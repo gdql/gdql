@@ -1,0 +1,6197 @@
+[
+  {
+    "date": "1977-02-17",
+    "venue": {
+      "name": "Sound City",
+      "city": "Van Nuys, CA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Dancing In The Streets",
+            "segue_before": false
+          },
+          {
+            "name": "Sunrise",
+            "segue_before": false
+          },
+          {
+            "name": "Passenger",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Pophet",
+            "segue_before": false
+          },
+          {
+            "name": "Fire On The Mountain",
+            "segue_before": false
+          },
+          {
+            "name": "Equinox",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          },
+          {
+            "name": "Pride Of Cucamonga",
+            "segue_before": false
+          },
+          {
+            "name": "Money Money",
+            "segue_before": false
+          },
+          {
+            "name": "Unbroken Chain",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-02-20",
+    "venue": {
+      "name": "Studio (Terrapin Station Outtakes)",
+      "city": "Novato, CA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Dancin' in the Streets",
+            "segue_before": false
+          },
+          {
+            "name": "Sunrise",
+            "segue_before": false
+          },
+          {
+            "name": "Passenger",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Fire on the Mountain",
+            "segue_before": false
+          },
+          {
+            "name": "Equinox",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-02-26",
+    "venue": {
+      "name": "Swing Auditorium",
+      "city": "San Bernardino, CA, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          },
+          {
+            "name": "New Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "They Love Each Other",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Sugaree",
+            "segue_before": false
+          },
+          {
+            "name": "Mama Tried",
+            "segue_before": false
+          },
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "Playin' in the Band",
+            "segue_before": false
+          },
+          {
+            "name": "The Wheel",
+            "segue_before": false
+          },
+          {
+            "name": "Playin' in the Band",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stops",
+            "segue_before": false
+          },
+          {
+            "name": "Help on the Way",
+            "segue_before": false
+          },
+          {
+            "name": "Slipknot!",
+            "segue_before": true
+          },
+          {
+            "name": "Franklin's Tower",
+            "segue_before": false
+          },
+          {
+            "name": "Promised Land",
+            "segue_before": false
+          },
+          {
+            "name": "Eyes of the World",
+            "segue_before": false
+          },
+          {
+            "name": "Dancin' in the Streets",
+            "segue_before": false
+          },
+          {
+            "name": "Around and Around",
+            "segue_before": false
+          },
+          {
+            "name": "E: U.S. Blues",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-02-27",
+    "venue": {
+      "name": "Robertson Gym, UC Santa Barbara",
+      "city": "Goleta, CA, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Loser",
+            "segue_before": false
+          },
+          {
+            "name": "El Paso",
+            "segue_before": false
+          },
+          {
+            "name": "Ramble On Rose",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Mississippi Half-Step",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias",
+            "segue_before": false
+          },
+          {
+            "name": "Samson And Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Saint Stephen",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          },
+          {
+            "name": "Morning Dew",
+            "segue_before": false
+          },
+          {
+            "name": "Sugar Magnolia",
+            "segue_before": false
+          },
+          {
+            "name": "Johnny B. Goode",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-03-01",
+    "venue": {
+      "name": "Multiple",
+      "city": "Multiple",
+      "state": "",
+      "country": ""
+    },
+    "tour": "",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "3-18-77",
+            "segue_before": false
+          },
+          {
+            "name": "4-22-77",
+            "segue_before": false
+          },
+          {
+            "name": "4-23-77",
+            "segue_before": false
+          },
+          {
+            "name": "4-30-77",
+            "segue_before": false
+          },
+          {
+            "name": "5-11-77",
+            "segue_before": false
+          },
+          {
+            "name": "5-13-77",
+            "segue_before": false
+          },
+          {
+            "name": "5-17-77",
+            "segue_before": false
+          },
+          {
+            "name": "5-21-77",
+            "segue_before": false
+          },
+          {
+            "name": "5-25-77",
+            "segue_before": false
+          },
+          {
+            "name": "5-4-77",
+            "segue_before": false
+          },
+          {
+            "name": "5-5-77",
+            "segue_before": false
+          },
+          {
+            "name": "5-8-77",
+            "segue_before": false
+          },
+          {
+            "name": "6-7-77",
+            "segue_before": false
+          },
+          {
+            "name": "Full Mix",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-03-18",
+    "venue": {
+      "name": "Winterland Arena",
+      "city": "San Francisco, CA, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Promised Land",
+            "segue_before": false
+          },
+          {
+            "name": "Mississippi Half-Step",
+            "segue_before": false
+          },
+          {
+            "name": "It's All Over Now",
+            "segue_before": false
+          },
+          {
+            "name": "Sugaree",
+            "segue_before": false
+          },
+          {
+            "name": "New Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "Cassidy",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias",
+            "segue_before": false
+          },
+          {
+            "name": "Fire On The Mountain",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Ship of Fools",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          },
+          {
+            "name": "Alhambra",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away",
+            "segue_before": false
+          },
+          {
+            "name": "Saint Stephen",
+            "segue_before": false
+          },
+          {
+            "name": "Around and Around",
+            "segue_before": false
+          },
+          {
+            "name": "Uncle John's Band",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-03-19",
+    "venue": {
+      "name": "Winterland Arena",
+      "city": "San Francisco, CA, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "Mama Tried",
+            "segue_before": false
+          },
+          {
+            "name": "Loser",
+            "segue_before": false
+          },
+          {
+            "name": "Big River",
+            "segue_before": false
+          },
+          {
+            "name": "They Love Each Other",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          },
+          {
+            "name": "Playing in the Band",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Playing in the Band",
+            "segue_before": false
+          },
+          {
+            "name": "Eyes of the World",
+            "segue_before": false
+          },
+          {
+            "name": "Dancin' in the Streets",
+            "segue_before": false
+          },
+          {
+            "name": "Wharf Rat",
+            "segue_before": false
+          },
+          {
+            "name": "Franklin's Tower",
+            "segue_before": false
+          },
+          {
+            "name": "Sugar Magnolia",
+            "segue_before": false
+          },
+          {
+            "name": "One More Saturday Night",
+            "segue_before": false
+          },
+          {
+            "name": "Uncle John's Band",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-03-20",
+    "venue": {
+      "name": "Winterland Arena",
+      "city": "San Francisco, CA, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "New Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Ramble On Rose",
+            "segue_before": false
+          },
+          {
+            "name": "El Paso",
+            "segue_before": false
+          },
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "Cassidy",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "Beat It On Down the Line",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Row Jimmy",
+            "segue_before": false
+          },
+          {
+            "name": "The Promised Land",
+            "segue_before": false
+          },
+          {
+            "name": "Saint Stephen -",
+            "segue_before": false
+          },
+          {
+            "name": "The Other One -",
+            "segue_before": false
+          },
+          {
+            "name": "Stella Blue",
+            "segue_before": false
+          },
+          {
+            "name": "Around and Around",
+            "segue_before": false
+          },
+          {
+            "name": "U.S. Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-04-22",
+    "venue": {
+      "name": "The Spectrum",
+      "city": "Philadelphia, PA, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "The Promised Land",
+            "segue_before": false
+          },
+          {
+            "name": "Mississippi Half-Step",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "El Paso",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "Playing In The Band",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias -",
+            "segue_before": false
+          },
+          {
+            "name": "Fire On The Mountain",
+            "segue_before": false
+          },
+          {
+            "name": "Samson And Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "It Must Have Been The Roses",
+            "segue_before": false
+          },
+          {
+            "name": "Dancin' In The Streets -",
+            "segue_before": false
+          },
+          {
+            "name": "Got My Mojo Workin' -",
+            "segue_before": false
+          },
+          {
+            "name": "Dancin' In The Streets -",
+            "segue_before": false
+          },
+          {
+            "name": "The Wheel -",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-04-23",
+    "venue": {
+      "name": "Springfield Civic Center",
+      "city": "Springfield, MA, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Sugaree",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Cassidy",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Loser",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "New Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Ramble On Rose",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Me and My Uncle",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Row Jimmy",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "It's All Over Now",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias",
+            "segue_before": false
+          },
+          {
+            "name": "Fire on the Mountain",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Take A Step Back",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never STopped",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Help On the Way",
+            "segue_before": false
+          },
+          {
+            "name": "Slipknot!",
+            "segue_before": false
+          },
+          {
+            "name": "Franklin's Tower",
+            "segue_before": false
+          },
+          {
+            "name": "Around and Around",
+            "segue_before": false
+          },
+          {
+            "name": "Goin' Down the Road Feelin' Bad",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "One More Saturday Night",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-04-25",
+    "venue": {
+      "name": "Capitol Theater",
+      "city": "Passaic, NJ, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "New Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "Mama Tried",
+            "segue_before": false
+          },
+          {
+            "name": "They Love Each Other",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "Lazy Lightning",
+            "segue_before": false
+          },
+          {
+            "name": "Supplication",
+            "segue_before": false
+          },
+          {
+            "name": "Ship Of Fools",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias",
+            "segue_before": false
+          },
+          {
+            "name": "Fire On The Mountain",
+            "segue_before": false
+          },
+          {
+            "name": "Samson And Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          },
+          {
+            "name": "Playing In The Band",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "Wharf Rat",
+            "segue_before": false
+          },
+          {
+            "name": "Playing In The Band",
+            "segue_before": false
+          },
+          {
+            "name": "U.S. Blues",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-04-26",
+    "venue": {
+      "name": "Capitol Theater",
+      "city": "Passaic, NJ, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "Me and My Uncle",
+            "segue_before": false
+          },
+          {
+            "name": "It Must Have Been the Roses",
+            "segue_before": false
+          },
+          {
+            "name": "Cassidy",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "Big River",
+            "segue_before": false
+          },
+          {
+            "name": "Friend of the Devil",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Mississippi Half-Step",
+            "segue_before": false
+          },
+          {
+            "name": "Dancin' in the Street",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "Eyes of the World",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Stella Blue",
+            "segue_before": false
+          },
+          {
+            "name": "Sugar Magnolia",
+            "segue_before": false
+          },
+          {
+            "name": "Lazy Lightning",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-04-27",
+    "venue": {
+      "name": "Capitol Theater",
+      "city": "Passaic, NJ, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Promised Land",
+            "segue_before": false
+          },
+          {
+            "name": "Mississippi Half Step",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Sugaree",
+            "segue_before": false
+          },
+          {
+            "name": "El Paso",
+            "segue_before": false
+          },
+          {
+            "name": "Row Jimmy",
+            "segue_before": false
+          },
+          {
+            "name": "Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Loser",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias",
+            "segue_before": false
+          },
+          {
+            "name": "Fire on the Mountain",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Ramble On Rose",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          },
+          {
+            "name": "Morning Dew",
+            "segue_before": false
+          },
+          {
+            "name": "Johnny B. Goode",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-04-29",
+    "venue": {
+      "name": "The Palladium",
+      "city": "New York, NY, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Help On The Way",
+            "segue_before": false
+          },
+          {
+            "name": "Slipknot!",
+            "segue_before": false
+          },
+          {
+            "name": "Franklin's Tower",
+            "segue_before": false
+          },
+          {
+            "name": "New Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "Cassidy",
+            "segue_before": false
+          },
+          {
+            "name": "They Love Each Other",
+            "segue_before": false
+          },
+          {
+            "name": "Big River",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Loser",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Sugaree",
+            "segue_before": false
+          },
+          {
+            "name": "El Paso",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias",
+            "segue_before": false
+          },
+          {
+            "name": "Goin' Down The Road Feeling Bad",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away Jam",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "The Wheel",
+            "segue_before": false
+          },
+          {
+            "name": "Wharf Rat",
+            "segue_before": false
+          },
+          {
+            "name": "Around and Around",
+            "segue_before": false
+          },
+          {
+            "name": "Uncle John's Band",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-04-30",
+    "venue": {
+      "name": "The Palladium",
+      "city": "New York, NY, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "It's All Over Now",
+            "segue_before": false
+          },
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "Mama Tried",
+            "segue_before": false
+          },
+          {
+            "name": "Me And My Uncle",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Mississippi Half Step",
+            "segue_before": false
+          },
+          {
+            "name": "The Promised Land",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias",
+            "segue_before": false
+          },
+          {
+            "name": "Fire On The Mountain",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Friend Of The Devil",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Saint Stephen",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away",
+            "segue_before": false
+          },
+          {
+            "name": "Stella Blue",
+            "segue_before": false
+          },
+          {
+            "name": "Saint Stephen",
+            "segue_before": false
+          },
+          {
+            "name": "One More Saturday Night",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-05-01",
+    "venue": {
+      "name": "The Palladium",
+      "city": "New York, NY, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Dancing In The Street",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "Beer Barrel Polka",
+            "segue_before": false
+          },
+          {
+            "name": "Playing In The Band",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "The Other One",
+            "segue_before": false
+          },
+          {
+            "name": "Comes A Time",
+            "segue_before": false
+          },
+          {
+            "name": "Playing In The Band Reprise",
+            "segue_before": false
+          },
+          {
+            "name": "Brokedown Palace",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-05-03",
+    "venue": {
+      "name": "The Palladium",
+      "city": "New York, NY, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "crowd",
+            "segue_before": false
+          },
+          {
+            "name": "The Promised Land",
+            "segue_before": false
+          },
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "Me And My Uncle",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O/",
+            "segue_before": false
+          },
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "Row Jimmy [tape flip patched]",
+            "segue_before": false
+          },
+          {
+            "name": "Lazy Lightnin'",
+            "segue_before": false
+          },
+          {
+            "name": "Supplication",
+            "segue_before": false
+          },
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Ship of Fools",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Might As Well",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Sugaree",
+            "segue_before": false
+          },
+          {
+            "name": "Samson And Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Friend Of The Devil",
+            "segue_before": false
+          },
+          {
+            "name": "Eyes Of The World",
+            "segue_before": false
+          },
+          {
+            "name": "Space",
+            "segue_before": false
+          },
+          {
+            "name": "Wharf Rat",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away",
+            "segue_before": false
+          },
+          {
+            "name": "Around And Around [tape flip patched]",
+            "segue_before": false
+          },
+          {
+            "name": "Uncle John's Band",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-05-04",
+    "venue": {
+      "name": "The Palladium",
+      "city": "New York, NY, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Mississippi Half-Step Uptown Toodeloo -",
+            "segue_before": false
+          },
+          {
+            "name": "Big River",
+            "segue_before": false
+          },
+          {
+            "name": "They Love Each Other",
+            "segue_before": false
+          },
+          {
+            "name": "New Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "It Must Have Been The Roses",
+            "segue_before": false
+          },
+          {
+            "name": "Cassidy",
+            "segue_before": false
+          },
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "Dancing In The Street",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias -",
+            "segue_before": false
+          },
+          {
+            "name": "Fire On The Mountain",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station -",
+            "segue_before": false
+          },
+          {
+            "name": "Playing In The Band -",
+            "segue_before": false
+          },
+          {
+            "name": "Comes A Time -",
+            "segue_before": false
+          },
+          {
+            "name": "Playing In The Band",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-05-05",
+    "venue": {
+      "name": "Veterans Memorial Coliseum",
+      "city": "New Haven, CT, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Promised Land",
+            "segue_before": false
+          },
+          {
+            "name": "Sugaree",
+            "segue_before": false
+          },
+          {
+            "name": "Mama Tried",
+            "segue_before": false
+          },
+          {
+            "name": "El Paso",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "Lazy Lightning",
+            "segue_before": false
+          },
+          {
+            "name": "Supplication",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias",
+            "segue_before": false
+          },
+          {
+            "name": "Fire On The Mountain",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Saint Stephen",
+            "segue_before": false
+          },
+          {
+            "name": "Sugar Magnolia",
+            "segue_before": false
+          },
+          {
+            "name": "Johnny B. Goode",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-05-07",
+    "venue": {
+      "name": "Boston Garden",
+      "city": "Boston, MA, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Equipment Repairs",
+            "segue_before": false
+          },
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "More repairs",
+            "segue_before": false
+          },
+          {
+            "name": "Cassidy",
+            "segue_before": false
+          },
+          {
+            "name": "Tune Up",
+            "segue_before": false
+          },
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "Tune Up",
+            "segue_before": false
+          },
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "Fennario (Pretty Peggy-O)",
+            "segue_before": false
+          },
+          {
+            "name": "New Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Repairs - Billy K's Birthday!",
+            "segue_before": false
+          },
+          {
+            "name": "Mississippi Half Step Uptown Toodle-Loo",
+            "segue_before": false
+          },
+          {
+            "name": "Big River",
+            "segue_before": false
+          },
+          {
+            "name": "Tune Up",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "Tune Up",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Tune Up",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          },
+          {
+            "name": "Sampson And Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Tune Up",
+            "segue_before": false
+          },
+          {
+            "name": "Friend Of The Devil",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Tune Up",
+            "segue_before": false
+          },
+          {
+            "name": "Eyes Of The World",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "The Wheel",
+            "segue_before": false
+          },
+          {
+            "name": "Wharf Rat",
+            "segue_before": false
+          },
+          {
+            "name": "Around And Around",
+            "segue_before": false
+          },
+          {
+            "name": "FCrowd (Aud patch) - Jerry's Guitar is Broke!\\",
+            "segue_before": false
+          },
+          {
+            "name": "U.S. Blues",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-05-08",
+    "venue": {
+      "name": "Barton Hall, Cornell University",
+      "city": "Ithaca, NY, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Loser",
+            "segue_before": false
+          },
+          {
+            "name": "El Paso",
+            "segue_before": false
+          },
+          {
+            "name": "They Love Each Other",
+            "segue_before": false
+          },
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "Lazy Lightning -",
+            "segue_before": false
+          },
+          {
+            "name": "Supplication",
+            "segue_before": true
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "Mama Tried",
+            "segue_before": false
+          },
+          {
+            "name": "Row Jimmy",
+            "segue_before": false
+          },
+          {
+            "name": "Dancin' In The Streets",
+            "segue_before": false
+          },
+          {
+            "name": "Take A Step Back/Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias-",
+            "segue_before": false
+          },
+          {
+            "name": "Fire On The Mountain",
+            "segue_before": true
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning/Dead Air",
+            "segue_before": false
+          },
+          {
+            "name": "Saint Stephen",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away",
+            "segue_before": false
+          },
+          {
+            "name": "Saint Stephen",
+            "segue_before": false
+          },
+          {
+            "name": "Morning Dew",
+            "segue_before": false
+          },
+          {
+            "name": "Saturday Night",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-05-09",
+    "venue": {
+      "name": "War Memorial Auditorium",
+      "city": "Buffalo, NY, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Help On The Way",
+            "segue_before": false
+          },
+          {
+            "name": "Slipknot!",
+            "segue_before": false
+          },
+          {
+            "name": "Franklin's Tower",
+            "segue_before": false
+          },
+          {
+            "name": "Cassidy",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "Mexicali Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "Big River",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "Sunrise",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Ship Of Fools",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "The Other One",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away",
+            "segue_before": false
+          },
+          {
+            "name": "Comes A Time",
+            "segue_before": false
+          },
+          {
+            "name": "Sugar Magnolia",
+            "segue_before": false
+          },
+          {
+            "name": "Uncle John's Band",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-05-11",
+    "venue": {
+      "name": "St. Paul Civic Center",
+      "city": "St. Paul, MN, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Promised Land",
+            "segue_before": false
+          },
+          {
+            "name": "They Love Each Other",
+            "segue_before": false
+          },
+          {
+            "name": "Big River",
+            "segue_before": false
+          },
+          {
+            "name": "Loser",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Ramble On Rose",
+            "segue_before": false
+          },
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "El Paso",
+            "segue_before": false
+          },
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "Lazy Lightning",
+            "segue_before": false
+          },
+          {
+            "name": "Supplication",
+            "segue_before": false
+          },
+          {
+            "name": "Sugaree",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias",
+            "segue_before": false
+          },
+          {
+            "name": "Fire on the Mountain",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Uncle John's Band",
+            "segue_before": false
+          },
+          {
+            "name": "Jam",
+            "segue_before": false
+          },
+          {
+            "name": "Wharf Rat",
+            "segue_before": false
+          },
+          {
+            "name": "Around and Around",
+            "segue_before": false
+          },
+          {
+            "name": "Brokedown Palace",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-05-12",
+    "venue": {
+      "name": "Auditorium Theatre",
+      "city": "Chicago, IL, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "Me & My Uncle",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "They Love Each Other",
+            "segue_before": false
+          },
+          {
+            "name": "Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Mississippi Half Step",
+            "segue_before": false
+          },
+          {
+            "name": "Dancin' in the Street",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Sunrise",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          },
+          {
+            "name": "Playin' in the Band",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away",
+            "segue_before": false
+          },
+          {
+            "name": "Comes A Time",
+            "segue_before": false
+          },
+          {
+            "name": "Playin' in the Band",
+            "segue_before": false
+          },
+          {
+            "name": "Johnny B. Goode",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-05-13",
+    "venue": {
+      "name": "Auditorium Theatre",
+      "city": "Chicago, IL, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Ramble On Rose",
+            "segue_before": false
+          },
+          {
+            "name": "Cassidy",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "New Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Friend of the Devil",
+            "segue_before": false
+          },
+          {
+            "name": "El Paso",
+            "segue_before": false
+          },
+          {
+            "name": "Jack-A-Roe",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias",
+            "segue_before": false
+          },
+          {
+            "name": "Fire on the Mountain",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "The Other One",
+            "segue_before": false
+          },
+          {
+            "name": "Stella Blue",
+            "segue_before": false
+          },
+          {
+            "name": "Goin' Down The Road Feeling Bad",
+            "segue_before": false
+          },
+          {
+            "name": "One More Saturday Night",
+            "segue_before": false
+          },
+          {
+            "name": "U.S. Blues",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-05-15",
+    "venue": {
+      "name": "St. Louis Arena",
+      "city": "St. Louis, MO, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Bertha -",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Row Jimmy",
+            "segue_before": false
+          },
+          {
+            "name": "New Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "Lazy Lightnin' -",
+            "segue_before": false
+          },
+          {
+            "name": "Supplictaion",
+            "segue_before": false
+          },
+          {
+            "name": "Jack-A-Roe",
+            "segue_before": false
+          },
+          {
+            "name": "Passenger",
+            "segue_before": false
+          },
+          {
+            "name": "Funiculi Finicula",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "Dancin' In The Streets",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet -",
+            "segue_before": false
+          },
+          {
+            "name": "Eyes Of The World -",
+            "segue_before": false
+          },
+          {
+            "name": "Drums -",
+            "segue_before": false
+          },
+          {
+            "name": "Samson And Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Ship Of Fools",
+            "segue_before": false
+          },
+          {
+            "name": "Saint Stephen -",
+            "segue_before": false
+          },
+          {
+            "name": "Iko Iko -",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away -",
+            "segue_before": false
+          },
+          {
+            "name": "Sugar Magnolia",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Uncle John's Band",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-05-17",
+    "venue": {
+      "name": "Memorial Coliseum, U. of Alabama",
+      "city": "Tuscaloosa, AL, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "Mississippi Half-Step",
+            "segue_before": false
+          },
+          {
+            "name": "El Paso",
+            "segue_before": false
+          },
+          {
+            "name": "They Love Each Other",
+            "segue_before": false
+          },
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "Jack-A-Roe",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "Passenger",
+            "segue_before": false
+          },
+          {
+            "name": "High Time",
+            "segue_before": false
+          },
+          {
+            "name": "Big River",
+            "segue_before": false
+          },
+          {
+            "name": "Sunrise",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias",
+            "segue_before": false
+          },
+          {
+            "name": "Fire On The Mountain",
+            "segue_before": false
+          },
+          {
+            "name": "Samson And Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          },
+          {
+            "name": "Playin' In The Band",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "Wharf Rat",
+            "segue_before": false
+          },
+          {
+            "name": "Playin' In The Band",
+            "segue_before": false
+          },
+          {
+            "name": "Sugar Magnolia",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-05-18",
+    "venue": {
+      "name": "Fox Theater",
+      "city": "Atlanta, GA, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "Cassidy",
+            "segue_before": false
+          },
+          {
+            "name": "Jack-A-Roe",
+            "segue_before": false
+          },
+          {
+            "name": "Mexicali Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Friend Of The Devil",
+            "segue_before": false
+          },
+          {
+            "name": "New Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "It Must Have Been The Roses",
+            "segue_before": false
+          },
+          {
+            "name": "Lazy Lightnin' -",
+            "segue_before": false
+          },
+          {
+            "name": "Supplication",
+            "segue_before": false
+          },
+          {
+            "name": "High Time",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "Ship Of Fools",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet -",
+            "segue_before": false
+          },
+          {
+            "name": "Eyes Of The World -",
+            "segue_before": false
+          },
+          {
+            "name": "Drums -",
+            "segue_before": false
+          },
+          {
+            "name": "The Other One -",
+            "segue_before": false
+          },
+          {
+            "name": "Stella Blue -",
+            "segue_before": false
+          },
+          {
+            "name": "Around And Around",
+            "segue_before": false
+          },
+          {
+            "name": "Brokedown Palace",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-05-19",
+    "venue": {
+      "name": "Fox Theater",
+      "city": "Atlanta, GA, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "The Promised Land",
+            "segue_before": false
+          },
+          {
+            "name": "Sugaree",
+            "segue_before": false
+          },
+          {
+            "name": "El Paso",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Row Jimmy",
+            "segue_before": false
+          },
+          {
+            "name": "Passenger",
+            "segue_before": false
+          },
+          {
+            "name": "Loser",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Dancing In The Street",
+            "segue_before": false
+          },
+          {
+            "name": "Exercise",
+            "segue_before": false
+          },
+          {
+            "name": "Samson And Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Ramble On Rose",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          },
+          {
+            "name": "Playing In The Band",
+            "segue_before": false
+          },
+          {
+            "name": "Uncle John's Band",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "The Wheel",
+            "segue_before": false
+          },
+          {
+            "name": "China Doll",
+            "segue_before": false
+          },
+          {
+            "name": "Playing In The Band",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-05-21",
+    "venue": {
+      "name": "Lakeland Civic Center",
+      "city": "4nuyKoY91WKwR6HLq7Gzkl Lakeland, FL, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "Me and My Uncle",
+            "segue_before": false
+          },
+          {
+            "name": "They Love Each Other",
+            "segue_before": false
+          },
+          {
+            "name": "Cassidy",
+            "segue_before": false
+          },
+          {
+            "name": "Jack-A-Roe",
+            "segue_before": false
+          },
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Row Jimmy",
+            "segue_before": false
+          },
+          {
+            "name": "Passenger",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias",
+            "segue_before": false
+          },
+          {
+            "name": "Fire on the Mountain",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "He's Gone",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "The Other One",
+            "segue_before": false
+          },
+          {
+            "name": "Comes a Time",
+            "segue_before": false
+          },
+          {
+            "name": "Saint Stephen",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away",
+            "segue_before": false
+          },
+          {
+            "name": "Saint Stephen",
+            "segue_before": false
+          },
+          {
+            "name": "One More Saturday Night",
+            "segue_before": false
+          },
+          {
+            "name": "U.S. Blues",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-05-22",
+    "venue": {
+      "name": "The Sportatorium",
+      "city": "Pembroke Pines, FL, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "gd77-05-22t01.mp3",
+            "segue_before": false
+          },
+          {
+            "name": "gd77-05-22t02.mp3",
+            "segue_before": false
+          },
+          {
+            "name": "gd77-05-22t03.mp3",
+            "segue_before": false
+          },
+          {
+            "name": "gd77-05-22t04.mp3",
+            "segue_before": false
+          },
+          {
+            "name": "gd77-05-22t05.mp3",
+            "segue_before": false
+          },
+          {
+            "name": "gd77-05-22t06.mp3",
+            "segue_before": false
+          },
+          {
+            "name": "gd77-05-22t07.mp3",
+            "segue_before": false
+          },
+          {
+            "name": "gd77-05-22t08.mp3",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-05-25",
+    "venue": {
+      "name": "The Mosque",
+      "city": "Richmond, VA, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Mississippi Half-Step",
+            "segue_before": false
+          },
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "They Love Each Other",
+            "segue_before": false
+          },
+          {
+            "name": "Mexicali Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "Cassidy",
+            "segue_before": false
+          },
+          {
+            "name": "Loser",
+            "segue_before": false
+          },
+          {
+            "name": "Lazy Lightning",
+            "segue_before": false
+          },
+          {
+            "name": "Supplication",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Brown-Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "Promised Land",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias",
+            "segue_before": false
+          },
+          {
+            "name": "Fire On The Mountain",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "He's Gone",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "The Other One",
+            "segue_before": false
+          },
+          {
+            "name": "Wharf Rat",
+            "segue_before": false
+          },
+          {
+            "name": "The Other One",
+            "segue_before": false
+          },
+          {
+            "name": "The Wheel",
+            "segue_before": false
+          },
+          {
+            "name": "Around & Around",
+            "segue_before": false
+          },
+          {
+            "name": "Johnny B. Goode",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-05-26",
+    "venue": {
+      "name": "Baltimore Civic Center",
+      "city": "Baltimore, MD, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Sugaree",
+            "segue_before": false
+          },
+          {
+            "name": "Mama Tried",
+            "segue_before": false
+          },
+          {
+            "name": "Sunrise",
+            "segue_before": false
+          },
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "Passenger",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Jack-A-Roe",
+            "segue_before": false
+          },
+          {
+            "name": "New Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "Samson & Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "High Time",
+            "segue_before": false
+          },
+          {
+            "name": "Big River",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          },
+          {
+            "name": "Es//timated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Eyes Of The World",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away",
+            "segue_before": false
+          },
+          {
+            "name": "GDTRFB",
+            "segue_before": false
+          },
+          {
+            "name": "Around // And Around",
+            "segue_before": false
+          },
+          {
+            "name": "Uncle John's Band",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-05-28",
+    "venue": {
+      "name": "Hartford Civic Center",
+      "city": "Hartford, CT, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Sugaree",
+            "segue_before": false
+          },
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "Row Jimmy",
+            "segue_before": false
+          },
+          {
+            "name": "Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Candyman",
+            "segue_before": false
+          },
+          {
+            "name": "Passenger",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "Promised Land",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "Crowd",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Playin' in the Band",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away",
+            "segue_before": false
+          },
+          {
+            "name": "Wharf Rat",
+            "segue_before": false
+          },
+          {
+            "name": "Playin' in the Band",
+            "segue_before": false
+          },
+          {
+            "name": "One More Saturday Night",
+            "segue_before": false
+          },
+          {
+            "name": "U.S. Blues",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-06-04",
+    "venue": {
+      "name": "The Forum",
+      "city": "Inglewood, CA, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "The Promised Land",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "El Paso",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "Friend Of The Devil",
+            "segue_before": false
+          },
+          {
+            "name": "Lazy Lightning",
+            "segue_before": false
+          },
+          {
+            "name": "Supplication",
+            "segue_before": false
+          },
+          {
+            "name": "Candyman",
+            "segue_before": false
+          },
+          {
+            "name": "Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Brown-Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Samson And Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Ship Of Fools",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Eyes of the World",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          },
+          {
+            "name": "Playing in the Band",
+            "segue_before": false
+          },
+          {
+            "name": "Franklin's Tower",
+            "segue_before": false
+          },
+          {
+            "name": "Space",
+            "segue_before": false
+          },
+          {
+            "name": "China Doll",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away",
+            "segue_before": false
+          },
+          {
+            "name": "Playin' Reprise",
+            "segue_before": false
+          },
+          {
+            "name": "One More Saturday Night",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-06-07",
+    "venue": {
+      "name": "Winterland Arena",
+      "city": "San Francisco, CA, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "Finiculi Finicula",
+            "segue_before": false
+          },
+          {
+            "name": "El Paso",
+            "segue_before": false
+          },
+          {
+            "name": "Friend Of The Devil",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias-",
+            "segue_before": false
+          },
+          {
+            "name": "Fire On The Mountain-",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Candyman",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet-",
+            "segue_before": false
+          },
+          {
+            "name": "He's Gone-",
+            "segue_before": false
+          },
+          {
+            "name": "Drums-",
+            "segue_before": false
+          },
+          {
+            "name": "Samson & Delilah-",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station-",
+            "segue_before": false
+          },
+          {
+            "name": "Morning Dew-",
+            "segue_before": false
+          },
+          {
+            "name": "Around & Around",
+            "segue_before": false
+          },
+          {
+            "name": "Uncle John's Band",
+            "segue_before": false
+          },
+          {
+            "name": "U.S. Blues",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-06-08",
+    "venue": {
+      "name": "Winterland Arena",
+      "city": "San Francisco, CA, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Sugaree",
+            "segue_before": false
+          },
+          {
+            "name": "Mexicali Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Row Jimmy",
+            "segue_before": false
+          },
+          {
+            "name": "Passenger",
+            "segue_before": false
+          },
+          {
+            "name": "Sunrise",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "It's All Over Now",
+            "segue_before": false
+          },
+          {
+            "name": "Jack-A-Roe",
+            "segue_before": false
+          },
+          {
+            "name": "Lazy Lightning",
+            "segue_before": false
+          },
+          {
+            "name": "Supplication",
+            "segue_before": false
+          },
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Ramble On Rose",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Eyes of the World",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "The Other One",
+            "segue_before": true
+          },
+          {
+            "name": "Wharf Rat",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away",
+            "segue_before": false
+          },
+          {
+            "name": "Going Down the Road Feeling Bad",
+            "segue_before": false
+          },
+          {
+            "name": "Johnny B. Goode",
+            "segue_before": false
+          },
+          {
+            "name": "Brokedown Palace",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-06-09",
+    "venue": {
+      "name": "Winterland Arena",
+      "city": "San Francisco, CA, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Spring 1977",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Mississippi Half-Step Uptown Toodeloo",
+            "segue_before": false
+          },
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "They Love Each Other",
+            "segue_before": false
+          },
+          {
+            "name": "Cassidy",
+            "segue_before": false
+          },
+          {
+            "name": "Sunrise",
+            "segue_before": false
+          },
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Loser",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Samson And Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Funiculi Funicula",
+            "segue_before": false
+          },
+          {
+            "name": "Help On The Way",
+            "segue_before": false
+          },
+          {
+            "name": "Slipknot!",
+            "segue_before": false
+          },
+          {
+            "name": "Franklin's Tower",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet -",
+            "segue_before": false
+          },
+          {
+            "name": "St. Stephen",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away -",
+            "segue_before": false
+          },
+          {
+            "name": "Drums -",
+            "segue_before": false
+          },
+          {
+            "name": "St. Stephen -",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station -",
+            "segue_before": false
+          },
+          {
+            "name": "Sugar Magnolia",
+            "segue_before": false
+          },
+          {
+            "name": "U.S. Blues",
+            "segue_before": false
+          },
+          {
+            "name": "One More Saturday Night",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-09-03",
+    "venue": {
+      "name": "Raceway Park",
+      "city": "Englishtown, NJ, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Introduction",
+            "segue_before": false
+          },
+          {
+            "name": "Promised Land",
+            "segue_before": false
+          },
+          {
+            "name": "The Love Each Other",
+            "segue_before": false
+          },
+          {
+            "name": "Me and My Uncle",
+            "segue_before": false
+          },
+          {
+            "name": "Mississippi Half Step",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Friend of the Devil",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Loser",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Eyes of the World",
+            "segue_before": false
+          },
+          {
+            "name": "Radio Talk",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "He's Gone",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away",
+            "segue_before": false
+          },
+          {
+            "name": "Truckin'",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-09-28",
+    "venue": {
+      "name": "Paramount Northwest Theater",
+      "city": "Seattle, WA, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "Passenger",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "Me And My Uncle",
+            "segue_before": false
+          },
+          {
+            "name": "Friend Of The Devil",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Dire Wolf",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Eyes Of The World",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away",
+            "segue_before": false
+          },
+          {
+            "name": "Wharf Rat",
+            "segue_before": false
+          },
+          {
+            "name": "Around And Around",
+            "segue_before": false
+          },
+          {
+            "name": "U.S. Blues",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-09-29",
+    "venue": {
+      "name": "Paramount Northwest Theater",
+      "city": "Seattle, WA, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Mississippi Half Step",
+            "segue_before": false
+          },
+          {
+            "name": "Mama Tried",
+            "segue_before": false
+          },
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Ramble On Rose",
+            "segue_before": false
+          },
+          {
+            "name": "Sugaree",
+            "segue_before": false
+          },
+          {
+            "name": "Let It Grow",
+            "segue_before": false
+          },
+          {
+            "name": "Franklin's Tower",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Ship Of Fools",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "He's Gone",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "Truckin'",
+            "segue_before": false
+          },
+          {
+            "name": "Stella Blue",
+            "segue_before": false
+          },
+          {
+            "name": "Goin' Down The Road Feelin' Bad",
+            "segue_before": false
+          },
+          {
+            "name": "Johnny B. Goode",
+            "segue_before": false
+          },
+          {
+            "name": "Uncle John's Band",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-10-01",
+    "venue": {
+      "name": "Paramount Theater",
+      "city": "Portland, OR, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "The Promised Land//",
+            "segue_before": false
+          },
+          {
+            "name": "They Love Each Other",
+            "segue_before": false
+          },
+          {
+            "name": "Mexicali Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Dire Wolf",
+            "segue_before": false
+          },
+          {
+            "name": "Cassidy",
+            "segue_before": false
+          },
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "Passenger",
+            "segue_before": false
+          },
+          {
+            "name": "Tenessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "New Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "It Must Have Been The Roses",
+            "segue_before": false
+          },
+          {
+            "name": "Esimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Eyes Of The World",
+            "segue_before": false
+          },
+          {
+            "name": "Dancing In The Street",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away",
+            "segue_before": false
+          },
+          {
+            "name": "Black Peter",
+            "segue_before": false
+          },
+          {
+            "name": "Around and Around",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-10-02",
+    "venue": {
+      "name": "Paramount Theater",
+      "city": "Portland, OR, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Casey Jones",
+            "segue_before": false
+          },
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "Sunrise",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "El Paso",
+            "segue_before": false
+          },
+          {
+            "name": "Dupree's Diamond Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Let It Grow",
+            "segue_before": false
+          },
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias",
+            "segue_before": false
+          },
+          {
+            "name": "Fire on the Mountain",
+            "segue_before": false
+          },
+          {
+            "name": "Funiculi Funicula",
+            "segue_before": false
+          },
+          {
+            "name": "Playin' in the Band",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "The Wheel",
+            "segue_before": false
+          },
+          {
+            "name": "Truckin'",
+            "segue_before": false
+          },
+          {
+            "name": "The Other One",
+            "segue_before": false
+          },
+          {
+            "name": "Wharf Rat",
+            "segue_before": false
+          },
+          {
+            "name": "Sugar Magnolia",
+            "segue_before": false
+          },
+          {
+            "name": "Johnny B. Goode",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-10-06",
+    "venue": {
+      "name": "Activity Center. Arizona State U",
+      "city": "Tempe, AZ, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Promised Land",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet// (station break)",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away// (tape flip)",
+            "segue_before": false
+          },
+          {
+            "name": "Black Peter",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away",
+            "segue_before": false
+          },
+          {
+            "name": "Around & Around",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-10-07",
+    "venue": {
+      "name": "U. of New Mexico",
+      "city": "Albuquerque, NM, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "The Wheel",
+            "segue_before": false
+          },
+          {
+            "name": "Wharf Rat",
+            "segue_before": false
+          },
+          {
+            "name": "Sugar Magnolia",
+            "segue_before": false
+          },
+          {
+            "name": "One More Saturday Night",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-10-09",
+    "venue": {
+      "name": "McNichols Sports Arena",
+      "city": "Denver, CO, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "New Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "They Love Each Other",
+            "segue_before": false
+          },
+          {
+            "name": "Cassidy",
+            "segue_before": false
+          },
+          {
+            "name": "Dire Wolf",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "Lazy Lightnin' -",
+            "segue_before": false
+          },
+          {
+            "name": "Supplication",
+            "segue_before": false
+          },
+          {
+            "name": "Sugaree",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Samson And Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias -",
+            "segue_before": false
+          },
+          {
+            "name": "Fire On The Mountain",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet -",
+            "segue_before": false
+          },
+          {
+            "name": "He's Gone -",
+            "segue_before": false
+          },
+          {
+            "name": "Truckin' -",
+            "segue_before": false
+          },
+          {
+            "name": "Drums -",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station -",
+            "segue_before": false
+          },
+          {
+            "name": "Around And Around",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-10-11",
+    "venue": {
+      "name": "Lloyd Noble Center, U. of Oklahoma",
+      "city": "Norman, OK, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Help On The Way",
+            "segue_before": false
+          },
+          {
+            "name": "Slipknot",
+            "segue_before": false
+          },
+          {
+            "name": "Franklin's Tower",
+            "segue_before": false
+          },
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "El Paso",
+            "segue_before": false
+          },
+          {
+            "name": "Sunrise",
+            "segue_before": false
+          },
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "Let It Grow",
+            "segue_before": false
+          },
+          {
+            "name": "Dancin' In The Streets",
+            "segue_before": false
+          },
+          {
+            "name": "Dire Wolf",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet--",
+            "segue_before": false
+          },
+          {
+            "name": "Eyes Of The World--",
+            "segue_before": false
+          },
+          {
+            "name": "Drums--",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away--",
+            "segue_before": false
+          },
+          {
+            "name": "Wharf Rat--",
+            "segue_before": false
+          },
+          {
+            "name": "Around & Around",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-10-12",
+    "venue": {
+      "name": "Manor Downs",
+      "city": "Austin, TX, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Promised Land",
+            "segue_before": false
+          },
+          {
+            "name": "They Love Each Other",
+            "segue_before": false
+          },
+          {
+            "name": "Me and My Uncle",
+            "segue_before": false
+          },
+          {
+            "name": "Candyman",
+            "segue_before": false
+          },
+          {
+            "name": "Passenger",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "El Paso",
+            "segue_before": false
+          },
+          {
+            "name": "Friend Of The Devil",
+            "segue_before": false
+          },
+          {
+            "name": "Lazy Lightning",
+            "segue_before": false
+          },
+          {
+            "name": "Supplication",
+            "segue_before": false
+          },
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "He's Gone",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "The Other One",
+            "segue_before": false
+          },
+          {
+            "name": "Black Peter",
+            "segue_before": false
+          },
+          {
+            "name": "Truckin'",
+            "segue_before": false
+          },
+          {
+            "name": "Nobody's Fault But Mine",
+            "segue_before": false
+          },
+          {
+            "name": "Iko Iko",
+            "segue_before": false
+          },
+          {
+            "name": "Sugar Magnolia",
+            "segue_before": false
+          },
+          {
+            "name": "Johnny B. Goode",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-10-14",
+    "venue": {
+      "name": "Hofheinz Pavilion",
+      "city": "Houston, TX, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "Mississippi Half-Step Uptown Toodeloo -",
+            "segue_before": false
+          },
+          {
+            "name": "El Paso",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "New Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Loser",
+            "segue_before": false
+          },
+          {
+            "name": "Passenger",
+            "segue_before": false
+          },
+          {
+            "name": "Friend Of The Devil",
+            "segue_before": false
+          },
+          {
+            "name": "Me And My Uncle",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Bertha -",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Candyman",
+            "segue_before": false
+          },
+          {
+            "name": "Playing In The Band -",
+            "segue_before": false
+          },
+          {
+            "name": "Drums -",
+            "segue_before": false
+          },
+          {
+            "name": "The Wheel -",
+            "segue_before": false
+          },
+          {
+            "name": "Wharf Rat -",
+            "segue_before": false
+          },
+          {
+            "name": "Around And Around",
+            "segue_before": false
+          },
+          {
+            "name": "Brokedown Palace -",
+            "segue_before": false
+          },
+          {
+            "name": "Playing In The Band",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-10-15",
+    "venue": {
+      "name": "Moody Coliseum, S.M.U",
+      "city": "Dallas, TX, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "They Love Each Other",
+            "segue_before": false
+          },
+          {
+            "name": "Mama Tried",
+            "segue_before": false
+          },
+          {
+            "name": "Big River",
+            "segue_before": false
+          },
+          {
+            "name": "Ramble On Rose",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "Let It Grow",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Sunrise",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          },
+          {
+            "name": "Saint Stephen",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away",
+            "segue_before": false
+          },
+          {
+            "name": "Stella Blue",
+            "segue_before": false
+          },
+          {
+            "name": "Sugar Magnolia",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Truckin'",
+            "segue_before": false
+          },
+          {
+            "name": "One More Saturday Night",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-10-16",
+    "venue": {
+      "name": "Assembly Center, Lousiana State U",
+      "city": "Baton Rouge, LA, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Promised Land",
+            "segue_before": false
+          },
+          {
+            "name": "Sugaree",
+            "segue_before": false
+          },
+          {
+            "name": "Cassidy",
+            "segue_before": false
+          },
+          {
+            "name": "Loser",
+            "segue_before": false
+          },
+          {
+            "name": "Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Friend of the Devil",
+            "segue_before": false
+          },
+          {
+            "name": "Sunrise",
+            "segue_before": false
+          },
+          {
+            "name": "Dire Wolf",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias",
+            "segue_before": false
+          },
+          {
+            "name": "Fire on the Mountain",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "The Other One",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          },
+          {
+            "name": "Black Peter",
+            "segue_before": false
+          },
+          {
+            "name": "Around and Around",
+            "segue_before": false
+          },
+          {
+            "name": "US Blues",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-10-28",
+    "venue": {
+      "name": "Soldiers' and Sailors' Memorial Hall",
+      "city": "Kansas City, KS, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Promised Land",
+            "segue_before": false
+          },
+          {
+            "name": "They Love Each Other",
+            "segue_before": false
+          },
+          {
+            "name": "Cassidy",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "Mexicali Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Big River",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "Lazy Lightning",
+            "segue_before": false
+          },
+          {
+            "name": "Supplication",
+            "segue_before": false
+          },
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Candyman",
+            "segue_before": false
+          },
+          {
+            "name": "Sunrise",
+            "segue_before": false
+          },
+          {
+            "name": "Passenger",
+            "segue_before": false
+          },
+          {
+            "name": "He's Gone",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away",
+            "segue_before": false
+          },
+          {
+            "name": "Stella Blue",
+            "segue_before": false
+          },
+          {
+            "name": "Going Down the Road Feeling Bad",
+            "segue_before": false
+          },
+          {
+            "name": "Around and Around",
+            "segue_before": false
+          },
+          {
+            "name": "Casey Jones",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-10-29",
+    "venue": {
+      "name": "Field House, Northern Illinois U.",
+      "city": "De Kalb, IL, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Might As Well",
+            "segue_before": false
+          },
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "Dire Wolf",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Loser",
+            "segue_before": false
+          },
+          {
+            "name": "El Paso",
+            "segue_before": false
+          },
+          {
+            "name": "Ramble On Rose",
+            "segue_before": false
+          },
+          {
+            "name": "New Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "It Must Have Been The Roses",
+            "segue_before": false
+          },
+          {
+            "name": "Let It Grow",
+            "segue_before": false
+          },
+          {
+            "name": "Bertha -",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Friend Of The Devil",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet -",
+            "segue_before": false
+          },
+          {
+            "name": "Eyes Of The World -",
+            "segue_before": false
+          },
+          {
+            "name": "Space -",
+            "segue_before": false
+          },
+          {
+            "name": "Saint Stephen -",
+            "segue_before": false
+          },
+          {
+            "name": "Drums/Bass -",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away -",
+            "segue_before": false
+          },
+          {
+            "name": "Black Peter -",
+            "segue_before": false
+          },
+          {
+            "name": "Sugar Magnolia",
+            "segue_before": false
+          },
+          {
+            "name": "One More Saturday Night",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-10-30",
+    "venue": {
+      "name": "Assembly Hall, Indiana U",
+      "city": "Bloomington, IN, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "They Love Each Other",
+            "segue_before": false
+          },
+          {
+            "name": "Mama Tried",
+            "segue_before": false
+          },
+          {
+            "name": "Me And My Uncle",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "Passenger",
+            "segue_before": false
+          },
+          {
+            "name": "Candyman",
+            "segue_before": false
+          },
+          {
+            "name": "Lazy Lightning",
+            "segue_before": false
+          },
+          {
+            "name": "Supplication",
+            "segue_before": false
+          },
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "Samson And Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "Playin' In The Band",
+            "segue_before": false
+          },
+          {
+            "name": "The Other One",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "The Wheel",
+            "segue_before": false
+          },
+          {
+            "name": "Wharf Rat",
+            "segue_before": false
+          },
+          {
+            "name": "Playin' in the Band",
+            "segue_before": false
+          },
+          {
+            "name": "Johnny B. Goode",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-11-01",
+    "venue": {
+      "name": "COBO Arena",
+      "city": "Detriot, MI, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Might as Well",
+            "segue_before": false
+          },
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "El Paso",
+            "segue_before": false
+          },
+          {
+            "name": "Friend of the Devil",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Dire Wolf",
+            "segue_before": false
+          },
+          {
+            "name": "Passenger",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "The Other One",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "Wharf Rat",
+            "segue_before": false
+          },
+          {
+            "name": "Truckin'",
+            "segue_before": false
+          },
+          {
+            "name": "Around and Around",
+            "segue_before": false
+          },
+          {
+            "name": "U.S. Blues",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-11-02",
+    "venue": {
+      "name": "Field House, Seneca College",
+      "city": "Toronto, Ontario, Canada",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "The Promised Land",
+            "segue_before": false
+          },
+          {
+            "name": "They Love Each Other",
+            "segue_before": false
+          },
+          {
+            "name": "Me and My Uncle",
+            "segue_before": false
+          },
+          {
+            "name": "Big River",
+            "segue_before": true
+          },
+          {
+            "name": "Candyman",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Ramble On Rose",
+            "segue_before": false
+          },
+          {
+            "name": "Lazy Lightnin'",
+            "segue_before": false
+          },
+          {
+            "name": "Supplication",
+            "segue_before": true
+          },
+          {
+            "name": "Might As Well",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Ship Of Fools",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Sunrise",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet",
+            "segue_before": false
+          },
+          {
+            "name": "Fire",
+            "segue_before": true
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "St Stephen",
+            "segue_before": false
+          },
+          {
+            "name": "Truckin'",
+            "segue_before": false
+          },
+          {
+            "name": "Around and Around",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-11-04",
+    "venue": {
+      "name": "Cotterrell Gym, Colgate U.",
+      "city": "Hamilton, NY, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "Cassidy",
+            "segue_before": false
+          },
+          {
+            "name": "It Must Have Been The Roses",
+            "segue_before": false
+          },
+          {
+            "name": "Sunrise",
+            "segue_before": false
+          },
+          {
+            "name": "Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Dupree's Diamond Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Let It Grow",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Cold Rain and Snow",
+            "segue_before": false
+          },
+          {
+            "name": "Playin' In The Band",
+            "segue_before": false
+          },
+          {
+            "name": "Eyes Of The World",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "The Other One",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "Iko Iko",
+            "segue_before": false
+          },
+          {
+            "name": "Stella Blue",
+            "segue_before": false
+          },
+          {
+            "name": "Playin' In The Band",
+            "segue_before": false
+          },
+          {
+            "name": "Johnny B. Goode",
+            "segue_before": false
+          },
+          {
+            "name": "Sleigh Ride",
+            "segue_before": false
+          },
+          {
+            "name": "Stay",
+            "segue_before": true
+          },
+          {
+            "name": "Rip It Up",
+            "segue_before": true
+          },
+          {
+            "name": "Blue Suede Shoes",
+            "segue_before": false
+          },
+          {
+            "name": "Tuning",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "Cumberland Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Thirty Days",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-11-05",
+    "venue": {
+      "name": "Community War Memorial Auditorium",
+      "city": "Rochester, NY, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Take A Step Back",
+            "segue_before": false
+          },
+          {
+            "name": "Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Mississippi Half Step",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Take A Step Back",
+            "segue_before": false
+          },
+          {
+            "name": "Dire Wolf",
+            "segue_before": false
+          },
+          {
+            "name": "Mama Tried",
+            "segue_before": false
+          },
+          {
+            "name": "Big River",
+            "segue_before": false
+          },
+          {
+            "name": "Candyman",
+            "segue_before": false
+          },
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "Deal",
+            "segue_before": false
+          },
+          {
+            "name": "Phil Solo",
+            "segue_before": false
+          },
+          {
+            "name": "Take A Step Back",
+            "segue_before": false
+          },
+          {
+            "name": "Eyes of the World",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "It Must Have Been the Roses",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "He's Gone",
+            "segue_before": false
+          },
+          {
+            "name": "Billy, Mickey and Phil jam",
+            "segue_before": false
+          },
+          {
+            "name": "The Other One",
+            "segue_before": false
+          },
+          {
+            "name": "Black Peter",
+            "segue_before": false
+          },
+          {
+            "name": "Sugar Magnolia",
+            "segue_before": false
+          },
+          {
+            "name": "One More Saturday Night",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-11-06",
+    "venue": {
+      "name": "Broome County Arena",
+      "city": "Binghamton, NY, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Mississippi Half Step",
+            "segue_before": false
+          },
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "Mexicali Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Me and My Uncle",
+            "segue_before": false
+          },
+          {
+            "name": "Friend of the Devil",
+            "segue_before": false
+          },
+          {
+            "name": "Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Dupree's Diamond Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Passenger",
+            "segue_before": false
+          },
+          {
+            "name": "Dire Wolf",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Sunrise",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias",
+            "segue_before": false
+          },
+          {
+            "name": "Fire on the Mountain",
+            "segue_before": false
+          },
+          {
+            "name": "Gool Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Saint Stephen",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away",
+            "segue_before": false
+          },
+          {
+            "name": "Wharf Rat",
+            "segue_before": false
+          },
+          {
+            "name": "Saint Stephen",
+            "segue_before": false
+          },
+          {
+            "name": "Truckin'",
+            "segue_before": false
+          },
+          {
+            "name": "Johnny B. Goode",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-12-27",
+    "venue": {
+      "name": "Winterland Arena",
+      "city": "San Francisco, CA, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "Brown Eyed Women",
+            "segue_before": false
+          },
+          {
+            "name": "Cassidy",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Dire Wolf",
+            "segue_before": false
+          },
+          {
+            "name": "Passenger",
+            "segue_before": false
+          },
+          {
+            "name": "Candyman",
+            "segue_before": false
+          },
+          {
+            "name": "El Paso",
+            "segue_before": false
+          },
+          {
+            "name": "Friend Of The Devil",
+            "segue_before": false
+          },
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Cold Rain and Snow",
+            "segue_before": false
+          },
+          {
+            "name": "Lazy Lightning",
+            "segue_before": false
+          },
+          {
+            "name": "Supplication",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias",
+            "segue_before": false
+          },
+          {
+            "name": "Fire On The Mountain",
+            "segue_before": false
+          },
+          {
+            "name": "Estimated Prophet",
+            "segue_before": false
+          },
+          {
+            "name": "He's Gone",
+            "segue_before": false
+          },
+          {
+            "name": "Truckin'",
+            "segue_before": false
+          },
+          {
+            "name": "Wharf Rat",
+            "segue_before": false
+          },
+          {
+            "name": "Around and Around",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-12-29",
+    "venue": {
+      "name": "Winterland Arena",
+      "city": "San Francisco, CA, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "They Love Each Other",
+            "segue_before": false
+          },
+          {
+            "name": "Mama Tried",
+            "segue_before": false
+          },
+          {
+            "name": "Loser",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "New Minglewood Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Sugaree",
+            "segue_before": false
+          },
+          {
+            "name": "Promised Land",
+            "segue_before": false
+          },
+          {
+            "name": "Bertha",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          },
+          {
+            "name": "It Must Have Been the Roses",
+            "segue_before": false
+          },
+          {
+            "name": "Sunrise",
+            "segue_before": false
+          },
+          {
+            "name": "Playin' in the Band",
+            "segue_before": false
+          },
+          {
+            "name": "China Cat Sunflower",
+            "segue_before": false
+          },
+          {
+            "name": "I Know You Rider",
+            "segue_before": false
+          },
+          {
+            "name": "China Doll",
+            "segue_before": false
+          },
+          {
+            "name": "Space (PITB Theme)",
+            "segue_before": false
+          },
+          {
+            "name": "drums",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away",
+            "segue_before": false
+          },
+          {
+            "name": "Playin' in the Band",
+            "segue_before": false
+          },
+          {
+            "name": "Terrapin Station",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-12-30",
+    "venue": {
+      "name": "Winterland Arena",
+      "city": "San Francisco, CA, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "Mississippi Half Step",
+            "segue_before": false
+          },
+          {
+            "name": "Me and My Uncle",
+            "segue_before": false
+          },
+          {
+            "name": "Dire Wolf",
+            "segue_before": false
+          },
+          {
+            "name": "Looks Like Rain",
+            "segue_before": false
+          },
+          {
+            "name": "Row Jimmy",
+            "segue_before": false
+          },
+          {
+            "name": "Big River",
+            "segue_before": false
+          },
+          {
+            "name": "Peggy-O",
+            "segue_before": false
+          },
+          {
+            "name": "Passenger",
+            "segue_before": false
+          },
+          {
+            "name": "Ramble On Rose",
+            "segue_before": false
+          },
+          {
+            "name": "Let it Grow",
+            "segue_before": false
+          },
+          {
+            "name": "Samson and Delilah",
+            "segue_before": false
+          },
+          {
+            "name": "Ship of Fools",
+            "segue_before": false
+          },
+          {
+            "name": "Sugar Magnolia",
+            "segue_before": false
+          },
+          {
+            "name": "US Blues",
+            "segue_before": false
+          },
+          {
+            "name": "Good Lovin'",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "date": "1977-12-31",
+    "venue": {
+      "name": "Winterland Arena",
+      "city": "San Francisco, CA, USA",
+      "state": "",
+      "country": ""
+    },
+    "tour": "Not Part of a Tour",
+    "notes": "",
+    "sets": [
+      {
+        "songs": [
+          {
+            "name": "The Music Never Stopped",
+            "segue_before": false
+          },
+          {
+            "name": "Tennessee Jed",
+            "segue_before": false
+          },
+          {
+            "name": "Funiculi Funicula",
+            "segue_before": false
+          },
+          {
+            "name": "Me and My Uncle",
+            "segue_before": false
+          },
+          {
+            "name": "Loser",
+            "segue_before": false
+          },
+          {
+            "name": "Jack Straw",
+            "segue_before": false
+          },
+          {
+            "name": "Friend of the Devil",
+            "segue_before": false
+          },
+          {
+            "name": "Lazy Lightning",
+            "segue_before": false
+          },
+          {
+            "name": "Supplication",
+            "segue_before": false
+          },
+          {
+            "name": "Sugar Magnolia",
+            "segue_before": false
+          },
+          {
+            "name": "Scarlet Begonias",
+            "segue_before": false
+          },
+          {
+            "name": "Fire on the Mountain",
+            "segue_before": false
+          },
+          {
+            "name": "Truckin'",
+            "segue_before": false
+          },
+          {
+            "name": "Wharf Rat",
+            "segue_before": false
+          },
+          {
+            "name": "Drums",
+            "segue_before": false
+          },
+          {
+            "name": "Not Fade Away",
+            "segue_before": false
+          },
+          {
+            "name": "Around and Around",
+            "segue_before": false
+          },
+          {
+            "name": "One More Saturday Night",
+            "segue_before": false
+          },
+          {
+            "name": "Casey Jones",
+            "segue_before": false
+          }
+        ]
+      }
+    ]
+  }
+]
