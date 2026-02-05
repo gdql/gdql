@@ -1,0 +1,81 @@
+# Build and publish a GitHub Release when a tag v* is pushed.
+# Creates binaries for linux/amd64, darwin/amd64, darwin/arm64, windows/amd64.
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - run: go test ./...
+
+  build:
+    needs: test
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - goos: linux
+            goarch: amd64
+            suffix: ""
+          - goos: darwin
+            goarch: amd64
+            suffix: ""
+          - goos: darwin
+            goarch: arm64
+            suffix: ""
+          - goos: windows
+            goarch: amd64
+            suffix: ".exe"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Build
+        env:
+          CGO_ENABLED: "0"
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+        run: go build -ldflags "-s -w" -o gdql${{ matrix.suffix }} ./cmd/gdql
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gdql-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: gdql${{ matrix.suffix }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: Prepare release assets
+        run: |
+          mkdir -p release
+          cp artifacts/gdql-linux-amd64/gdql release/gdql-linux-amd64
+          cp artifacts/gdql-darwin-amd64/gdql release/gdql-darwin-amd64
+          cp artifacts/gdql-darwin-arm64/gdql release/gdql-darwin-arm64
+          cp artifacts/gdql-windows-amd64/gdql.exe release/gdql-windows-amd64.exe
+          ls -la release/
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: release/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
