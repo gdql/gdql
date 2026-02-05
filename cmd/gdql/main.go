@@ -42,6 +42,7 @@ func main() {
 		if len(args) < 2 {
 			fmt.Fprintln(os.Stderr, "Usage: gdql [-db <path>] import setlistfm")
 			fmt.Fprintln(os.Stderr, "       gdql [-db <path>] import json <file.json>")
+			fmt.Fprintln(os.Stderr, "       gdql [-db <path>] import aliases <file.json>")
 			os.Exit(1)
 		}
 		switch args[1] {
@@ -81,9 +82,22 @@ func main() {
 				os.Exit(1)
 			}
 			return
+		case "aliases":
+			if len(args) < 3 {
+				fmt.Fprintln(os.Stderr, "Usage: gdql [-db <path>] import aliases <file.json>")
+				fmt.Fprintln(os.Stderr, "Format: [{\"alias\": \"...\", \"canonical\": \"...\"}, ...] — see SONG_NORMALIZATION.md")
+				os.Exit(1)
+			}
+			aliasPath := args[2]
+			if err := runImportAliases(dbPath, aliasPath); err != nil {
+				fmt.Fprintf(os.Stderr, "Import error: %v\n", err)
+				os.Exit(1)
+			}
+			return
 		default:
 			fmt.Fprintln(os.Stderr, "Usage: gdql [-db <path>] import setlistfm")
 			fmt.Fprintln(os.Stderr, "       gdql [-db <path>] import json <file.json>")
+			fmt.Fprintln(os.Stderr, "       gdql [-db <path>] import aliases <file.json>")
 			os.Exit(1)
 		}
 	}
@@ -154,6 +168,20 @@ func runImportJSON(dbPath, jsonPath string) error {
 	return nil
 }
 
+func runImportAliases(dbPath, aliasPath string) error {
+	db, err := sqlite.Open(dbPath)
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	loaded, skipped, err := sqlite.LoadAliasesFromFile(context.Background(), db.DB(), aliasPath)
+	if err != nil {
+		return err
+	}
+	fmt.Fprintf(os.Stderr, "Aliases: %d loaded, %d skipped (canonical not found)\n", loaded, skipped)
+	return nil
+}
+
 func getDBPath(args []string) string {
 	for i, a := range args {
 		if a == "-db" && i+1 < len(args) {
@@ -204,7 +232,8 @@ func printUsage() {
 	fmt.Fprintln(os.Stderr, "Usage: gdql [options] <query>")
 	fmt.Fprintln(os.Stderr, "       gdql init [path]              create database with schema and sample data (default: shows.db)")
 	fmt.Fprintln(os.Stderr, "       gdql [-db <path>] import setlistfm   import from setlist.fm (requires SETLISTFM_API_KEY)")
-	fmt.Fprintln(os.Stderr, "       gdql [-db <path>] import json <file> import from canonical JSON (see docs/CANONICAL_IMPORT.md)")
+	fmt.Fprintln(os.Stderr, "       gdql [-db <path>] import json <file>   import from canonical JSON (see docs/CANONICAL_IMPORT.md)")
+	fmt.Fprintln(os.Stderr, "       gdql [-db <path>] import aliases <file>  load song alias mappings (see SONG_NORMALIZATION.md)")
 	fmt.Fprintln(os.Stderr, "       gdql -f <file>")
 	fmt.Fprintln(os.Stderr, "       gdql -   (read query from stdin)")
 	fmt.Fprintln(os.Stderr)

@@ -55,6 +55,30 @@ We already have **aliases** and **short_name** in the schema; this doc ties them
 
 ---
 
+### 4. Why we don’t “normalize” with rules (100% accuracy)
+
+**You cannot get 100% accuracy with string rules.** There will always be transition characters, parentheses, source-specific spelling, or typos that break any heuristic (e.g. trim trailing `-`, fix case, strip parentheticals). One source’s “Scarlet Begonias (reprise)” might be another’s “Scarlet Begonias - Reprise”; a rule that strips parentheticals could wrongly merge different songs.
+
+**Solution: explicit mappings in `song_aliases`.**  
+We store one canonical name per song in `songs`. Any variant (segue dash, spelling, parentheses, source quirk) is mapped to that song via a row in `song_aliases (alias, song_id)`. Lookup order: exact/case-insensitive on `songs.name`, then `song_aliases`, then a single best-effort fallback (trim trailing `" -"`) for backward compatibility. New variants are added by:
+
+- **At import**: When we see a name that matches an existing song only after a small heuristic (e.g. trim trailing `-`), we merge to that song and **insert an alias** for the raw form. So we use the heuristic once; after that the alias table is the source of truth.
+- **By hand**: Add rows to `song_aliases` (via SQL or the alias file). No code change; 100% accurate for any variant you’ve mapped.
+
+**Alias file (going forward):**  
+Use `gdql import aliases <file.json>` to load mappings. Format:
+
+```json
+[
+  { "alias": "Scarlet Begonias-", "canonical": "Scarlet Begonias" },
+  { "alias": "Fire On The Mountain", "canonical": "Fire on the Mountain" }
+]
+```
+
+`canonical` is resolved to `song_id` (by `songs.name`, then trim fallback). Example file: `data/song_aliases.json`. Add new variants there (or via SQL); no normalization rules needed.
+
+---
+
 ## Design Decisions
 
 ### A. Canonical song names (what we store)
