@@ -51,9 +51,3 @@ func LoadAliasesFromFile(ctx context.Context, db *sql.DB, path string) (loaded, 
 	}
 	return loaded, skipped, nil
 }
-ped, err
-		}
-		loaded++
-	}
-	return loaded, skipped, nil
-}

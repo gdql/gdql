@@ -15,7 +15,12 @@ INSERT INTO songs (id, name, short_name, writers, first_played, last_played, tim
 (2, 'Fire on the Mountain', 'Fire', 'Hunter/Hart', '1977-03-18', '1995-07-09', 303),
 (3, 'Help on the Way', 'Help', 'Hunter/Garcia', '1975-08-13', '1995-07-09', 306),
 (4, 'Samson and Delilah', 'Samson', 'traditional', '1976-06-03', '1995-06-25', 287),
-(5, 'Morning Dew', 'Dew', 'Dobson/Rose', '1967-03-18', '1995-06-25', 232);
+(5, 'Morning Dew', 'Dew', 'Dobson/Rose', '1967-03-18', '1995-06-25', 232),
+(6, 'Dark Star', 'Dark Star', 'Hunter/Garcia/Hart/Kreutzmann/Lesh/Weir', '1968-02-02', '1994-10-01', 228);
+
+-- Alias for GetSong / resolver tests (e.g. Relisten-style "Scarlet Begonias-")
+INSERT INTO song_aliases (alias, song_id) VALUES
+('Scarlet Begonias-', 1);
 
 -- Cornell 77 set 2: Scarlet > Fire and more (segue_type = transition TO next, so on Scarlet row)
 INSERT INTO performances (id, show_id, song_id, set_number, position, segue_type, length_seconds, is_opener, is_closer) VALUES
@@ -35,6 +40,11 @@ INSERT INTO performances (id, show_id, song_id, set_number, position, segue_type
 (8, 3, 4, 2, 1, NULL, 400, 1, 0),
 (9, 3, 1, 2, 2, '>', 560, 0, 0),
 (10, 3, 2, 2, 3, NULL, 610, 0, 0);
+
+-- Dark Star performances (for PERFORMANCES OF "Dark Star" WITH LENGTH > 20min example)
+INSERT INTO performances (id, show_id, song_id, set_number, position, segue_type, length_seconds, is_opener, is_closer) VALUES
+(11, 1, 6, 1, 1, NULL, 1320, 1, 0),
+(12, 2, 6, 1, 1, '>', 1500, 1, 0);
 
 -- Lyrics for SONGS WITH LYRICS test
 INSERT INTO lyrics (song_id, lyrics, lyrics_fts) VALUES

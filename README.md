@@ -46,6 +46,13 @@ SHOWS AT "Fillmore West" FROM 1969;
 SETLIST FOR 5/8/77;
 ```
 
+## What gets built
+
+**`go build` produces a single binary that includes a default database.**
+
+- The **default DB** (schema + seed: Cornell ’77, Scarlet > Fire, a few songs) is **embedded** in the binary (`cmd/gdql/embeddb/default.db`). When the user runs `gdql` with the default path and no DB exists, that file is unpacked to the config dir and used — one file, run anywhere.
+- **`gdql init [path]`** still creates a fresh DB from embedded schema+seed at the given path. To **regenerate** the embedded default DB after changing schema or seed, run from repo root: `go run ./cmd/build_embed_db`, then rebuild.
+
 ## Installation
 
 ### Download a release (recommended)
@@ -53,6 +60,23 @@ SETLIST FOR 5/8/77;
 Pre-built binaries and a pre-built **shows.db** are published on GitHub Releases. No build or import required.
 
 - **[Releases](https://github.com/gdql/gdql/releases)** — download `gdql` (or `gdql.exe` on Windows) and optionally `shows.db`. Put the binary on your PATH; use `-db shows.db` or `GDQL_DB` if the database is not in the current directory.
+
+### Where to put files when you install the binary
+
+| What | Where | Notes |
+|------|--------|------|
+| **Binary** | Anywhere on your PATH (e.g. `/usr/local/bin`, `~/bin`, or `C:\tools`) | Only file required; see below. |
+| **Database** | Any path you like | Default: `shows.db` in the current directory, or **automatically** in the user config dir (e.g. `~/.config/gdql/shows.db`) if not in cwd. Override with `-db <path>` or env `GDQL_DB`. |
+| **Alias file** | Any path | Optional. Pass path when running: `gdql import aliases <path/to/aliases.json>`. Example: [data/song_aliases.json](data/song_aliases.json). |
+| **Query files** | Any path | Pass with `-f`: `gdql -db shows.db -f query.gdql`. |
+
+### Packaging for easy install (one binary)
+
+**The default database is embedded in the binary.** When someone runs `gdql` with the default database and no `shows.db` exists in the current directory, the program copies the embedded DB (schema + seed data: Cornell ’77, Scarlet > Fire, etc.) into the user's config directory (e.g. `~/.config/gdql/shows.db`) and uses it. So:
+
+- **Package = single binary.** Install the `gdql` (or `gdql.exe`) binary to a directory on PATH. No separate DB file is required. First run unpacks the embedded default DB to the config dir; the user can run queries immediately.
+- **To change the embedded default DB:** from repo root run `go run ./cmd/build_embed_db`, then rebuild. Use `go run ./cmd/build_embed_db --from full.db` to embed a DB you built (e.g. after `gdql import json shows.json -db full.db`); see [scripts/README.md](scripts/README.md) for the full flow. The file `cmd/gdql/embeddb/default.db` is committed so normal `go build` works.
+- **Optional:** To ship a *larger* pre-filled database without embedding, build one (e.g. `gdql import json shows.json -db full.db`), then install it as e.g. `/usr/share/gdql/shows.db` and set `GDQL_DB` or document `-db /usr/share/gdql/shows.db`.
 
 ### Build from source (requires Go 1.21+)
 
@@ -77,7 +101,7 @@ go build -o gdql.exe ./cmd/gdql
 .\gdql.exe -f query.gdql
 ```
 
-**Data:** Use `shows.db` from [Releases](https://github.com/gdql/gdql/releases), or run `gdql init` for a minimal DB, or `gdql import setlistfm` (with `SETLISTFM_API_KEY`) to import from setlist.fm.
+**Data:** Use `shows.db` from [Releases](https://github.com/gdql/gdql/releases), or run `gdql init` for a minimal DB, or `gdql import setlistfm` (with `SETLISTFM_API_KEY`) to import from setlist.fm. To add song name variants (e.g. so `"Scarlet Begonias"` matches sources that store `"Scarlet Begonias-"`), use **`gdql import aliases <file.json>`** — see [data/song_aliases.json](data/song_aliases.json) and [SONG_NORMALIZATION.md](SONG_NORMALIZATION.md).
 
 ## Usage
 
@@ -115,6 +139,16 @@ echo 'SHOWS FROM 1977;' | gdql -db shows.db -
 - **[SPEC.md](SPEC.md)** — Implementation spec and grammar.
 
 **Go API docs:** From the repo root, run `go doc ./...` to see package and symbol docs. Add `// Comment` above exported types and functions to build those docs as you go.
+
+### Running tests
+
+```bash
+go test ./...                    # all tests
+go test -v ./test/acceptance/    # example / docs-style E2E tests only
+go test ./test/acceptance/ -run TestE2E_SetlistForDate   # one example test
+```
+
+The **acceptance** tests run the same kinds of queries as in the README and docs (e.g. SHOWS FROM 1977, Scarlet > Fire, SETLIST FOR 5/8/77, SONGS WITH LYRICS, PERFORMANCES OF "Dark Star") against a fixture DB.
 
 ## Status
 

@@ -2,11 +2,13 @@
 package main
 
 import (
+	_ "embed"
 	"bufio"
 	"context"
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/gdql/gdql/internal/executor"
@@ -15,6 +17,12 @@ import (
 	"github.com/gdql/gdql/internal/import/canonical"
 	"github.com/gdql/gdql/internal/import/setlistfm"
 )
+
+// defaultDB is the embedded default database (schema + seed).
+// Regenerate with: go run ./cmd/build_embed_db (from repo root).
+//
+//go:embed embeddb/default.db
+var defaultDB []byte
 
 func main() {
 	if len(os.Args) < 2 {
@@ -39,6 +47,12 @@ func main() {
 	dbPath := getDBPath(args)
 	args = stripDBArg(args)
 	if len(args) >= 1 && args[0] == "import" {
+		var err error
+		dbPath, err = ensureDefaultDB(dbPath)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
 		if len(args) < 2 {
 			fmt.Fprintln(os.Stderr, "Usage: gdql [-db <path>] import setlistfm")
 			fmt.Fprintln(os.Stderr, "       gdql [-db <path>] import json <file.json>")
@@ -120,6 +134,11 @@ func main() {
 		os.Exit(1)
 	}
 
+	dbPath, err = ensureDefaultDB(dbPath)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		os.Exit(1)
+	}
 	db, err := sqlite.Open(dbPath)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error opening database: %v\n", err)
@@ -192,6 +211,40 @@ func getDBPath(args []string) string {
 		return p
 	}
 	return "shows.db"
+}
+
+// ensureDefaultDB returns the path to use. When the default path ("shows.db") is used and that
+// file does not exist in the current directory, it creates a new DB with schema+seed in the user's
+// config dir (e.g. ~/.config/gdql/shows.db) so the binary works out-of-the-box when packaged alone.
+func ensureDefaultDB(path string) (string, error) {
+	if path != "shows.db" {
+		return path, nil
+	}
+	if _, err := os.Stat("shows.db"); err == nil {
+		return "shows.db", nil
+	}
+	configDir, err := os.UserConfigDir()
+	if err != nil {
+		return "", fmt.Errorf("no database at shows.db and cannot use config dir: %w", err)
+	}
+	gdqlDir := filepath.Join(configDir, "gdql")
+	dbPath := filepath.Join(gdqlDir, "shows.db")
+	if _, err := os.Stat(dbPath); err == nil {
+		return dbPath, nil
+	}
+	if err := os.MkdirAll(gdqlDir, 0755); err != nil {
+		return "", fmt.Errorf("creating config dir %s: %w", gdqlDir, err)
+	}
+	if len(defaultDB) > 0 {
+		if err := os.WriteFile(dbPath, defaultDB, 0644); err != nil {
+			return "", fmt.Errorf("writing database to %s: %w", dbPath, err)
+		}
+	} else {
+		if err := sqlite.Init(dbPath); err != nil {
+			return "", fmt.Errorf("initializing database at %s: %w", dbPath, err)
+		}
+	}
+	return dbPath, nil
 }
 
 func stripDBArg(args []string) []string {

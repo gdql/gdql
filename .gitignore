@@ -1,0 +1,16 @@
+# Binaries
+/gdql
+/gdql.exe
+
+# Local DBs and data (embeddb/default.db is tracked)
+/shows.db
+/shows.db.bak
+/full.db
+*-journal
+/shows.json
+
+# Local query scratch
+/query.gdql
+
+# IDE
+.cursor/

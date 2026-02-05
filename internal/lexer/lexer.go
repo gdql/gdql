@@ -201,7 +201,15 @@ func (l *lexer) nextToken() token.Token {
 func (l *lexer) readString(start token.Position) token.Token {
 	l.readChar() // consume opening quote
 	var b strings.Builder
+	closedByBackslashQuote := false
 	for l.ch != 0 && !isQuote(l.ch) {
+		if l.ch == '\\' && isQuote(l.peekChar()) {
+			// \" from PowerShell/shell: treat as closing quote, not literal quote in content
+			l.readChar()
+			l.readChar()
+			closedByBackslashQuote = true
+			break
+		}
 		if l.ch == '\\' {
 			l.readChar()
 			switch l.ch {
@@ -220,6 +228,9 @@ func (l *lexer) readString(start token.Position) token.Token {
 		}
 		b.WriteRune(l.ch)
 		l.readChar()
+	}
+	if closedByBackslashQuote {
+		return token.Token{Type: token.STRING, Literal: b.String(), Pos: start}
 	}
 	if !isQuote(l.ch) {
 		return token.Token{Type: token.ILLEGAL, Literal: "unterminated string", Pos: start}

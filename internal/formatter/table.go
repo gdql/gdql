@@ -25,7 +25,7 @@ func formatTable(result *executor.Result) (string, error) {
 
 func tableShows(shows []*data.Show) string {
 	if len(shows) == 0 {
-		return "No shows found."
+		return "No shows found.\n(Tip: Use a DB with data — run 'gdql init' for seed data, or remove shows.db so the app uses the embedded default.)"
 	}
 	var b strings.Builder
 	b.WriteString("DATE       | VENUE            | CITY         | STATE\n")

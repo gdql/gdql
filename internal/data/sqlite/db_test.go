@@ -60,6 +60,22 @@ func TestGetSong_ByName(t *testing.T) {
 	require.Equal(t, "Scarlet Begonias", song.Name)
 }
 
+func TestGetSong_ViaAlias(t *testing.T) {
+	path, cleanup := fixtures.CreateTestDB(t)
+	defer cleanup()
+	db, err := Open(path)
+	require.NoError(t, err)
+	defer db.Close()
+
+	ctx := context.Background()
+	// minimal_data has alias "Scarlet Begonias-" -> song 1 (Scarlet Begonias)
+	song, err := db.GetSong(ctx, "Scarlet Begonias-")
+	require.NoError(t, err)
+	require.NotNil(t, song)
+	require.Equal(t, 1, song.ID)
+	require.Equal(t, "Scarlet Begonias", song.Name)
+}
+
 func TestGetSong_NotFound(t *testing.T) {
 	path, cleanup := fixtures.CreateTestDB(t)
 	defer cleanup()
