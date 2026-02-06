@@ -36,6 +36,17 @@ func (db *DB) DB() *sql.DB {
 	return db.conn
 }
 
+// nullAcceptingScanner implements sql.Scanner to accept any value including NULL.
+// Used by ExecuteQuery so NULL columns don't cause "converting NULL to string is unsupported".
+type nullAcceptingScanner struct {
+	v *interface{}
+}
+
+func (n *nullAcceptingScanner) Scan(src interface{}) error {
+	*n.v = src
+	return nil
+}
+
 // ExecuteQuery runs the SQL with args and returns columns and rows.
 func (db *DB) ExecuteQuery(ctx context.Context, query string, args ...interface{}) (*data.ResultSet, error) {
 	rows, err := db.conn.QueryContext(ctx, query, args...)
@@ -51,9 +62,11 @@ func (db *DB) ExecuteQuery(ctx context.Context, query string, args ...interface{
 	var out []data.Row
 	for rows.Next() {
 		vals := make([]interface{}, len(cols))
+		scanners := make([]nullAcceptingScanner, len(cols))
 		ptrs := make([]interface{}, len(cols))
 		for i := range vals {
-			ptrs[i] = &vals[i]
+			scanners[i] = nullAcceptingScanner{v: &vals[i]}
+			ptrs[i] = &scanners[i]
 		}
 		if err := rows.Scan(ptrs...); err != nil {
 			return nil, err
@@ -76,7 +89,8 @@ func (db *DB) ExecuteQuery(ctx context.Context, query string, args ...interface{
 // For 100% accuracy on variants (parentheses, segues, spelling), add explicit rows to song_aliases (see SONG_NORMALIZATION.md).
 func (db *DB) GetSong(ctx context.Context, name string) (*data.Song, error) {
 	var id int
-	var sname, short, writers string
+	var sname string
+	var short, writers sql.NullString
 	var first, last sql.NullString
 	var times int
 	err := db.conn.QueryRowContext(ctx, "SELECT id, name, short_name, writers, first_played, last_played, times_played FROM songs WHERE name = ? OR LOWER(name) = LOWER(?) LIMIT 1", name, name).
@@ -87,7 +101,7 @@ func (db *DB) GetSong(ctx context.Context, name string) (*data.Song, error) {
 			Scan(&id, &sname, &short, &writers, &first, &last, &times)
 	}
 	if err == sql.ErrNoRows {
-		// Best-effort: Relisten often uses trailing " -" for segues. Prefer adding an alias instead.
+		// Best-effort: Relisten often uses trailing " -" for segues. Prefer adding an alias.
 		err = db.conn.QueryRowContext(ctx, "SELECT id, name, short_name, writers, first_played, last_played, times_played FROM songs WHERE LOWER(TRIM(name, '- ')) = LOWER(TRIM(?, '- ')) LIMIT 1", name, name).
 			Scan(&id, &sname, &short, &writers, &first, &last, &times)
 	}
@@ -97,7 +111,15 @@ func (db *DB) GetSong(ctx context.Context, name string) (*data.Song, error) {
 	if err != nil {
 		return nil, err
 	}
-	s := &data.Song{ID: id, Name: sname, ShortName: short, Writers: writers, TimesPlayed: times}
+	shortVal := ""
+	if short.Valid {
+		shortVal = short.String
+	}
+	writersVal := ""
+	if writers.Valid {
+		writersVal = writers.String
+	}
+	s := &data.Song{ID: id, Name: sname, ShortName: shortVal, Writers: writersVal, TimesPlayed: times}
 	if first.Valid {
 		t, _ := time.Parse("2006-01-02", first.String)
 		s.FirstPlayed = t
@@ -111,7 +133,8 @@ func (db *DB) GetSong(ctx context.Context, name string) (*data.Song, error) {
 
 // GetSongByID returns a song by ID.
 func (db *DB) GetSongByID(ctx context.Context, id int) (*data.Song, error) {
-	var sname, short, writers string
+	var sname string
+	var short, writers sql.NullString
 	var first, last sql.NullString
 	var times int
 	err := db.conn.QueryRowContext(ctx, "SELECT id, name, short_name, writers, first_played, last_played, times_played FROM songs WHERE id = ?", id).
@@ -122,7 +145,15 @@ func (db *DB) GetSongByID(ctx context.Context, id int) (*data.Song, error) {
 	if err != nil {
 		return nil, err
 	}
-	s := &data.Song{ID: id, Name: sname, ShortName: short, Writers: writers, TimesPlayed: times}
+	shortVal := ""
+	if short.Valid {
+		shortVal = short.String
+	}
+	writersVal := ""
+	if writers.Valid {
+		writersVal = writers.String
+	}
+	s := &data.Song{ID: id, Name: sname, ShortName: shortVal, Writers: writersVal, TimesPlayed: times}
 	if first.Valid {
 		t, _ := time.Parse("2006-01-02", first.String)
 		s.FirstPlayed = t
@@ -144,12 +175,21 @@ func (db *DB) SearchSongs(ctx context.Context, pattern string) ([]*data.Song, er
 	var out []*data.Song
 	for rows.Next() {
 		var id, times int
-		var sname, short, writers string
+		var sname string
+		var short, writers sql.NullString
 		var first, last sql.NullString
 		if err := rows.Scan(&id, &sname, &short, &writers, &first, &last, &times); err != nil {
 			return nil, err
 		}
-		s := &data.Song{ID: id, Name: sname, ShortName: short, Writers: writers, TimesPlayed: times}
+		shortVal := ""
+		if short.Valid {
+			shortVal = short.String
+		}
+		writersVal := ""
+		if writers.Valid {
+			writersVal = writers.String
+		}
+		s := &data.Song{ID: id, Name: sname, ShortName: shortVal, Writers: writersVal, TimesPlayed: times}
 		if first.Valid {
 			t, _ := time.Parse("2006-01-02", first.String)
 			s.FirstPlayed = t
