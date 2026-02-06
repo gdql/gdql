@@ -16,6 +16,8 @@ SHOWS WHERE "Help on the Way" > "Slipknot!" > "Franklin's Tower";
 PERFORMANCES OF "Dark Star" FROM 1972 WITH LENGTH > 20min;
 ```
 
+**Try in Sandbox:** [Scarlet→Fire](https://sandbox.gdql.dev?example=scarlet-fire&run=1) · [SONGS LYRICS](https://sandbox.gdql.dev?example=songs-lyrics&run=1) · [Help→Slip→Frank](https://sandbox.gdql.dev?example=help-slip-frank&run=1) · [Dark Star](https://sandbox.gdql.dev?example=dark-star&run=1)
+
 ## What is this?
 
 GDQL is a SQL-inspired domain-specific language designed for querying the Grateful Dead's live performance history. It provides intuitive, music-centric syntax for exploring:
@@ -46,11 +48,13 @@ SHOWS AT "Fillmore West" FROM 1969;
 SETLIST FOR 5/8/77;
 ```
 
+**Try in Sandbox:** [Scarlet→Fire](https://sandbox.gdql.dev?example=scarlet-fire&run=1) · [SONGS LYRICS](https://sandbox.gdql.dev?example=songs-lyrics&run=1) · [Dark Star by length](https://sandbox.gdql.dev?example=dark-star&run=1) · [Cornell setlist](https://sandbox.gdql.dev?example=setlist-cornell&run=1)
+
 ## What gets built
 
 **`go build` produces a single binary that includes a default database.**
 
-- The **default DB** (schema + seed: Cornell ’77, Scarlet > Fire, a few songs) is **embedded** in the binary (`cmd/gdql/embeddb/default.db`). When the user runs `gdql` with the default path and no DB exists, that file is unpacked to the config dir and used — one file, run anywhere.
+- The **default DB** (schema + seed: Cornell ’77, Scarlet > Fire, a few songs) is **embedded** in the binary (`cmd/gdql/embeddb/default.db`). When the user runs `gdql` without `-db`, that file is unpacked to the config dir (e.g. `~/.config/gdql/shows.db`) and used. Use `-db <path>` to point at a different database.
 - **`gdql init [path]`** still creates a fresh DB from embedded schema+seed at the given path. To **regenerate** the embedded default DB after changing schema or seed, run from repo root: `go run ./cmd/build_embed_db`, then rebuild.
 
 ## Installation
@@ -66,13 +70,13 @@ Pre-built binaries and a pre-built **shows.db** are published on GitHub Releases
 | What | Where | Notes |
 |------|--------|------|
 | **Binary** | Anywhere on your PATH (e.g. `/usr/local/bin`, `~/bin`, or `C:\tools`) | Only file required; see below. |
-| **Database** | Any path you like | Default: `shows.db` in the current directory, or **automatically** in the user config dir (e.g. `~/.config/gdql/shows.db`) if not in cwd. Override with `-db <path>` or env `GDQL_DB`. |
+| **Database** | Any path you like | Default: embedded DB (unpacked to config dir, e.g. `~/.config/gdql/shows.db`). Use `-db <path>` to override. |
 | **Alias file** | Any path | Optional. Pass path when running: `gdql import aliases <path/to/aliases.json>`. Example: [data/song_aliases.json](data/song_aliases.json). |
 | **Query files** | Any path | Pass with `-f`: `gdql -db shows.db -f query.gdql`. |
 
 ### Packaging for easy install (one binary)
 
-**The default database is embedded in the binary.** When someone runs `gdql` with the default database and no `shows.db` exists in the current directory, the program copies the embedded DB (schema + seed data: Cornell ’77, Scarlet > Fire, etc.) into the user's config directory (e.g. `~/.config/gdql/shows.db`) and uses it. So:
+**The default database is embedded in the binary.** When someone runs `gdql` without `-db`, the program uses the embedded DB, unpacking it to the config directory (e.g. `~/.config/gdql/shows.db`) on first use. So:
 
 - **Package = single binary.** Install the `gdql` (or `gdql.exe`) binary to a directory on PATH. No separate DB file is required. First run unpacks the embedded default DB to the config dir; the user can run queries immediately.
 - **To change the embedded default DB:** from repo root run `go run ./cmd/build_embed_db`, then rebuild. Use `go run ./cmd/build_embed_db --from full.db` to embed a DB you built (e.g. after `gdql import json shows.json -db full.db`); see [scripts/README.md](scripts/README.md) for the full flow. The file `cmd/gdql/embeddb/default.db` is committed so normal `go build` works.
@@ -123,9 +127,11 @@ echo 'SHOWS FROM 1977;' | gdql -db shows.db -
 .\gdql.exe -db shows.db -f query.gdql
 ```
 
-**Queries with song names** (double quotes) are often mangled by PowerShell. Use either:
+**Queries with song names** are often mangled by PowerShell (quotes stripped or `>` treated as redirection). Use one of:
 
 - **`-f` file** (recommended): put the query in `query.gdql` and run `.\gdql.exe -f query.gdql`.
+- **Whole query in single quotes**, double quotes for song names:  
+  `.\gdql.exe 'SHOWS FROM 1969 WHERE PLAYED "St Stephen" > "The Eleven";'`
 - **Backtick-escape** the inner double quotes:  
   `.\gdql.exe "SHOWS WHERE \`"Scarlet Begonias\`" > \`"Fire on the Mountain\`""`
 
@@ -152,7 +158,7 @@ The **acceptance** tests run the same kinds of queries as in the README and docs
 
 ## Status
 
-✅ **Functional** — Parse, plan, execute against SQLite. Supports SHOWS, SONGS, PERFORMANCES, SETLIST with date ranges, segue chains (e.g. Scarlet > Fire), position/played/guest conditions, and table/JSON/CSV/setlist output. Run `gdql init` to create a sample DB, then query with `-db shows.db`.
+✅ **Functional** — Parse, plan, execute against SQLite. Supports SHOWS, SONGS, PERFORMANCES, SETLIST with date ranges, segue chains (e.g. Scarlet > Fire), position/played/guest conditions, and table/JSON/CSV/setlist output. Run `gdql init` to create a sample DB; query with no `-db` for the embedded default or `-db <path>` to use another DB.
 
 ## License
 

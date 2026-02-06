@@ -27,6 +27,8 @@ SHOWS FROM 1977 ORDER BY DATE DESC;
 SHOWS FROM 1977 AS JSON;
 ```
 
+**Try in Sandbox:** [SHOWS](https://sandbox.gdql.dev?example=shows&run=1) · [FROM 1977](https://sandbox.gdql.dev?example=shows-77&run=1) · [1977–1980](https://sandbox.gdql.dev?example=shows-range&run=1) · [PRIMAL](https://sandbox.gdql.dev?example=shows-primal&run=1) · [Scarlet→Fire](https://sandbox.gdql.dev?example=scarlet-fire&run=1) · [LIMIT 10](https://sandbox.gdql.dev?example=shows-77-80-limit&run=1) · [ORDER BY](https://sandbox.gdql.dev?example=shows-77-order&run=1) · [AS JSON](https://sandbox.gdql.dev?example=shows-77-json&run=1)
+
 **Clauses:** `FROM` (date range or era), `WHERE` (conditions), `ORDER BY` field `ASC`|`DESC`, `LIMIT` n, `AS` (JSON | CSV | SETLIST | TABLE).
 
 ### SONGS
@@ -39,6 +41,8 @@ SONGS WITH LYRICS("train", "road");
 SONGS WRITTEN 1968-1970;
 SONGS WITH LYRICS("rose") WRITTEN 1970 LIMIT 20;
 ```
+
+**Try in Sandbox:** [SONGS](https://sandbox.gdql.dev?example=songs&run=1) · [LYRICS](https://sandbox.gdql.dev?example=songs-lyrics&run=1) · [WRITTEN](https://sandbox.gdql.dev?example=songs-written&run=1) · [LYRICS+WRITTEN](https://sandbox.gdql.dev?example=songs-lyrics-rose&run=1)
 
 **Clauses:** `WITH` (LYRICS(...), LENGTH, GUEST), `WRITTEN` (date range), `ORDER BY`, `LIMIT`.
 
@@ -65,6 +69,8 @@ SETLIST FOR "Cornell 1977";
 SETLIST FOR 1977;   -- single year (interpretation TBD)
 ```
 
+**Try in Sandbox:** [5/8/77](https://sandbox.gdql.dev?example=setlist-cornell&run=1) · [Cornell 1977](https://sandbox.gdql.dev?example=setlist-cornell-name&run=1)
+
 ---
 
 ## Dates and eras
@@ -85,6 +91,8 @@ SETLIST FOR 1977;   -- single year (interpretation TBD)
 - **Guest:** `GUEST "Branford Marsalis"`.
 - **Length:** `LENGTH("Dark Star") > 20min` (when we support it in WHERE).
 - **Combine:** `condition1 AND condition2`, `condition1 OR condition2`.
+
+**Try in Sandbox:** [Scarlet→Fire](https://sandbox.gdql.dev?example=scarlet-fire&run=1) · [Help→Slip→Franklin’s](https://sandbox.gdql.dev?example=help-slip-frank&run=1) · [PLAYED St. Stephen](https://sandbox.gdql.dev?example=played-st-stephen&run=1) · [St. Stephen > The Eleven](https://sandbox.gdql.dev?example=st-stephen-eleven&run=1)
 
 ---
 
