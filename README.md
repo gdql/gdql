@@ -48,7 +48,7 @@ SHOWS AT "Fillmore West" FROM 1969;
 SETLIST FOR 5/8/77;
 ```
 
-**Try in Sandbox:** [Scarlet→Fire](https://sandbox.gdql.dev?example=scarlet-fire&run=1) · [SONGS LYRICS](https://sandbox.gdql.dev?example=songs-lyrics&run=1) · [Dark Star by length](https://sandbox.gdql.dev?example=dark-star&run=1) · [Cornell setlist](https://sandbox.gdql.dev?example=setlist-cornell&run=1)
+**Try in Sandbox:** [Scarlet→Fire](https://sandbox.gdql.dev?q=U0hPV1MgRlJPTSA3Ny03OSBXSEVSRSAiU2NhcmxldCBCZWdvbmlhcyIgPiAiRmlyZSBvbiB0aGUgTW91bnRhaW4iOw&run=1) · [SONGS LYRICS](https://sandbox.gdql.dev?q=U09OR1MgV0lUSCBMWVJJQ1MoInRyYWluIiwgInJhaWxyb2FkIiwgImVuZ2luZWVyIik7&run=1) · [Dark Star by length](https://sandbox.gdql.dev?q=UEVSRk9STUFOQ0VTIE9GICJEYXJrIFN0YXIiIE9SREVSIEJZIExFTkdUSCBERVNDIExJTUlUIDEwOw&run=1) · [Cornell setlist](https://sandbox.gdql.dev?q=U0VUTElTVCBGT1IgNS84Lzc3Ow&run=1)
 
 ## What gets built
 

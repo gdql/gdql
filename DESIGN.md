@@ -40,6 +40,8 @@ SHOWS WHERE "Playing in the Band" SANDWICH;
 SHOWS WHERE "Slipknot!" SANDWICHED BY "Franklin's Tower";
 ```
 
+**Try in Sandbox:** [1977-1980](https://sandbox.gdql.dev?q=U0hPV1MgRlJPTSAxOTc3LTE5ODA7&run=1) · [Scarlet Begonias](https://sandbox.gdql.dev?q=U0hPV1MgRlJPTSA3NyBXSEVSRSBQTEFZRUQgIlNjYXJsZXQgQmVnb25pYXMiOw&run=1) · [Scarlet→Fire](https://sandbox.gdql.dev?q=U0hPV1MgRlJPTSA3Ny04MCBXSEVSRSAiU2NhcmxldCBCZWdvbmlhcyIgPiAiRmlyZSBvbiB0aGUgTW91bnRhaW4iOw&run=1)
+
 ### Song Queries
 
 ```sql
@@ -73,6 +75,8 @@ FIRST "Dark Star" > "St. Stephen";  -- first time this segue happened
 BUSTOUTS > 100 SHOWS;  -- songs that returned after 100+ show gap
 PERFORMANCES OF "Dark Star" AFTER BUSTOUT;
 ```
+
+**Try in Sandbox:** [Dark Star](https://sandbox.gdql.dev?q=UEVSRk9STUFOQ0VTIE9GICJEYXJrIFN0YXIiIEZST00gMTk2OC0xOTc0IFdJVEggTEVOR1RIID4gMjBtaW47&run=1)
 
 ### Venue Queries
 
@@ -115,6 +119,8 @@ SHOWS WHERE SET2 CLOSED "Sugar Magnolia";
 SHOWS WHERE ENCORE = "U.S. Blues";
 SHOWS WHERE SET2 OPENED "Samson and Delilah" FROM 1977;
 ```
+
+**Try in Sandbox:** [PRIMAL](https://sandbox.gdql.dev?q=U0hPV1MgRlJPTSBQUklNQUw7&run=1)
 
 ### Jam Characteristics
 

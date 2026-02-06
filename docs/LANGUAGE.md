@@ -27,7 +27,7 @@ SHOWS FROM 1977 ORDER BY DATE DESC;
 SHOWS FROM 1977 AS JSON;
 ```
 
-**Try in Sandbox:** [SHOWS](https://sandbox.gdql.dev?example=shows&run=1) · [FROM 1977](https://sandbox.gdql.dev?example=shows-77&run=1) · [1977–1980](https://sandbox.gdql.dev?example=shows-range&run=1) · [PRIMAL](https://sandbox.gdql.dev?example=shows-primal&run=1) · [Scarlet→Fire](https://sandbox.gdql.dev?example=scarlet-fire&run=1) · [LIMIT 10](https://sandbox.gdql.dev?example=shows-77-80-limit&run=1) · [ORDER BY](https://sandbox.gdql.dev?example=shows-77-order&run=1) · [AS JSON](https://sandbox.gdql.dev?example=shows-77-json&run=1)
+**Try in Sandbox:** [SHOWS](https://sandbox.gdql.dev?q=U0hPV1M7&run=1) · [FROM 1977](https://sandbox.gdql.dev?q=U0hPV1MgRlJPTSAxOTc3Ow&run=1) · [1977–1980](https://sandbox.gdql.dev?q=U0hPV1MgRlJPTSAxOTc3LTE5ODA7&run=1) · [PRIMAL](https://sandbox.gdql.dev?q=U0hPV1MgRlJPTSBQUklNQUw7&run=1) · [Scarlet→Fire](https://sandbox.gdql.dev?q=U0hPV1MgRlJPTSAxOTc3IFdIRVJFICJTY2FybGV0IEJlZ29uaWFzIiA-ICJGaXJlIG9uIHRoZSBNb3VudGFpbiI7&run=1) · [LIMIT 10](https://sandbox.gdql.dev?q=U0hPV1MgRlJPTSA3Ny04MCBMSU1JVCAxMDs&run=1) · [ORDER BY](https://sandbox.gdql.dev?q=U0hPV1MgRlJPTSAxOTc3IE9SREVSIEJZIERBVEUgREVTQzs&run=1) · [AS JSON](https://sandbox.gdql.dev?q=U0hPV1MgRlJPTSAxOTc3IEFTIEpTT047&run=1)
 
 **Clauses:** `FROM` (date range or era), `WHERE` (conditions), `ORDER BY` field `ASC`|`DESC`, `LIMIT` n, `AS` (JSON | CSV | SETLIST | TABLE).
 
@@ -42,7 +42,7 @@ SONGS WRITTEN 1968-1970;
 SONGS WITH LYRICS("rose") WRITTEN 1970 LIMIT 20;
 ```
 
-**Try in Sandbox:** [SONGS](https://sandbox.gdql.dev?example=songs&run=1) · [LYRICS](https://sandbox.gdql.dev?example=songs-lyrics&run=1) · [WRITTEN](https://sandbox.gdql.dev?example=songs-written&run=1) · [LYRICS+WRITTEN](https://sandbox.gdql.dev?example=songs-lyrics-rose&run=1)
+**Try in Sandbox:** [SONGS](https://sandbox.gdql.dev?q=U09OR1M7&run=1) · [LYRICS](https://sandbox.gdql.dev?q=U09OR1MgV0lUSCBMWVJJQ1MoInRyYWluIiwgInJvYWQiKTs&run=1) · [WRITTEN](https://sandbox.gdql.dev?q=U09OR1MgV1JJVFRFTiAxOTY4LTE5NzA7&run=1) · [LYRICS+WRITTEN](https://sandbox.gdql.dev?q=U09OR1MgV0lUSCBMWVJJQ1MoInJvc2UiKSBXUklUVEVOIDE5NzAgTElNSVQgMjA7&run=1)
 
 **Clauses:** `WITH` (LYRICS(...), LENGTH, GUEST), `WRITTEN` (date range), `ORDER BY`, `LIMIT`.
 
@@ -57,6 +57,8 @@ PERFORMANCES OF "Dark Star" WITH LENGTH > 20min;
 PERFORMANCES OF "Eyes of the World" ORDER BY LENGTH DESC LIMIT 5;
 ```
 
+**Try in Sandbox:** [Dark Star](https://sandbox.gdql.dev?q=UEVSRk9STUFOQ0VTIE9GICJEYXJrIFN0YXIiOw&run=1) · [FROM 1972-74](https://sandbox.gdql.dev?q=UEVSRk9STUFOQ0VTIE9GICJEYXJrIFN0YXIiIEZST00gMTk3Mi0xOTc0Ow&run=1) · [LENGTH > 20min](https://sandbox.gdql.dev?q=UEVSRk9STUFOQ0VTIE9GICJEYXJrIFN0YXIiIFdJVEggTEVOR1RIID4gMjBtaW47&run=1) · [Eyes by length](https://sandbox.gdql.dev?q=UEVSRk9STUFOQ0VTIE9GICJFeWVzIG9mIHRoZSBXb3JsZCIgT1JERVIgQlkgTEVOR1RIIERFU0MgTElNSVQgNTs&run=1)
+
 **Clauses:** `FROM`, `WITH`, `ORDER BY`, `LIMIT`.
 
 ### SETLIST
@@ -69,7 +71,7 @@ SETLIST FOR "Cornell 1977";
 SETLIST FOR 1977;   -- single year (interpretation TBD)
 ```
 
-**Try in Sandbox:** [5/8/77](https://sandbox.gdql.dev?example=setlist-cornell&run=1) · [Cornell 1977](https://sandbox.gdql.dev?example=setlist-cornell-name&run=1)
+**Try in Sandbox:** [5/8/77](https://sandbox.gdql.dev?q=U0VUTElTVCBGT1IgNS84Lzc3Ow&run=1) · [Cornell 1977](https://sandbox.gdql.dev?q=U0VUTElTVCBGT1IgIkNvcm5lbGwgMTk3NyI7&run=1)
 
 ---
 
@@ -92,7 +94,7 @@ SETLIST FOR 1977;   -- single year (interpretation TBD)
 - **Length:** `LENGTH("Dark Star") > 20min` (when we support it in WHERE).
 - **Combine:** `condition1 AND condition2`, `condition1 OR condition2`.
 
-**Try in Sandbox:** [Scarlet→Fire](https://sandbox.gdql.dev?example=scarlet-fire&run=1) · [Help→Slip→Franklin’s](https://sandbox.gdql.dev?example=help-slip-frank&run=1) · [PLAYED St. Stephen](https://sandbox.gdql.dev?example=played-st-stephen&run=1) · [St. Stephen > The Eleven](https://sandbox.gdql.dev?example=st-stephen-eleven&run=1)
+**Try in Sandbox:** [Scarlet→Fire](https://sandbox.gdql.dev?q=U0hPV1MgRlJPTSAxOTc3IFdIRVJFICJTY2FybGV0IEJlZ29uaWFzIiA-ICJGaXJlIG9uIHRoZSBNb3VudGFpbiI7&run=1) · [Help→Slip→Franklin’s](https://sandbox.gdql.dev?q=U0hPV1MgV0hFUkUgIkhlbHAgb24gdGhlIFdheSIgPiAiU2xpcGtub3QhIiA-ICJGcmFua2xpbidzIFRvd2VyIjs&run=1) · [PLAYED St. Stephen](https://sandbox.gdql.dev?q=U0hPV1MgRlJPTSAxOTY5IFdIRVJFIFBMQVlFRCAiU3QuIFN0ZXBoZW4iOw&run=1) · [St. Stephen > The Eleven](https://sandbox.gdql.dev?q=U0hPV1MgRlJPTSAxOTY5IFdIRVJFIFBMQVlFRCAiU3QuIFN0ZXBoZW4iID4gIlRoZSBFbGV2ZW4iOw&run=1)
 
 ---
 
