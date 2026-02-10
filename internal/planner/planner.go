@@ -52,12 +52,12 @@ func (p *planner) planShow(ctx context.Context, s *ast.ShowQuery) (*ir.QueryIR, 
 		}
 	}
 	if s.Where != nil {
-		for i, c := range s.Where.Conditions {
-			if seg, ok := c.(*ast.SegueCondition); ok && i == 0 && out.SegueChain == nil {
-		chain, err := p.segueToIR(ctx, seg)
-		if err != nil {
-			return nil, p.wrapSongNotFound(ctx, err)
-		}
+		for _, c := range s.Where.Conditions {
+			if seg, ok := c.(*ast.SegueCondition); ok {
+				chain, err := p.segueToIR(ctx, seg)
+				if err != nil {
+					return nil, p.wrapSongNotFound(ctx, err)
+				}
 				out.SegueChain = chain
 				continue
 			}

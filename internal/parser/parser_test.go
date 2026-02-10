@@ -57,6 +57,53 @@ func TestParseShowQuery_WithSegue(t *testing.T) {
 	assert.Equal(t, ast.SegueOpSegue, seg.Operators[0])
 }
 
+func TestParseShowQuery_WherePlayedAndPlayedSegue(t *testing.T) {
+	// WHERE PLAYED "St Stephen" only
+	p := NewFromString(`SHOWS FROM 1969 WHERE PLAYED "St Stephen";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.NotNil(t, sq.Where)
+	require.Len(t, sq.Where.Conditions, 1)
+	play, ok := sq.Where.Conditions[0].(*ast.PlayedCondition)
+	require.True(t, ok)
+	assert.Equal(t, "St Stephen", play.Song.Name)
+
+	// WHERE PLAYED "St Stephen" > "The Eleven"
+	p2 := NewFromString(`SHOWS FROM 1969 WHERE PLAYED "St Stephen" > "The Eleven";`)
+	q2, err := p2.Parse()
+	require.NoError(t, err)
+	sq2 := q2.(*ast.ShowQuery)
+	require.NotNil(t, sq2.Where)
+	require.Len(t, sq2.Where.Conditions, 2)
+	play2, ok := sq2.Where.Conditions[0].(*ast.PlayedCondition)
+	require.True(t, ok)
+	assert.Equal(t, "St Stephen", play2.Song.Name)
+	seg2, ok := sq2.Where.Conditions[1].(*ast.SegueCondition)
+	require.True(t, ok)
+	require.Len(t, seg2.Songs, 2)
+	assert.Equal(t, "St Stephen", seg2.Songs[0].Name)
+	assert.Equal(t, "The Eleven", seg2.Songs[1].Name)
+	require.Len(t, seg2.Operators, 1)
+	assert.Equal(t, ast.SegueOpSegue, seg2.Operators[0])
+}
+
+// TestParseShowQuery_UnicodeSegue ensures fullwidth ＞ (U+FF1E) and other variants parse as segue.
+func TestParseShowQuery_UnicodeSegue(t *testing.T) {
+	// Fullwidth ＞ (U+FF1E) often inserted by Windows editors instead of ASCII >
+	withFullwidth := "SHOWS FROM 1969 WHERE PLAYED \"St Stephen\" \uFF1E \"The Eleven\";"
+	p := NewFromString(withFullwidth)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.NotNil(t, sq.Where)
+	require.Len(t, sq.Where.Conditions, 2)
+	seg, ok := sq.Where.Conditions[1].(*ast.SegueCondition)
+	require.True(t, ok)
+	require.Len(t, seg.Songs, 2)
+	assert.Equal(t, "The Eleven", seg.Songs[1].Name)
+}
+
 func TestParseShowQuery_WithLimit(t *testing.T) {
 	p := NewFromString("SHOWS FROM 1977 LIMIT 10;")
 	q, err := p.Parse()

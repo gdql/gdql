@@ -201,6 +201,14 @@ func (p *parser) parseWhereClause() (*ast.WhereClause, error) {
 		return nil, err
 	}
 	wc.Conditions = append(wc.Conditions, cond)
+	// PLAYED "A" > "B" — after PLAYED we may have a segue; parse it and add as second condition
+	if playCond, ok := cond.(*ast.PlayedCondition); ok && p.parseSegueOp() != nil {
+		segCond, segErr := p.parseSegueRest(playCond.Song)
+		if segErr != nil {
+			return nil, segErr
+		}
+		wc.Conditions = append(wc.Conditions, segCond)
+	}
 
 	for p.curIs(token.AND) || p.curIs(token.OR) {
 		if p.curIs(token.AND) {
@@ -256,7 +264,7 @@ func (p *parser) parseCondition() (ast.Condition, error) {
 		return &ast.PositionCondition{Set: set, Operator: op, Song: ref}, nil
 	}
 
-	// PLAYED "Song"
+	// PLAYED "Song" [> "Song" ...] — optional segue after PLAYED
 	if p.curIs(token.PLAYED) {
 		p.advance()
 		ref, err := p.parseSongRef()
@@ -359,6 +367,32 @@ func (p *parser) parseSegueCondition() (*ast.SegueCondition, error) {
 	return sc, nil
 }
 
+// parseSegueRest parses " > \"Song\" [> \"Song\" ...]" when the first song is already known (e.g. after PLAYED "A").
+func (p *parser) parseSegueRest(firstRef *ast.SongRef) (*ast.SegueCondition, error) {
+	sc := &ast.SegueCondition{}
+	sc.Songs = append(sc.Songs, firstRef)
+	for {
+		op := p.parseSegueOp()
+		if op == nil {
+			break
+		}
+		p.advance()
+		if !p.curIs(token.STRING) {
+			return nil, &errors.ParseError{Pos: p.cur.Pos, Message: "expected song name after segue operator", Query: p.query}
+		}
+		nextRef, err := p.parseSongRef()
+		if err != nil {
+			return nil, err
+		}
+		sc.Songs = append(sc.Songs, nextRef)
+		sc.Operators = append(sc.Operators, *op)
+	}
+	if len(sc.Songs) < 2 {
+		return nil, &errors.ParseError{Pos: p.cur.Pos, Message: "segue requires at least two songs", Query: p.query}
+	}
+	return sc, nil
+}
+
 func (p *parser) parseSegueOp() *ast.SegueOp {
 	switch p.cur.Type {
 	case token.GT:
@@ -424,7 +458,9 @@ func (p *parser) parseSetPosition() ast.SetPosition {
 
 func (p *parser) parseSongRef() (*ast.SongRef, error) {
 	if !p.curIs(token.STRING) {
-		return nil, &errors.ParseError{Pos: p.cur.Pos, Message: "expected quoted song name", Query: p.query}
+		msg := "expected quoted song name"
+		hint := "Use double or single quotes around song names (e.g. \"St Stephen\"). In PowerShell the shell may strip quotes from the query; use a file: gdql -f query.gdql, or wrap the whole query in single quotes: gdql 'SHOWS FROM 1969 WHERE PLAYED \"St Stephen\" > \"The Eleven\";'"
+		return nil, &errors.ParseError{Pos: p.cur.Pos, Message: msg, Query: p.query, Hint: hint}
 	}
 	ref := &ast.SongRef{Name: p.cur.Literal}
 	p.advance()
@@ -524,8 +560,13 @@ func (p *parser) optionalSemicolon() error {
 	if p.curIs(token.SEMICOLON) {
 		p.advance()
 	}
+	for p.curIs(token.SEMICOLON) {
+		p.advance()
+	}
 	if !p.curIs(token.EOF) {
-		return &errors.ParseError{Pos: p.cur.Pos, Message: "unexpected token after query", Query: p.query}
+		msg := fmt.Sprintf("unexpected token after query (got %s %q)", p.cur.Type, p.cur.Literal)
+		hint := "Remove any extra text or invisible characters after the semicolon; ensure the file ends with a single newline or no trailing content."
+		return &errors.ParseError{Pos: p.cur.Pos, Message: msg, Query: p.query, Hint: hint}
 	}
 	return nil
 }

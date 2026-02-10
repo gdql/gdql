@@ -36,6 +36,34 @@ func isQuote(r rune) bool {
 	return false
 }
 
+// isSingleQuote returns true for ASCII apostrophe and Unicode single quotation marks
+// (Windows/PowerShell often sends U+2018 left and U+2019 right instead of ASCII ').
+func isSingleQuote(r rune) bool {
+	switch r {
+	case '\'', '\u2018', '\u2019', '\u201A', '\u201B':
+		return true
+	}
+	return false
+}
+
+// isStringDelim returns true for quote characters that start/end a string (double or single quote).
+func isStringDelim(r rune) bool {
+	return isQuote(r) || isSingleQuote(r)
+}
+
+// gtRunes are Unicode code points that should be treated as ASCII '>' (segue operator).
+// Editors (especially on Windows) often insert fullwidth or other variants.
+var gtRunes = map[rune]bool{
+	'>': true, 0x02C3: true, 0x203A: true, 0x22F1: true, 0x2E2B: true,
+	0xFE65: true, 0xFF1E: true, // small form, fullwidth
+}
+
+// ltRunes are Unicode code points that should be treated as ASCII '<'.
+var ltRunes = map[rune]bool{
+	'<': true, 0x02C2: true, 0x2039: true, 0x22F0: true, 0x2E2A: true,
+	0xFE64: true, 0xFF1C: true,
+}
+
 // New creates a lexer for the given input.
 func New(input string) Lexer {
 	l := &lexer{
@@ -74,7 +102,7 @@ func (l *lexer) peekChar() rune {
 }
 
 func (l *lexer) skipWhitespace() {
-	for l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r' {
+	for l.ch != 0 && (unicode.IsSpace(l.ch) || l.ch == '\u0000' || l.ch == '\uFEFF') {
 		l.readChar()
 	}
 }
@@ -150,13 +178,13 @@ func (l *lexer) nextToken() token.Token {
 			}
 			l.readChar()
 			return token.Token{Type: token.LT, Literal: "<", Pos: pos}
-		case '>':
+		case '>', '\uFF1E': // ASCII > and fullwidth ＞ (Windows/editors often insert this)
 			if l.peekChar() == '=' {
 				l.readChar()
 				l.readChar()
 				return token.Token{Type: token.GTEQ, Literal: ">=", Pos: pos}
 			}
-			if l.peekChar() == '>' {
+			if l.peekChar() == '>' || l.peekChar() == '\uFF1E' {
 				l.readChar()
 				l.readChar()
 				return token.Token{Type: token.GTGT, Literal: ">>", Pos: pos}
@@ -183,8 +211,16 @@ func (l *lexer) nextToken() token.Token {
 			l.readChar()
 			return token.Token{Type: token.ILLEGAL, Literal: "\\", Pos: pos}
 		default:
-			if isQuote(l.ch) {
-				return l.readString(pos)
+			if isStringDelim(l.ch) {
+				return l.readString(pos, l.ch)
+			}
+			if gtRunes[l.ch] {
+				l.readChar()
+				return token.Token{Type: token.GT, Literal: ">", Pos: pos}
+			}
+			if ltRunes[l.ch] {
+				l.readChar()
+				return token.Token{Type: token.LT, Literal: "<", Pos: pos}
 			}
 			if unicode.IsLetter(l.ch) || l.ch == '_' {
 				return l.readIdent(pos)
@@ -198,19 +234,43 @@ func (l *lexer) nextToken() token.Token {
 	}
 }
 
-func (l *lexer) readString(start token.Position) token.Token {
+// isClosingQuote returns true if ch is a closing delimiter for the given opening quote.
+// Single-quote openers accept any single-quote rune as close (so ' and ' match).
+func isClosingQuote(opening, ch rune) bool {
+	if ch == 0 {
+		return false
+	}
+	if isQuote(opening) {
+		return isQuote(ch)
+	}
+	if isSingleQuote(opening) {
+		return isSingleQuote(ch)
+	}
+	return false
+}
+
+// readString reads a quoted string. quote is the opening delimiter (" or ' or Unicode variant).
+// Double-quoted: \" escapes the quote. Single-quoted: '' escapes the quote (SQL style).
+func (l *lexer) readString(start token.Position, quote rune) token.Token {
 	l.readChar() // consume opening quote
 	var b strings.Builder
 	closedByBackslashQuote := false
-	for l.ch != 0 && !isQuote(l.ch) {
-		if l.ch == '\\' && isQuote(l.peekChar()) {
+	for l.ch != 0 && !isClosingQuote(quote, l.ch) {
+		if isQuote(quote) && l.ch == '\\' && isQuote(l.peekChar()) {
 			// \" from PowerShell/shell: treat as closing quote, not literal quote in content
 			l.readChar()
 			l.readChar()
 			closedByBackslashQuote = true
 			break
 		}
-		if l.ch == '\\' {
+		if isSingleQuote(quote) && l.ch == '\'' && l.peekChar() == '\'' {
+			// '' inside single-quoted string = escaped single quote (ASCII only)
+			b.WriteRune('\'')
+			l.readChar()
+			l.readChar()
+			continue
+		}
+		if isQuote(quote) && l.ch == '\\' {
 			l.readChar()
 			switch l.ch {
 			case 'n':
@@ -232,7 +292,7 @@ func (l *lexer) readString(start token.Position) token.Token {
 	if closedByBackslashQuote {
 		return token.Token{Type: token.STRING, Literal: b.String(), Pos: start}
 	}
-	if !isQuote(l.ch) {
+	if !isClosingQuote(quote, l.ch) {
 		return token.Token{Type: token.ILLEGAL, Literal: "unterminated string", Pos: start}
 	}
 	l.readChar() // consume closing quote

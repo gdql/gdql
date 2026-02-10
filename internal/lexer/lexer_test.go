@@ -107,6 +107,44 @@ func TestLexer_BackslashBeforeQuote(t *testing.T) {
 	require.Equal(t, token.EOF, l.NextToken().Type)
 }
 
+func TestLexer_SingleQuotedStrings(t *testing.T) {
+	// Single-quoted strings work (e.g. PowerShell: outer double quotes are awkward, so users use single quotes)
+	input := `SHOWS FROM 1969 WHERE PLAYED 'St Stephen' > 'The Eleven';`
+	l := New(input)
+	require.Equal(t, token.SHOWS, l.NextToken().Type)
+	require.Equal(t, token.FROM, l.NextToken().Type)
+	require.Equal(t, token.NUMBER, l.NextToken().Type)
+	require.Equal(t, token.WHERE, l.NextToken().Type)
+	require.Equal(t, token.PLAYED, l.NextToken().Type)
+	tok := l.NextToken()
+	require.Equal(t, token.STRING, tok.Type)
+	require.Equal(t, "St Stephen", tok.Literal)
+	require.Equal(t, token.GT, l.NextToken().Type)
+	tok2 := l.NextToken()
+	require.Equal(t, token.STRING, tok2.Type)
+	require.Equal(t, "The Eleven", tok2.Literal)
+	require.Equal(t, token.SEMICOLON, l.NextToken().Type)
+	require.Equal(t, token.EOF, l.NextToken().Type)
+}
+
+func TestLexer_UnicodeSingleQuotes(t *testing.T) {
+	// Windows/PowerShell sometimes sends Unicode single quotes U+2018/U+2019 instead of ASCII '
+	input := "SHOWS WHERE PLAYED \u2018St Stephen\u2019 > \u2019The Eleven\u2018;"
+	l := New(input)
+	require.Equal(t, token.SHOWS, l.NextToken().Type)
+	require.Equal(t, token.WHERE, l.NextToken().Type)
+	require.Equal(t, token.PLAYED, l.NextToken().Type)
+	tok := l.NextToken()
+	require.Equal(t, token.STRING, tok.Type)
+	require.Equal(t, "St Stephen", tok.Literal)
+	require.Equal(t, token.GT, l.NextToken().Type)
+	tok2 := l.NextToken()
+	require.Equal(t, token.STRING, tok2.Type)
+	require.Equal(t, "The Eleven", tok2.Literal)
+	require.Equal(t, token.SEMICOLON, l.NextToken().Type)
+	require.Equal(t, token.EOF, l.NextToken().Type)
+}
+
 func tokenWithoutPos(t token.Token) token.Token {
 	t.Pos = token.Position{}
 	return t
