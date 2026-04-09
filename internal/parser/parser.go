@@ -213,11 +213,10 @@ func (p *parser) parseDate() (*ast.Date, *ast.EraAlias, error) {
 	switch p.cur.Type {
 	case token.NUMBER:
 		y, _ := strconv.Atoi(p.cur.Literal)
+		// Two-digit years map to 19xx (the Grateful Dead were active 1965-1995).
+		// 65-99 → 1965-1999. 00-64 → assume nothing (Dead history doesn't extend).
 		if y < 100 {
 			y += 1900
-			if y < 1970 {
-				y += 100
-			}
 		}
 		d := &ast.Date{Year: y}
 		p.advance()
@@ -953,9 +952,6 @@ func (p *parser) parseDateForSetlist() (*ast.Date, error) {
 			y, _ := strconv.Atoi(p.cur.Literal)
 			if y < 100 {
 				y += 1900
-				if y < 1970 {
-					y += 100
-				}
 			}
 			p.advance()
 			return &ast.Date{Year: y, Month: m, Day: day}, nil
@@ -965,9 +961,6 @@ func (p *parser) parseDateForSetlist() (*ast.Date, error) {
 			yr := m
 			if yr < 100 {
 				yr += 1900
-				if yr < 1970 {
-					yr += 100
-				}
 			}
 			return &ast.Date{Year: yr}, nil
 		}

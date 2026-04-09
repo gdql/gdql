@@ -18,6 +18,42 @@ func TestParseShowQuery_Simple(t *testing.T) {
 	assert.Nil(t, sq.Where)
 }
 
+func TestParseShowQuery_TwoDigitYears(t *testing.T) {
+	cases := []struct {
+		input string
+		year  int
+	}{
+		{"SHOWS FROM 65;", 1965},
+		{"SHOWS FROM 69;", 1969},
+		{"SHOWS FROM 70;", 1970},
+		{"SHOWS FROM 77;", 1977},
+		{"SHOWS FROM 95;", 1995},
+		{"SHOWS FROM 1977;", 1977},
+	}
+	for _, tc := range cases {
+		t.Run(tc.input, func(t *testing.T) {
+			p := NewFromString(tc.input)
+			q, err := p.Parse()
+			require.NoError(t, err)
+			sq := q.(*ast.ShowQuery)
+			require.NotNil(t, sq.From)
+			require.NotNil(t, sq.From.Start)
+			require.Equal(t, tc.year, sq.From.Start.Year, "input: %s", tc.input)
+		})
+	}
+}
+
+func TestParseShowQuery_TwoDigitYearRanges(t *testing.T) {
+	p := NewFromString("SHOWS FROM 65-69;")
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.NotNil(t, sq.From.Start)
+	require.NotNil(t, sq.From.End)
+	require.Equal(t, 1965, sq.From.Start.Year)
+	require.Equal(t, 1969, sq.From.End.Year)
+}
+
 func TestParseShowQuery_WithDateRange(t *testing.T) {
 	p := NewFromString("SHOWS FROM 1977;")
 	q, err := p.Parse()
