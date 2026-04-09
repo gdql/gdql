@@ -25,14 +25,13 @@ type Row []interface{}
 
 // Show is a single show.
 type Show struct {
-	ID       int
-	Date     time.Time
-	VenueID  int
-	Venue    string
-	City     string
-	State    string
-	Notes    string
-	Rating   float64
+	ID      int
+	Date    time.Time
+	VenueID int
+	Venue   string
+	City    string
+	State   string
+	Tour    string `json:",omitempty"`
 }
 
 // Song is a song in the catalog.

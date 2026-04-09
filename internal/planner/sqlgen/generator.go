@@ -53,7 +53,7 @@ func (g *generator) genShows(q *ir.QueryIR) (*SQLQuery, error) {
 	}
 	var b strings.Builder
 	var args []interface{}
-	b.WriteString("SELECT s.id, s.date, s.venue_id, v.name AS venue, v.city, v.state, s.notes, s.rating FROM shows s LEFT JOIN venues v ON s.venue_id = v.id")
+	b.WriteString("SELECT s.id, s.date, s.venue_id, v.name AS venue, v.city, v.state, s.tour FROM shows s LEFT JOIN venues v ON s.venue_id = v.id")
 	where, wa := g.whereShows(q)
 	if where != "" {
 		b.WriteString(" WHERE ")
@@ -258,7 +258,7 @@ func (g *generator) genFirstLast(q *ir.QueryIR) (*SQLQuery, error) {
 	if q.IsLast {
 		dir = "DESC"
 	}
-	sql := fmt.Sprintf("SELECT s.id, s.date, s.venue_id, v.name AS venue, v.city, v.state, s.notes, s.rating FROM performances p JOIN shows s ON p.show_id = s.id LEFT JOIN venues v ON s.venue_id = v.id WHERE p.song_id = ? ORDER BY s.date %s LIMIT 1", dir)
+	sql := fmt.Sprintf("SELECT s.id, s.date, s.venue_id, v.name AS venue, v.city, v.state, s.tour FROM performances p JOIN shows s ON p.show_id = s.id LEFT JOIN venues v ON s.venue_id = v.id WHERE p.song_id = ? ORDER BY s.date %s LIMIT 1", dir)
 	return &SQLQuery{SQL: sql, Args: []interface{}{*q.SongID}}, nil
 }
 

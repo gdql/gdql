@@ -8,6 +8,11 @@ import (
 )
 
 // BuildSegueShowsSQL builds SELECT DISTINCT shows for a segue chain (2+ songs).
+//
+// Operator semantics:
+//   >  (segue):    songs are positionally adjacent in the same set (B at position A+1)
+//   >> (then):     both songs played in the same show, A's position < B's position (not necessarily adjacent)
+//   ~> (tease):    requires explicit segue_type='~>' metadata in performances row
 func BuildSegueShowsSQL(q *ir.QueryIR) (*SQLQuery, error) {
 	chain := q.SegueChain
 	if chain == nil || len(chain.SongIDs) < 2 {
@@ -16,7 +21,6 @@ func BuildSegueShowsSQL(q *ir.QueryIR) (*SQLQuery, error) {
 	n := len(chain.SongIDs)
 	ops := chain.Operators
 	if len(ops) < n-1 {
-		// Pad with segue
 		for len(ops) < n-1 {
 			ops = append(ops, ir.SegueOpSegue)
 		}
@@ -25,16 +29,16 @@ func BuildSegueShowsSQL(q *ir.QueryIR) (*SQLQuery, error) {
 	var b strings.Builder
 	var args []interface{}
 
-	// SELECT DISTINCT s.id, s.date, ...
-	b.WriteString("SELECT DISTINCT s.id, s.date, s.venue_id, v.name AS venue, v.city, v.state, s.notes, s.rating FROM ")
-	// p1 JOIN p2 ON ... JOIN p3 ON ... JOIN songs s1 ON p1.song_id = s1.id AND s1.id = ? ...
+	b.WriteString("SELECT DISTINCT s.id, s.date, s.venue_id, v.name AS venue, v.city, v.state, s.tour FROM ")
 	for i := 0; i < n; i++ {
 		alias := fmt.Sprintf("p%d", i+1)
 		if i == 0 {
 			b.WriteString("performances " + alias)
 		} else {
 			prev := fmt.Sprintf("p%d", i)
-			b.WriteString(" JOIN performances " + alias + " ON " + prev + ".show_id = " + alias + ".show_id AND " + prev + ".set_number = " + alias + ".set_number AND " + prev + ".position = " + alias + ".position - 1")
+			op := ops[i-1]
+			joinCond := joinForOp(prev, alias, op)
+			b.WriteString(" JOIN performances " + alias + " ON " + joinCond)
 		}
 	}
 	for i := 0; i < n; i++ {
@@ -89,4 +93,28 @@ func BuildSegueShowsSQL(q *ir.QueryIR) (*SQLQuery, error) {
 		args = append(args, *q.Limit)
 	}
 	return &SQLQuery{SQL: b.String(), Args: args}, nil
+}
+
+// joinForOp returns the JOIN ON clause linking two adjacent performance aliases
+// based on the segue operator semantics.
+func joinForOp(prev, curr string, op ir.SegueOp) string {
+	switch op {
+	case ir.SegueOpBreak:
+		// >> (then): same show, A's position before B's, but NOT adjacent.
+		// Either different sets, or same set with position gap > 1.
+		return prev + ".show_id = " + curr + ".show_id AND (" +
+			prev + ".set_number != " + curr + ".set_number OR " +
+			prev + ".position + 1 < " + curr + ".position)"
+	case ir.SegueOpTease:
+		// ~> (tease): adjacent AND segue_type='~>' explicitly recorded
+		return prev + ".show_id = " + curr + ".show_id AND " +
+			prev + ".set_number = " + curr + ".set_number AND " +
+			prev + ".position = " + curr + ".position - 1 AND " +
+			prev + ".segue_type = '~>'"
+	default:
+		// > (segue): positional adjacency in same set
+		return prev + ".show_id = " + curr + ".show_id AND " +
+			prev + ".set_number = " + curr + ".set_number AND " +
+			prev + ".position = " + curr + ".position - 1"
+	}
 }

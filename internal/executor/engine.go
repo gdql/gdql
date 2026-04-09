@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gdql/gdql/internal/ast"
@@ -156,7 +157,7 @@ func (e *executor) ExecuteAST(ctx context.Context, q ast.Query) (*Result, error)
 func mapRowsToShows(rs *data.ResultSet) ([]*data.Show, error) {
 	out := make([]*data.Show, 0, len(rs.Rows))
 	for _, row := range rs.Rows {
-		if len(row) < 8 {
+		if len(row) < 7 {
 			continue
 		}
 		sh := &data.Show{
@@ -165,13 +166,33 @@ func mapRowsToShows(rs *data.ResultSet) ([]*data.Show, error) {
 			Venue:   strVal(row[3]),
 			City:    strVal(row[4]),
 			State:   strVal(row[5]),
-			Notes:   strVal(row[6]),
-			Rating:  floatVal(row[7]),
+			Tour:    strVal(row[6]),
 		}
 		sh.Date = timeVal(row[1])
+		// If state is empty but city contains "City, ST" or "City, ST, Country", extract state
+		if sh.State == "" && sh.City != "" {
+			sh.City, sh.State = splitCityState(sh.City)
+		}
 		out = append(out, sh)
 	}
 	return out, nil
+}
+
+// splitCityState parses "City, ST" or "City, ST, Country" → (city, state).
+// Returns the input city unchanged if it doesn't match the pattern.
+func splitCityState(s string) (city, state string) {
+	parts := strings.Split(s, ",")
+	if len(parts) < 2 {
+		return s, ""
+	}
+	city = strings.TrimSpace(parts[0])
+	state = strings.TrimSpace(parts[1])
+	// Drop trailing country if state is too long to be a US state code
+	if len(state) > 6 {
+		// Probably full country name, not a state
+		return city, ""
+	}
+	return city, state
 }
 
 func mapRowsToSongs(rs *data.ResultSet) ([]*data.Song, error) {

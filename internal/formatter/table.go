@@ -47,7 +47,7 @@ func tableShows(shows []*data.Show) string {
 		venue := truncate(s.Venue, 30)
 		city := truncate(s.City, 24)
 		state := truncate(s.State, 5)
-		fmt.Fprintf(&b, "%-10s | %-30s | %-24s | %s\n", date, venue, city, state)
+		fmt.Fprintf(&b, "%-10s | %-30s | %-24s | %-5s\n", date, venue, city, state)
 	}
 	return b.String()
 }

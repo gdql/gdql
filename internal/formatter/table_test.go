@@ -310,7 +310,7 @@ func TestTableShows_WithRows(t *testing.T) {
 	result := &executor.Result{
 		Type: executor.ResultShows,
 		Shows: []*data.Show{
-			{ID: 1, Date: time.Date(1977, 5, 8, 0, 0, 0, 0, time.UTC), Venue: "Barton Hall", City: "Ithaca", State: "NY", Rating: 4.9},
+			{ID: 1, Date: time.Date(1977, 5, 8, 0, 0, 0, 0, time.UTC), Venue: "Barton Hall", City: "Ithaca", State: "NY"},
 		},
 	}
 	out, err := formatTable(result)

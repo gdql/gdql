@@ -13,11 +13,11 @@ func formatCSV(result *executor.Result) (string, error) {
 	w := csv.NewWriter(&b)
 	switch result.Type {
 	case executor.ResultShows:
-		w.Write([]string{"id", "date", "venue_id", "venue", "city", "state", "notes", "rating"})
+		w.Write([]string{"id", "date", "venue", "city", "state", "tour"})
 		for _, s := range result.Shows {
 			w.Write([]string{
-				fmt.Sprint(s.ID), s.Date.Format("2006-01-02"), fmt.Sprint(s.VenueID),
-				s.Venue, s.City, s.State, s.Notes, fmt.Sprint(s.Rating),
+				fmt.Sprint(s.ID), s.Date.Format("2006-01-02"),
+				s.Venue, s.City, s.State, s.Tour,
 			})
 		}
 	case executor.ResultSongs:
