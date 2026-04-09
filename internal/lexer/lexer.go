@@ -255,20 +255,32 @@ func (l *lexer) readString(start token.Position, quote rune) token.Token {
 	l.readChar() // consume opening quote
 	var b strings.Builder
 	closedByBackslashQuote := false
-	for l.ch != 0 && !isClosingQuote(quote, l.ch) {
+	for l.ch != 0 {
+		// Doubled-quote escape ('' or "") must be checked BEFORE the closing-quote check.
+		if isClosingQuote(quote, l.ch) {
+			if isSingleQuote(quote) && l.ch == '\'' && l.peekChar() == '\'' {
+				// '' inside single-quoted string = literal '
+				b.WriteRune('\'')
+				l.readChar()
+				l.readChar()
+				continue
+			}
+			if isQuote(quote) && l.ch == '"' && l.peekChar() == '"' {
+				// "" inside double-quoted string = literal "
+				b.WriteRune('"')
+				l.readChar()
+				l.readChar()
+				continue
+			}
+			// Real closing quote
+			break
+		}
 		if isQuote(quote) && l.ch == '\\' && isQuote(l.peekChar()) {
 			// \" from PowerShell/shell: treat as closing quote, not literal quote in content
 			l.readChar()
 			l.readChar()
 			closedByBackslashQuote = true
 			break
-		}
-		if isSingleQuote(quote) && l.ch == '\'' && l.peekChar() == '\'' {
-			// '' inside single-quoted string = escaped single quote (ASCII only)
-			b.WriteRune('\'')
-			l.readChar()
-			l.readChar()
-			continue
 		}
 		if isQuote(quote) && l.ch == '\\' {
 			l.readChar()

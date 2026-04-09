@@ -258,6 +258,35 @@ func TestLexer_SingleQuotedString(t *testing.T) {
 	assert.Equal(t, "Hello World", tok.Literal)
 }
 
+func TestLexer_SingleQuoteEscape(t *testing.T) {
+	// '' inside a single-quoted string = literal '
+	cases := []struct {
+		input string
+		want  string
+	}{
+		{`'Truckin'''`, "Truckin'"},
+		{`'A''B'`, "A'B"},
+		{`'don''t'`, "don't"},
+	}
+	for _, tc := range cases {
+		t.Run(tc.input, func(t *testing.T) {
+			l := New(tc.input)
+			tok := l.NextToken()
+			assert.Equal(t, token.STRING, tok.Type)
+			assert.Equal(t, tc.want, tok.Literal)
+			assert.Equal(t, token.EOF, l.NextToken().Type)
+		})
+	}
+}
+
+func TestLexer_DoubleQuoteEscape(t *testing.T) {
+	// "" inside double-quoted string = literal "
+	l := New(`"say ""hi"" friend"`)
+	tok := l.NextToken()
+	assert.Equal(t, token.STRING, tok.Type)
+	assert.Equal(t, `say "hi" friend`, tok.Literal)
+}
+
 func TestLexer_DoubleSlashIsNotComment(t *testing.T) {
 	// Only -- starts a comment, not //
 	l := New("// not comment")
