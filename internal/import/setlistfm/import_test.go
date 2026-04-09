@@ -127,6 +127,86 @@ func TestUpsertShow_DeduplicatesCaseVariants(t *testing.T) {
 	require.Equal(t, 1, songCount, "case variants should not create duplicate songs")
 }
 
+func TestParseEventDate(t *testing.T) {
+	cases := []struct {
+		input string
+		want  string
+		ok    bool
+	}{
+		{"08-05-1977", "1977-05-08", true},
+		{"01-01-1965", "1965-01-01", true},
+		{"31-12-1995", "1995-12-31", true},
+		{"", "", false},
+		{"08-05", "", false},
+		{"a-b-c", "c-b-a", true}, // 3 parts splits, function doesn't validate content
+	}
+	for _, tc := range cases {
+		t.Run(tc.input, func(t *testing.T) {
+			got, ok := parseEventDate(tc.input)
+			require.Equal(t, tc.ok, ok)
+			if tc.ok {
+				require.Equal(t, tc.want, got)
+			}
+		})
+	}
+}
+
+func TestVenueFields(t *testing.T) {
+	v := &Venue{
+		Name: "Barton Hall",
+		City: &City{
+			Name:      "Ithaca",
+			StateCode: "NY",
+			Country:   &Country{Code: "US"},
+		},
+	}
+	name, city, state, country := venueFields(v)
+	require.Equal(t, "Barton Hall", name)
+	require.Equal(t, "Ithaca", city)
+	require.Equal(t, "NY", state)
+	require.Equal(t, "US", country)
+}
+
+func TestVenueFields_NoCity(t *testing.T) {
+	v := &Venue{Name: "Madison Square Garden"}
+	name, city, state, country := venueFields(v)
+	require.Equal(t, "Madison Square Garden", name)
+	require.Empty(t, city)
+	require.Empty(t, state)
+	require.Empty(t, country)
+}
+
+func TestVenueFields_NoCountry(t *testing.T) {
+	v := &Venue{
+		Name: "Wembley",
+		City: &City{Name: "London", StateCode: ""},
+	}
+	name, city, _, country := venueFields(v)
+	require.Equal(t, "Wembley", name)
+	require.Equal(t, "London", city)
+	require.Empty(t, country)
+}
+
+func TestVenueKey(t *testing.T) {
+	v := &Venue{
+		Name: "Barton Hall",
+		City: &City{Name: "Ithaca", StateCode: "NY", Country: &Country{Code: "US"}},
+	}
+	k := venueKey(v)
+	require.Contains(t, k, "Barton Hall")
+	require.Contains(t, k, "Ithaca")
+
+	// Same venue produces same key
+	require.Equal(t, k, venueKey(v))
+
+	// Different city produces different key
+	v2 := &Venue{
+		Name: "Barton Hall",
+		City: &City{Name: "Different", StateCode: "NY", Country: &Country{Code: "US"}},
+	}
+	require.NotEqual(t, k, venueKey(v2))
+}
+
 func TestSplitSongName(t *testing.T) {
 	// Simple name
 	names, segue := splitSongName("Scarlet Begonias")

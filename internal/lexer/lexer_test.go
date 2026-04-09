@@ -149,3 +149,132 @@ func tokenWithoutPos(t token.Token) token.Token {
 	t.Pos = token.Position{}
 	return t
 }
+
+// === New tokens (AT, BEFORE, AFTER, TOUR, COUNT, FIRST, LAST, RANDOM, OPENER, CLOSER) ===
+
+func TestLexer_NewKeywords(t *testing.T) {
+	cases := []struct {
+		input string
+		want  token.TokenType
+	}{
+		{"AT", token.AT},
+		{"BEFORE", token.BEFORE},
+		{"AFTER", token.AFTER},
+		{"TOUR", token.TOUR},
+		{"COUNT", token.COUNT},
+		{"FIRST", token.FIRST},
+		{"LAST", token.LAST},
+		{"RANDOM", token.RANDOM},
+		{"OPENER", token.OPENER},
+		{"CLOSER", token.CLOSER},
+		// Case-insensitive
+		{"at", token.AT},
+		{"after", token.AFTER},
+	}
+	for _, tc := range cases {
+		t.Run(tc.input, func(t *testing.T) {
+			l := New(tc.input)
+			tok := l.NextToken()
+			assert.Equal(t, tc.want, tok.Type)
+		})
+	}
+}
+
+func TestLexer_ShowAlias(t *testing.T) {
+	// Both SHOWS and SHOW lex to token.SHOWS
+	for _, in := range []string{"SHOW", "SHOWS", "show", "shows"} {
+		l := New(in)
+		assert.Equal(t, token.SHOWS, l.NextToken().Type, in)
+	}
+}
+
+func TestLexer_UnterminatedString(t *testing.T) {
+	l := New(`"Bertha`)
+	tok := l.NextToken()
+	assert.Equal(t, token.ILLEGAL, tok.Type)
+	assert.Contains(t, tok.Literal, "unterminated")
+}
+
+func TestLexer_NumericLiteral(t *testing.T) {
+	l := New("1977")
+	tok := l.NextToken()
+	assert.Equal(t, token.NUMBER, tok.Type)
+	assert.Equal(t, "1977", tok.Literal)
+}
+
+func TestLexer_DurationVariants(t *testing.T) {
+	cases := []struct{ in, want string }{
+		{"20min", "20min"},
+		{"15 min", "15min"},
+		{"30sec", "30sec"},
+		{"5 minutes", "5minutes"},
+		{"45 seconds", "45seconds"},
+	}
+	for _, tc := range cases {
+		t.Run(tc.in, func(t *testing.T) {
+			l := New(tc.in)
+			tok := l.NextToken()
+			assert.Equal(t, token.DURATION, tok.Type)
+			assert.Equal(t, tc.want, tok.Literal)
+		})
+	}
+}
+
+func TestLexer_NotEquals(t *testing.T) {
+	l := New("!=")
+	assert.Equal(t, token.NEQ, l.NextToken().Type)
+}
+
+func TestLexer_LessThan(t *testing.T) {
+	l := New("< <=")
+	assert.Equal(t, token.LT, l.NextToken().Type)
+	assert.Equal(t, token.LTEQ, l.NextToken().Type)
+}
+
+func TestLexer_Slash(t *testing.T) {
+	// Slash is used in M/D/YY dates
+	l := New("5/8/77")
+	assert.Equal(t, token.NUMBER, l.NextToken().Type)
+	assert.Equal(t, token.SLASH, l.NextToken().Type)
+	assert.Equal(t, token.NUMBER, l.NextToken().Type)
+	assert.Equal(t, token.SLASH, l.NextToken().Type)
+	assert.Equal(t, token.NUMBER, l.NextToken().Type)
+}
+
+func TestLexer_Parens(t *testing.T) {
+	l := New(`LYRICS("train", "road")`)
+	assert.Equal(t, token.LYRICS, l.NextToken().Type)
+	assert.Equal(t, token.LPAREN, l.NextToken().Type)
+	assert.Equal(t, token.STRING, l.NextToken().Type)
+	assert.Equal(t, token.COMMA, l.NextToken().Type)
+	assert.Equal(t, token.STRING, l.NextToken().Type)
+	assert.Equal(t, token.RPAREN, l.NextToken().Type)
+}
+
+func TestLexer_SingleQuotedString(t *testing.T) {
+	l := New(`'Hello World'`)
+	tok := l.NextToken()
+	assert.Equal(t, token.STRING, tok.Type)
+	assert.Equal(t, "Hello World", tok.Literal)
+}
+
+func TestLexer_DoubleSlashIsNotComment(t *testing.T) {
+	// Only -- starts a comment, not //
+	l := New("// not comment")
+	assert.Equal(t, token.SLASH, l.NextToken().Type)
+}
+
+func TestLexer_BlankInput(t *testing.T) {
+	l := New("")
+	assert.Equal(t, token.EOF, l.NextToken().Type)
+}
+
+func TestLexer_OnlyWhitespace(t *testing.T) {
+	l := New("   \n\t  ")
+	assert.Equal(t, token.EOF, l.NextToken().Type)
+}
+
+func TestLexer_OnlyComment(t *testing.T) {
+	l := New("-- just a comment\n")
+	assert.Equal(t, token.EOF, l.NextToken().Type)
+}
