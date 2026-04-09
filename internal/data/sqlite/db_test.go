@@ -76,6 +76,64 @@ func TestGetSong_ViaAlias(t *testing.T) {
 	require.Equal(t, "Scarlet Begonias", song.Name)
 }
 
+func TestGetSong_FuzzyHandlesCaseAndPunctuation(t *testing.T) {
+	path, cleanup := fixtures.CreateTestDB(t)
+	defer cleanup()
+	db, err := Open(path)
+	require.NoError(t, err)
+	defer db.Close()
+
+	ctx := context.Background()
+
+	// Fixture has "Fire on the Mountain" (id=2). Try multiple variants:
+	cases := []string{
+		"Fire on the Mountain",  // exact
+		"Fire On The Mountain",  // case differs
+		"FIRE ON THE MOUNTAIN",  // all caps
+		"fire on the mountain",  // all lower
+	}
+	for _, name := range cases {
+		t.Run(name, func(t *testing.T) {
+			s, err := db.GetSong(ctx, name)
+			require.NoError(t, err)
+			require.NotNil(t, s, "should resolve %q", name)
+			require.Equal(t, 2, s.ID)
+		})
+	}
+}
+
+func TestGetSong_NotFoundReturnsNil(t *testing.T) {
+	path, cleanup := fixtures.CreateTestDB(t)
+	defer cleanup()
+	db, err := Open(path)
+	require.NoError(t, err)
+	defer db.Close()
+
+	s, err := db.GetSong(context.Background(), "Completely Made Up Song Name 12345")
+	require.NoError(t, err)
+	require.Nil(t, s)
+}
+
+func TestNormalizeName_StripsAllPunctuation(t *testing.T) {
+	cases := []struct {
+		input, want string
+	}{
+		{"Franklin's Tower", "franklins tower"},
+		{"St. Stephen", "st stephen"},
+		{"U.S. Blues", "us blues"},
+		{"Truckin'", "truckin"},
+		{"Help on the Way!", "help on the way"},
+		{"  extra   spaces  ", "extra spaces"},
+		{"Hyphen-Word", "hyphenword"},
+		{"(Parens) Around", "parens around"},
+	}
+	for _, tc := range cases {
+		t.Run(tc.input, func(t *testing.T) {
+			require.Equal(t, tc.want, normalizeName(tc.input))
+		})
+	}
+}
+
 func TestGetSong_FuzzyPunctuation(t *testing.T) {
 	path, cleanup := fixtures.CreateTestDB(t)
 	defer cleanup()

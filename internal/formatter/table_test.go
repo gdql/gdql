@@ -53,3 +53,86 @@ func TestTruncate(t *testing.T) {
 	// Empty
 	require.Equal(t, "", truncate("", 5))
 }
+
+func TestTableCount_WithSongName(t *testing.T) {
+	result := &executor.Result{
+		Type:  executor.ResultCount,
+		Count: &executor.CountResult{SongName: "Dark Star", Count: 236},
+	}
+	out, err := formatTable(result)
+	require.NoError(t, err)
+	require.Contains(t, out, "Dark Star")
+	require.Contains(t, out, "236")
+}
+
+func TestTableCount_NoSongName(t *testing.T) {
+	result := &executor.Result{
+		Type:  executor.ResultCount,
+		Count: &executor.CountResult{Count: 2061},
+	}
+	out, err := formatTable(result)
+	require.NoError(t, err)
+	require.Contains(t, out, "2061")
+}
+
+func TestTableShows_Empty(t *testing.T) {
+	result := &executor.Result{Type: executor.ResultShows, Shows: nil}
+	out, err := formatTable(result)
+	require.NoError(t, err)
+	require.Contains(t, out, "No shows found")
+	require.NotContains(t, out, "gdql init") // misleading tip removed
+}
+
+func TestFormatJSON_Count(t *testing.T) {
+	result := &executor.Result{
+		Type:  executor.ResultCount,
+		Count: &executor.CountResult{SongName: "Dark Star", Count: 236},
+	}
+	out, err := formatJSON(result)
+	require.NoError(t, err)
+	require.Contains(t, out, `"type": "count"`)
+	require.Contains(t, out, `"Dark Star"`)
+	require.Contains(t, out, `236`)
+}
+
+func TestFormatJSON_Shows(t *testing.T) {
+	result := &executor.Result{
+		Type:  executor.ResultShows,
+		Shows: []*data.Show{{ID: 1, Venue: "Barton Hall"}},
+	}
+	out, err := formatJSON(result)
+	require.NoError(t, err)
+	require.Contains(t, out, `"type": "shows"`)
+	require.Contains(t, out, `Barton Hall`)
+}
+
+func TestFormatCSV_Count(t *testing.T) {
+	result := &executor.Result{
+		Type:  executor.ResultCount,
+		Count: &executor.CountResult{SongName: "Dark Star", Count: 236},
+	}
+	out, err := formatCSV(result)
+	require.NoError(t, err)
+	require.Contains(t, out, "song,count")
+	require.Contains(t, out, "Dark Star,236")
+}
+
+func TestFormatCSV_Shows(t *testing.T) {
+	result := &executor.Result{
+		Type: executor.ResultShows,
+		Shows: []*data.Show{{ID: 1, Venue: "Barton Hall", City: "Ithaca"}},
+	}
+	out, err := formatCSV(result)
+	require.NoError(t, err)
+	require.Contains(t, out, "id,date")
+	require.Contains(t, out, "Barton Hall")
+	require.Contains(t, out, "Ithaca")
+}
+
+func TestFormat_CalendarReturnsError(t *testing.T) {
+	f := New()
+	result := &executor.Result{Type: executor.ResultShows}
+	_, err := f.Format(result, FormatCalendar)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "not yet implemented")
+}

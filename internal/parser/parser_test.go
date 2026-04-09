@@ -227,3 +227,258 @@ func TestParseShowQuery_FromEra(t *testing.T) {
 	require.NotNil(t, sq.From.Era)
 	assert.Equal(t, ast.EraPrimal, *sq.From.Era)
 }
+
+// === AT venue ===
+
+func TestParseShowQuery_AtVenue(t *testing.T) {
+	p := NewFromString(`SHOWS AT "Fillmore West";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	assert.Equal(t, "Fillmore West", sq.At)
+}
+
+func TestParseShowQuery_AtWithFromAndWhere(t *testing.T) {
+	p := NewFromString(`SHOWS AT "Winterland" FROM 1977 WHERE PLAYED "Dark Star";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	assert.Equal(t, "Winterland", sq.At)
+	require.NotNil(t, sq.From)
+	assert.Equal(t, 1977, sq.From.Start.Year)
+	require.NotNil(t, sq.Where)
+	require.Len(t, sq.Where.Conditions, 1)
+}
+
+func TestParseShowQuery_AtMissingString(t *testing.T) {
+	p := NewFromString(`SHOWS AT FROM 1977;`)
+	_, err := p.Parse()
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "venue name")
+}
+
+// === TOUR ===
+
+func TestParseShowQuery_Tour(t *testing.T) {
+	p := NewFromString(`SHOWS TOUR "Spring 1977";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	assert.Equal(t, "Spring 1977", sq.Tour)
+}
+
+// === BEFORE/AFTER ===
+
+func TestParseShowQuery_After(t *testing.T) {
+	p := NewFromString("SHOWS AFTER 1988;")
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.NotNil(t, sq.From)
+	assert.Equal(t, 1988, sq.From.Start.Year)
+	require.NotNil(t, sq.From.End)
+	assert.Equal(t, 2100, sq.From.End.Year)
+}
+
+func TestParseShowQuery_Before(t *testing.T) {
+	p := NewFromString("SHOWS BEFORE 1970;")
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.NotNil(t, sq.From)
+	assert.Equal(t, 1900, sq.From.Start.Year)
+	require.NotNil(t, sq.From.End)
+	assert.Equal(t, 1970, sq.From.End.Year)
+}
+
+// === COUNT ===
+
+func TestParseCountQuery_Song(t *testing.T) {
+	p := NewFromString(`COUNT "Dark Star";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	cq, ok := q.(*ast.CountQuery)
+	require.True(t, ok)
+	require.NotNil(t, cq.Song)
+	assert.Equal(t, "Dark Star", cq.Song.Name)
+	assert.False(t, cq.CountShows)
+}
+
+func TestParseCountQuery_SongWithFrom(t *testing.T) {
+	p := NewFromString(`COUNT "Dark Star" FROM 1972-1974;`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	cq := q.(*ast.CountQuery)
+	require.NotNil(t, cq.From)
+	assert.Equal(t, 1972, cq.From.Start.Year)
+	assert.Equal(t, 1974, cq.From.End.Year)
+}
+
+func TestParseCountQuery_Shows(t *testing.T) {
+	p := NewFromString("COUNT SHOWS FROM 1977;")
+	q, err := p.Parse()
+	require.NoError(t, err)
+	cq := q.(*ast.CountQuery)
+	assert.True(t, cq.CountShows)
+	assert.Nil(t, cq.Song)
+	require.NotNil(t, cq.From)
+}
+
+func TestParseCountQuery_Bare(t *testing.T) {
+	p := NewFromString("COUNT;")
+	_, err := p.Parse()
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "song name or SHOWS")
+}
+
+// === FIRST/LAST ===
+
+func TestParseFirstQuery(t *testing.T) {
+	p := NewFromString(`FIRST "Dark Star";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	fl, ok := q.(*ast.FirstLastQuery)
+	require.True(t, ok)
+	assert.False(t, fl.IsLast)
+	assert.Equal(t, "Dark Star", fl.Song.Name)
+}
+
+func TestParseLastQuery(t *testing.T) {
+	p := NewFromString(`LAST "Dark Star";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	fl := q.(*ast.FirstLastQuery)
+	assert.True(t, fl.IsLast)
+}
+
+// === RANDOM ===
+
+func TestParseRandomShow(t *testing.T) {
+	cases := []string{"RANDOM SHOW;", "RANDOM SHOWS;", "RANDOM;"}
+	for _, c := range cases {
+		t.Run(c, func(t *testing.T) {
+			p := NewFromString(c)
+			q, err := p.Parse()
+			require.NoError(t, err)
+			_, ok := q.(*ast.RandomShowQuery)
+			require.True(t, ok)
+		})
+	}
+}
+
+func TestParseRandomShow_FromYear(t *testing.T) {
+	p := NewFromString("RANDOM SHOW FROM 1977;")
+	q, err := p.Parse()
+	require.NoError(t, err)
+	rq := q.(*ast.RandomShowQuery)
+	require.NotNil(t, rq.From)
+	assert.Equal(t, 1977, rq.From.Start.Year)
+}
+
+// === OPENER/CLOSER ===
+
+func TestParseShowQuery_Opener(t *testing.T) {
+	p := NewFromString(`SHOWS WHERE OPENER "Bertha";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.Len(t, sq.Where.Conditions, 1)
+	pc, ok := sq.Where.Conditions[0].(*ast.PositionCondition)
+	require.True(t, ok)
+	assert.Equal(t, ast.SetAny, pc.Set)
+	assert.Equal(t, ast.PosOpened, pc.Operator)
+	assert.Equal(t, "Bertha", pc.Song.Name)
+}
+
+func TestParseShowQuery_Closer(t *testing.T) {
+	p := NewFromString(`SHOWS WHERE CLOSER "Morning Dew";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	pc := sq.Where.Conditions[0].(*ast.PositionCondition)
+	assert.Equal(t, ast.PosClosed, pc.Operator)
+}
+
+// === Bare song in WHERE → PLAYED ===
+
+func TestParseShowQuery_BareSongInWhere(t *testing.T) {
+	p := NewFromString(`SHOWS WHERE "Bertha";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.Len(t, sq.Where.Conditions, 1)
+	played, ok := sq.Where.Conditions[0].(*ast.PlayedCondition)
+	require.True(t, ok)
+	assert.Equal(t, "Bertha", played.Song.Name)
+}
+
+func TestParseShowQuery_BareSongVsSegue(t *testing.T) {
+	// Single song = PlayedCondition
+	p := NewFromString(`SHOWS WHERE "Bertha";`)
+	q, _ := p.Parse()
+	_, ok := q.(*ast.ShowQuery).Where.Conditions[0].(*ast.PlayedCondition)
+	assert.True(t, ok, "single bare song should be PlayedCondition")
+
+	// Two songs with > = SegueCondition
+	p2 := NewFromString(`SHOWS WHERE "Bertha" > "Loser";`)
+	q2, _ := p2.Parse()
+	_, ok = q2.(*ast.ShowQuery).Where.Conditions[0].(*ast.SegueCondition)
+	assert.True(t, ok, "two songs with > should be SegueCondition")
+}
+
+// === AS COUNT ===
+
+func TestParseSongQuery_AsCount(t *testing.T) {
+	p := NewFromString(`SONGS WITH LYRICS("sun") AS COUNT;`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.SongQuery)
+	assert.Equal(t, ast.OutputCount, sq.OutputFmt)
+}
+
+// === Error suggestions ===
+
+func TestParseError_DidYouMeanKeyword(t *testing.T) {
+	p := NewFromString("HOWS FROM 1977;")
+	_, err := p.Parse()
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "Did you mean: SHOWS")
+}
+
+func TestParseError_WrongOrder_WhereBeforeFrom(t *testing.T) {
+	p := NewFromString(`SHOWS WHERE PLAYED "Bertha" FROM 1977;`)
+	_, err := p.Parse()
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "FROM must come before WHERE")
+}
+
+func TestParseError_DidYouMeanEra(t *testing.T) {
+	p := NewFromString("SHOWS FROM PRIMOL;")
+	_, err := p.Parse()
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "Did you mean: PRIMAL")
+}
+
+func TestParseError_NegativeLimit(t *testing.T) {
+	p := NewFromString("SHOWS FROM 1977 LIMIT -5;")
+	_, err := p.Parse()
+	require.Error(t, err)
+}
+
+// === Modifier combinations ===
+
+func TestParseShowQuery_AllModifiers(t *testing.T) {
+	p := NewFromString(`SHOWS AT "Winterland" TOUR "Spring 1977" FROM 1977 WHERE PLAYED "Dark Star" ORDER BY DATE DESC LIMIT 5 AS JSON;`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	assert.Equal(t, "Winterland", sq.At)
+	assert.Equal(t, "Spring 1977", sq.Tour)
+	assert.Equal(t, 1977, sq.From.Start.Year)
+	require.Len(t, sq.Where.Conditions, 1)
+	require.NotNil(t, sq.OrderBy)
+	assert.True(t, sq.OrderBy.Desc)
+	require.NotNil(t, sq.Limit)
+	assert.Equal(t, 5, *sq.Limit)
+	assert.Equal(t, ast.OutputJSON, sq.OutputFmt)
+}
