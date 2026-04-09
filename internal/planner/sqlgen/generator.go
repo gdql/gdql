@@ -36,6 +36,12 @@ func (g *generator) Generate(q *ir.QueryIR) (*SQLQuery, error) {
 		return g.genPerformances(q)
 	case ir.QueryTypeSetlist:
 		return g.genSetlist(q)
+	case ir.QueryTypeCount:
+		return g.genCount(q)
+	case ir.QueryTypeFirstLast:
+		return g.genFirstLast(q)
+	case ir.QueryTypeRandomShow:
+		return g.genRandomShow(q)
 	default:
 		return nil, fmt.Errorf("unknown query type: %d", q.Type)
 	}
@@ -70,6 +76,14 @@ func (g *generator) genShows(q *ir.QueryIR) (*SQLQuery, error) {
 
 func (g *generator) whereShows(q *ir.QueryIR) (clause string, args []interface{}) {
 	var parts []string
+	if q.VenueName != "" {
+		parts = append(parts, "(v.name LIKE ? OR v.city LIKE ?)")
+		args = append(args, "%"+q.VenueName+"%", "%"+q.VenueName+"%")
+	}
+	if q.TourName != "" {
+		parts = append(parts, "s.tour LIKE ?")
+		args = append(args, "%"+q.TourName+"%")
+	}
 	if q.DateRange != nil {
 		parts = append(parts, "s.date >= ? AND s.date <= ?")
 		args = append(args, formatDate(q.DateRange.Start), formatDate(q.DateRange.End))
@@ -93,13 +107,26 @@ func (g *generator) whereShows(q *ir.QueryIR) (clause string, args []interface{}
 
 func (g *generator) positionCondition(c *ir.PositionConditionIR) (string, []interface{}) {
 	setNum := setPositionToNumber(c.Set)
+	setFilter := " AND p.set_number = ?"
+	if setNum == 0 {
+		setFilter = "" // SetAny: don't filter by set
+	}
 	switch c.Operator {
 	case ir.PosOpened:
-		return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.set_number = ? AND p.song_id = ? AND p.is_opener = 1)", []interface{}{setNum, c.SongID}
+		if setNum == 0 {
+			return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.song_id = ? AND p.is_opener = 1)", []interface{}{c.SongID}
+		}
+		return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id" + setFilter + " AND p.song_id = ? AND p.is_opener = 1)", []interface{}{setNum, c.SongID}
 	case ir.PosClosed:
-		return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.set_number = ? AND p.song_id = ? AND p.is_closer = 1)", []interface{}{setNum, c.SongID}
+		if setNum == 0 {
+			return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.song_id = ? AND p.is_closer = 1)", []interface{}{c.SongID}
+		}
+		return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id" + setFilter + " AND p.song_id = ? AND p.is_closer = 1)", []interface{}{setNum, c.SongID}
 	case ir.PosEquals:
-		return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.set_number = ? AND p.song_id = ?)", []interface{}{setNum, c.SongID}
+		if setNum == 0 {
+			return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.song_id = ?)", []interface{}{c.SongID}
+		}
+		return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id" + setFilter + " AND p.song_id = ?)", []interface{}{setNum, c.SongID}
 	}
 	return "", nil
 }
@@ -113,7 +140,7 @@ func setPositionToNumber(s ir.SetPosition) int {
 	case ir.Set3:
 		return 3
 	case ir.Encore:
-		return 3
+		return 4
 	}
 	return 0
 }
@@ -125,7 +152,12 @@ func (g *generator) genShowsWithSegue(q *ir.QueryIR) (*SQLQuery, error) {
 func (g *generator) genSongs(q *ir.QueryIR) (*SQLQuery, error) {
 	var b strings.Builder
 	var args []interface{}
-	b.WriteString("SELECT id, name, short_name, writers, first_played, last_played, times_played FROM songs")
+	isCount := q.OutputFmt == ir.OutputCount
+	if isCount {
+		b.WriteString("SELECT count(*) AS count, 'songs' AS name FROM songs")
+	} else {
+		b.WriteString("SELECT id, name, short_name, writers, first_played, last_played, times_played FROM songs")
+	}
 	var parts []string
 	for _, c := range q.Conditions {
 		switch x := c.(type) {
@@ -200,6 +232,49 @@ func (g *generator) genSetlist(q *ir.QueryIR) (*SQLQuery, error) {
 	return &SQLQuery{SQL: sql, Args: []interface{}{formatDate(*q.SingleDate)}}, nil
 }
 
+func (g *generator) genCount(q *ir.QueryIR) (*SQLQuery, error) {
+	var b strings.Builder
+	var args []interface{}
+	if q.SongID == nil {
+		// COUNT SHOWS
+		b.WriteString("SELECT count(*) AS count, 'shows' AS name FROM shows s")
+		if q.DateRange != nil {
+			b.WriteString(" WHERE s.date >= ? AND s.date <= ?")
+			args = append(args, formatDate(q.DateRange.Start), formatDate(q.DateRange.End))
+		}
+	} else {
+		b.WriteString("SELECT count(*) AS count, songs.name FROM performances p JOIN shows s ON p.show_id = s.id JOIN songs ON p.song_id = songs.id WHERE p.song_id = ?")
+		args = append(args, *q.SongID)
+		if q.DateRange != nil {
+			b.WriteString(" AND s.date >= ? AND s.date <= ?")
+			args = append(args, formatDate(q.DateRange.Start), formatDate(q.DateRange.End))
+		}
+	}
+	return &SQLQuery{SQL: b.String(), Args: args}, nil
+}
+
+func (g *generator) genFirstLast(q *ir.QueryIR) (*SQLQuery, error) {
+	dir := "ASC"
+	if q.IsLast {
+		dir = "DESC"
+	}
+	sql := fmt.Sprintf("SELECT s.id, s.date, s.venue_id, v.name AS venue, v.city, v.state, s.notes, s.rating FROM performances p JOIN shows s ON p.show_id = s.id LEFT JOIN venues v ON s.venue_id = v.id WHERE p.song_id = ? ORDER BY s.date %s LIMIT 1", dir)
+	return &SQLQuery{SQL: sql, Args: []interface{}{*q.SongID}}, nil
+}
+
+func (g *generator) genRandomShow(q *ir.QueryIR) (*SQLQuery, error) {
+	// Pick a random show, then return its setlist
+	var b strings.Builder
+	var args []interface{}
+	b.WriteString("SELECT p.id, p.show_id, p.song_id, p.set_number, p.position, p.segue_type, p.length_seconds, songs.name FROM performances p JOIN shows s ON p.show_id = s.id JOIN songs ON p.song_id = songs.id WHERE s.id = (SELECT id FROM shows")
+	if q.DateRange != nil {
+		b.WriteString(" WHERE date >= ? AND date <= ?")
+		args = append(args, formatDate(q.DateRange.Start), formatDate(q.DateRange.End))
+	}
+	b.WriteString(" ORDER BY RANDOM() LIMIT 1) ORDER BY p.set_number, p.position")
+	return &SQLQuery{SQL: b.String(), Args: args}, nil
+}
+
 func (g *generator) orderBy(q *ir.QueryIR, prefix string) string {
 	if q.OrderBy == nil {
 		return ""
@@ -215,7 +290,11 @@ func (g *generator) orderBy(q *ir.QueryIR, prefix string) string {
 	col := prefix + "." + strings.ToLower(field)
 	switch strings.ToUpper(field) {
 	case "DATE":
-		col = prefix + ".date"
+		if prefix == "p" {
+			col = "s.date" // performances join shows as s
+		} else {
+			col = prefix + ".date"
+		}
 	case "LENGTH":
 		if prefix == "p" {
 			col = "p.length_seconds"

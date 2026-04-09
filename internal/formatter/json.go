@@ -19,6 +19,8 @@ func formatJSON(result *executor.Result) (string, error) {
 		out["performances"] = result.Performances
 	case executor.ResultSetlist:
 		out["setlist"] = result.Setlist
+	case executor.ResultCount:
+		out["count"] = result.Count
 	}
 	b, err := json.MarshalIndent(out, "", "  ")
 	if err != nil {
@@ -37,6 +39,8 @@ func resultTypeStr(t executor.ResultType) string {
 		return "performances"
 	case executor.ResultSetlist:
 		return "setlist"
+	case executor.ResultCount:
+		return "count"
 	}
 	return ""
 }

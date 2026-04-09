@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/gdql/gdql/internal/data/sqlite"
+	"github.com/gdql/gdql/internal/import/shared"
 
 	_ "modernc.org/sqlite"
 )
@@ -23,11 +24,18 @@ func Import(ctx context.Context, dbPath string, client *Client) (showsAdded, son
 	defer db.Close()
 
 	venueByKey := make(map[string]int64)
-	songByName := loadSongByName(db)
-	nextVenueID := maxID(db, "venues") + 1
-	nextShowID := maxID(db, "shows") + 1
-	nextSongID := maxID(db, "songs") + 1
-	nextPerfID := maxID(db, "performances") + 1
+	songByName, loadErr := shared.LoadSongByName(db)
+	if loadErr != nil {
+		return 0, 0, loadErr
+	}
+	venueMax, _ := shared.MaxID(db, "venues")
+	showMax, _ := shared.MaxID(db, "shows")
+	songMax, _ := shared.MaxID(db, "songs")
+	perfMax, _ := shared.MaxID(db, "performances")
+	nextVenueID := venueMax + 1
+	nextShowID := showMax + 1
+	nextSongID := songMax + 1
+	nextPerfID := perfMax + 1
 	songsBefore := len(songByName)
 
 	page := 1
@@ -51,7 +59,7 @@ func Import(ctx context.Context, dbPath string, client *Client) (showsAdded, son
 				continue
 			}
 			venueName, city, state, country := venueFields(&sl.Venue)
-			if showExists(db, dateStr, venueName, city, state, country) {
+			if shared.ShowExists(db, dateStr, venueName, city, state, country) {
 				continue // already have this show; skip so we can resume later
 			}
 			// List endpoint often returns empty set[]; fetch by version ID for full set/song data.
@@ -108,41 +116,6 @@ func venueFields(v *Venue) (name, city, state, country string) {
 	return name, city, state, country
 }
 
-func showExists(db *sql.DB, dateStr, venueName, city, state, country string) bool {
-	var n int
-	err := db.QueryRow(
-		"SELECT 1 FROM shows s JOIN venues v ON s.venue_id = v.id WHERE s.date = ? AND v.name = ? AND COALESCE(v.city,'') = ? AND COALESCE(v.state,'') = ? AND COALESCE(v.country,'') = ? LIMIT 1",
-		dateStr, venueName, city, state, country,
-	).Scan(&n)
-	return err == nil
-}
-
-func loadSongByName(db *sql.DB) map[string]int64 {
-	out := make(map[string]int64)
-	rows, err := db.Query("SELECT id, name FROM songs")
-	if err != nil {
-		return out
-	}
-	defer rows.Close()
-	for rows.Next() {
-		var id int64
-		var name string
-		if err := rows.Scan(&id, &name); err != nil {
-			continue
-		}
-		out[name] = id
-	}
-	return out
-}
-
-func maxID(db *sql.DB, table string) int64 {
-	var id sql.NullInt64
-	_ = db.QueryRow("SELECT MAX(id) FROM " + table).Scan(&id)
-	if id.Valid {
-		return id.Int64
-	}
-	return 0
-}
 
 func venueKey(v *Venue) string {
 	city := ""
@@ -209,12 +182,9 @@ func upsertShow(db *sql.DB, sl *Setlist, venueByKey map[string]int64, songByName
 	setNumber := 0
 	for _, set := range sl.Set {
 		if set.Encore > 0 {
-			setNumber = 2 + set.Encore
+			setNumber = 3 + set.Encore // encore 1 → 4, encore 2 → 5
 		} else {
 			setNumber++
-		}
-		if setNumber > 3 {
-			setNumber = 3
 		}
 		position := 0
 		for i, song := range set.Songs {
@@ -225,6 +195,18 @@ func upsertShow(db *sql.DB, sl *Setlist, venueByKey map[string]int64, songByName
 				}
 				position++
 				songID, ok := songByName[name]
+				if !ok {
+					// Case-insensitive match before creating a new song
+					lowerName := strings.ToLower(name)
+					for existing, id := range songByName {
+						if strings.ToLower(existing) == lowerName {
+							songID = id
+							songByName[name] = id
+							ok = true
+							break
+						}
+					}
+				}
 				if !ok {
 					_, err := db.Exec("INSERT INTO songs (id, name, times_played) VALUES (?, ?, 0)", *nextSongID, name)
 					if err != nil {
@@ -251,7 +233,7 @@ func upsertShow(db *sql.DB, sl *Setlist, venueByKey map[string]int64, songByName
 					isCloser = 1
 				}
 				_, err = db.Exec("INSERT INTO performances (id, show_id, song_id, set_number, position, segue_type, is_opener, is_closer) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-					*nextPerfID, showID, songID, setNumber, position, nullStr(segueType), isOpener, isCloser)
+					*nextPerfID, showID, songID, setNumber, position, shared.NullStr(segueType), isOpener, isCloser)
 				if err != nil {
 					return false, err
 				}
@@ -272,22 +254,14 @@ func splitSongName(s string) (names []string, segueAfter []bool) {
 	}
 	parts := strings.Split(s, " > ")
 	names = make([]string, 0, len(parts))
-	segueAfter = make([]bool, len(parts))
+	segueAfter = make([]bool, 0, len(parts))
 	for i, p := range parts {
 		p = strings.TrimSpace(p)
 		if p != "" {
 			names = append(names, p)
-			if i < len(parts)-1 {
-				segueAfter[len(names)-1] = true
-			}
+			segueAfter = append(segueAfter, i < len(parts)-1)
 		}
 	}
 	return names, segueAfter
 }
 
-func nullStr(s string) interface{} {
-	if s == "" {
-		return nil
-	}
-	return s
-}

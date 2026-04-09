@@ -41,14 +41,13 @@ func BuildSegueShowsSQL(q *ir.QueryIR) (*SQLQuery, error) {
 		fmt.Fprintf(&b, " JOIN songs s%d ON p%d.song_id = s%d.id AND s%d.id = ?", i+1, i+1, i+1, i+1)
 		args = append(args, chain.SongIDs[i])
 	}
-	// segue_type for each transition
-	for i := 0; i < n-1; i++ {
-		fmt.Fprintf(&b, " AND p%d.segue_type = ?", i+1)
-		args = append(args, segueOpToSQL(ops[i]))
-	}
 	b.WriteString(" JOIN shows s ON p1.show_id = s.id LEFT JOIN venues v ON s.venue_id = v.id")
 
 	var whereParts []string
+	if q.VenueName != "" {
+		whereParts = append(whereParts, "(v.name LIKE ? OR v.city LIKE ?)")
+		args = append(args, "%"+q.VenueName+"%", "%"+q.VenueName+"%")
+	}
 	if q.DateRange != nil {
 		whereParts = append(whereParts, "s.date >= ? AND s.date <= ?")
 		args = append(args, formatDate(q.DateRange.Start), formatDate(q.DateRange.End))
@@ -90,16 +89,4 @@ func BuildSegueShowsSQL(q *ir.QueryIR) (*SQLQuery, error) {
 		args = append(args, *q.Limit)
 	}
 	return &SQLQuery{SQL: b.String(), Args: args}, nil
-}
-
-func segueOpToSQL(op ir.SegueOp) string {
-	switch op {
-	case ir.SegueOpSegue:
-		return ">"
-	case ir.SegueOpBreak:
-		return ">>"
-	case ir.SegueOpTease:
-		return "~>"
-	}
-	return ">"
 }

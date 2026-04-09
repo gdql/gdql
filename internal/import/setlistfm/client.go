@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"strconv"
+	"sync"
 	"time"
 )
 
@@ -35,15 +36,18 @@ func NewClient(apiKey string) *Client {
 type throttleTransport struct {
 	perSec int
 	rt     http.RoundTripper
+	mu     sync.Mutex
 	last   time.Time
 }
 
 func (t *throttleTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	t.mu.Lock()
 	elapsed := time.Since(t.last)
 	if elapsed < time.Second/time.Duration(t.perSec) {
 		time.Sleep(time.Second/time.Duration(t.perSec) - elapsed)
 	}
 	t.last = time.Now()
+	t.mu.Unlock()
 	return t.rt.RoundTrip(req)
 }
 
@@ -130,15 +134,14 @@ func (c *Client) GetSetlist(versionID string) (*Setlist, error) {
 			return nil, err
 		}
 		if resp.StatusCode == http.StatusOK {
+			defer resp.Body.Close()
 			var out Setlist
 			if err := json.NewDecoder(resp.Body).Decode(&out); err != nil {
-				resp.Body.Close()
 				return nil, err
 			}
-			resp.Body.Close()
 			return &out, nil
 		}
-		_, _ = io.ReadAll(resp.Body)
+		io.Copy(io.Discard, resp.Body)
 		resp.Body.Close()
 		lastErr = fmt.Errorf("setlist.fm API: %s", resp.Status)
 		if resp.StatusCode != http.StatusTooManyRequests {
@@ -179,16 +182,15 @@ func (c *Client) GetArtistSetlists(mbid string, page int) (*SetlistsResponse, er
 		}
 
 		if resp.StatusCode == http.StatusOK {
+			defer resp.Body.Close()
 			var out SetlistsResponse
 			if err := json.NewDecoder(resp.Body).Decode(&out); err != nil {
-				resp.Body.Close()
 				return nil, err
 			}
-			resp.Body.Close()
 			return &out, nil
 		}
 
-		_, _ = io.ReadAll(resp.Body)
+		io.Copy(io.Discard, resp.Body)
 		resp.Body.Close()
 		lastErr = fmt.Errorf("setlist.fm API: %s", resp.Status)
 

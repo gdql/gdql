@@ -1,6 +1,8 @@
 package formatter
 
 import (
+	"fmt"
+
 	"github.com/gdql/gdql/internal/executor"
 	"github.com/gdql/gdql/internal/ir"
 )
@@ -37,6 +39,8 @@ func (f *formatter) Format(result *executor.Result, format OutputFormat) (string
 		return formatCSV(result)
 	case FormatSetlist:
 		return formatSetlist(result)
+	case FormatCalendar:
+		return "", fmt.Errorf("CALENDAR output format is not yet implemented")
 	default:
 		return formatTable(result)
 	}
@@ -53,6 +57,10 @@ func FromIR(o ir.OutputFormat) OutputFormat {
 		return FormatSetlist
 	case ir.OutputTable:
 		return FormatTable
+	case ir.OutputCalendar:
+		return FormatCalendar
+	case ir.OutputCount:
+		return FormatTable // count results use table formatter's count handler
 	}
 	return FormatTable
 }

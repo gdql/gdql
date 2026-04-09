@@ -88,10 +88,16 @@ func (p *parser) Parse() (ast.Query, error) {
 		return p.parsePerformanceQuery()
 	case token.SETLIST:
 		return p.parseSetlistQuery()
+	case token.COUNT:
+		return p.parseCountQuery()
+	case token.FIRST, token.LAST:
+		return p.parseFirstLastQuery()
+	case token.RANDOM:
+		return p.parseRandomShowQuery()
 	default:
 		return nil, &errors.ParseError{
 			Pos:     p.cur.Pos,
-			Message: fmt.Sprintf("unexpected %s, expected SHOWS, SONGS, PERFORMANCES, or SETLIST", p.cur.Type),
+			Message: fmt.Sprintf("unexpected %s, expected SHOWS, SONGS, PERFORMANCES, SETLIST, or COUNT", p.cur.Type),
 			Query:   p.query,
 		}
 	}
@@ -102,9 +108,26 @@ func (p *parser) parseShowQuery() (*ast.ShowQuery, error) {
 	// consume SHOWS
 	p.advance()
 
-	if p.curIs(token.FROM) {
+	if p.curIs(token.AT) {
 		p.advance()
-		dr, err := p.parseDateRange()
+		if !p.curIs(token.STRING) {
+			return nil, &errors.ParseError{Pos: p.cur.Pos, Message: "expected venue name after AT", Query: p.query}
+		}
+		q.At = p.cur.Literal
+		p.advance()
+	}
+
+	if p.curIs(token.TOUR) {
+		p.advance()
+		if !p.curIs(token.STRING) {
+			return nil, &errors.ParseError{Pos: p.cur.Pos, Message: "expected tour name after TOUR", Query: p.query}
+		}
+		q.Tour = p.cur.Literal
+		p.advance()
+	}
+
+	if p.curIs(token.FROM) || p.curIs(token.AFTER) || p.curIs(token.BEFORE) {
+		dr, err := p.parseDateRangeWithDirection()
 		if err != nil {
 			return nil, err
 		}
@@ -125,6 +148,30 @@ func (p *parser) parseShowQuery() (*ast.ShowQuery, error) {
 	}
 
 	return q, p.optionalSemicolon()
+}
+
+// parseDateRangeWithDirection handles FROM, AFTER, and BEFORE.
+// FROM 1977 = start 1977, end 1977. AFTER 1988 = start 1988, end 2100. BEFORE 1970 = start 1900, end 1970.
+func (p *parser) parseDateRangeWithDirection() (*ast.DateRange, error) {
+	if p.curIs(token.AFTER) {
+		p.advance()
+		start, _, err := p.parseDate()
+		if err != nil {
+			return nil, err
+		}
+		return &ast.DateRange{Start: start, End: &ast.Date{Year: 2100}}, nil
+	}
+	if p.curIs(token.BEFORE) {
+		p.advance()
+		end, _, err := p.parseDate()
+		if err != nil {
+			return nil, err
+		}
+		return &ast.DateRange{Start: &ast.Date{Year: 1900}, End: end}, nil
+	}
+	// FROM
+	p.advance()
+	return p.parseDateRange()
 }
 
 func (p *parser) parseDateRange() (*ast.DateRange, error) {
@@ -160,6 +207,12 @@ func (p *parser) parseDate() (*ast.Date, *ast.EraAlias, error) {
 	switch p.cur.Type {
 	case token.NUMBER:
 		y, _ := strconv.Atoi(p.cur.Literal)
+		if y < 100 {
+			y += 1900
+			if y < 1970 {
+				y += 100
+			}
+		}
 		d := &ast.Date{Year: y}
 		p.advance()
 		return d, nil, nil
@@ -178,7 +231,7 @@ func (p *parser) parseEraAlias() *ast.EraAlias {
 	case "EUROPE72", "EUROPE":
 		e := ast.EraEurope72
 		return &e
-	case "WALLOFOUND", "WALLOFSOUND":
+	case "WALLOFSOUND":
 		e := ast.EraWallOfSound
 		return &e
 	case "HIATUS":
@@ -264,6 +317,20 @@ func (p *parser) parseCondition() (ast.Condition, error) {
 		return &ast.PositionCondition{Set: set, Operator: op, Song: ref}, nil
 	}
 
+	// OPENER "Song" / CLOSER "Song" — any set opened/closed with this song
+	if p.curIs(token.OPENER) || p.curIs(token.CLOSER) {
+		op := ast.PosOpened
+		if p.curIs(token.CLOSER) {
+			op = ast.PosClosed
+		}
+		p.advance()
+		ref, err := p.parseSongRef()
+		if err != nil {
+			return nil, err
+		}
+		return &ast.PositionCondition{Set: ast.SetAny, Operator: op, Song: ref}, nil
+	}
+
 	// PLAYED "Song" [> "Song" ...] — optional segue after PLAYED
 	if p.curIs(token.PLAYED) {
 		p.advance()
@@ -317,9 +384,9 @@ func (p *parser) parseCondition() (ast.Condition, error) {
 		return &ast.LengthCondition{Song: songRef, Operator: *op, Duration: dur}, nil
 	}
 
-	// Segue: "Song" > "Song" [> "Song" ...]
+	// Segue: "Song" > "Song" [> "Song" ...] — or bare "Song" implies PLAYED
 	if p.curIs(token.STRING) {
-		return p.parseSegueCondition()
+		return p.parseSegueOrPlayed()
 	}
 
 	hint := "use quoted song names, e.g. WHERE \"Scarlet Begonias\" > \"Fire on the Mountain\""
@@ -332,6 +399,38 @@ func (p *parser) parseCondition() (ast.Condition, error) {
 		Query:   p.query,
 		Hint:    hint,
 	}
+}
+
+// parseSegueOrPlayed parses a quoted song name. If followed by >, it's a segue chain.
+// Otherwise, it's an implicit PLAYED condition (WHERE "Bertha" = WHERE PLAYED "Bertha").
+func (p *parser) parseSegueOrPlayed() (ast.Condition, error) {
+	ref, err := p.parseSongRef()
+	if err != nil {
+		return nil, err
+	}
+	// If no segue operator follows, treat as PLAYED
+	if p.parseSegueOp() == nil {
+		return &ast.PlayedCondition{Song: ref}, nil
+	}
+	// Otherwise, build a segue chain starting with this song
+	sc := &ast.SegueCondition{Songs: []*ast.SongRef{ref}}
+	for {
+		op := p.parseSegueOp()
+		if op == nil {
+			break
+		}
+		p.advance()
+		if !p.curIs(token.STRING) {
+			return nil, &errors.ParseError{Pos: p.cur.Pos, Message: "expected song name after segue operator", Query: p.query}
+		}
+		nextRef, err := p.parseSongRef()
+		if err != nil {
+			return nil, err
+		}
+		sc.Songs = append(sc.Songs, nextRef)
+		sc.Operators = append(sc.Operators, *op)
+	}
+	return sc, nil
 }
 
 func (p *parser) parseSegueCondition() (*ast.SegueCondition, error) {
@@ -504,7 +603,10 @@ func (p *parser) parseModifiers(show *ast.ShowQuery, song *ast.SongQuery, perf *
 			if !p.curIs(token.NUMBER) {
 				return &errors.ParseError{Pos: p.cur.Pos, Message: "expected number after LIMIT", Query: p.query}
 			}
-			n, _ := strconv.Atoi(p.cur.Literal)
+			n, err := strconv.Atoi(p.cur.Literal)
+			if err != nil || n < 0 {
+				return &errors.ParseError{Pos: p.cur.Pos, Message: "LIMIT must be a non-negative integer", Query: p.query}
+			}
 			p.advance()
 			if show != nil {
 				show.Limit = &n
@@ -523,6 +625,9 @@ func (p *parser) parseModifiers(show *ast.ShowQuery, song *ast.SongQuery, perf *
 			p.advance()
 			if show != nil {
 				show.OutputFmt = fmt
+			}
+			if song != nil {
+				song.OutputFmt = fmt
 			}
 			continue
 		}
@@ -552,6 +657,8 @@ func (p *parser) parseOutputFormat() ast.OutputFormat {
 		return ast.OutputCalendar
 	case "TABLE":
 		return ast.OutputTable
+	case "COUNT":
+		return ast.OutputCount
 	}
 	return ast.OutputDefault
 }
@@ -679,9 +786,8 @@ func (p *parser) parsePerformanceQuery() (*ast.PerformanceQuery, error) {
 	}
 	q.Song = ref
 
-	if p.curIs(token.FROM) {
-		p.advance()
-		dr, err := p.parseDateRange()
+	if p.curIs(token.FROM) || p.curIs(token.AFTER) || p.curIs(token.BEFORE) {
+		dr, err := p.parseDateRangeWithDirection()
 		if err != nil {
 			return nil, err
 		}
@@ -715,6 +821,57 @@ func (p *parser) parseSetlistQuery() (*ast.SetlistQuery, error) {
 		return nil, err
 	}
 	q.Date = date
+	return q, p.optionalSemicolon()
+}
+
+func (p *parser) parseCountQuery() (*ast.CountQuery, error) {
+	q := &ast.CountQuery{}
+	p.advance() // consume COUNT
+	// COUNT SHOWS [FROM ...] — count shows
+	if p.curIs(token.SHOWS) {
+		q.CountShows = true
+		p.advance()
+	} else {
+		ref, err := p.parseSongRef()
+		if err != nil {
+			return nil, err
+		}
+		q.Song = ref
+	}
+	if p.curIs(token.FROM) || p.curIs(token.AFTER) || p.curIs(token.BEFORE) {
+		dr, err := p.parseDateRangeWithDirection()
+		if err != nil {
+			return nil, err
+		}
+		q.From = dr
+	}
+	return q, p.optionalSemicolon()
+}
+
+func (p *parser) parseRandomShowQuery() (*ast.RandomShowQuery, error) {
+	q := &ast.RandomShowQuery{}
+	p.advance() // consume RANDOM
+	if p.curIs(token.SHOWS) {
+		p.advance() // consume SHOW/SHOWS
+	}
+	if p.curIs(token.FROM) || p.curIs(token.AFTER) || p.curIs(token.BEFORE) {
+		dr, err := p.parseDateRangeWithDirection()
+		if err != nil {
+			return nil, err
+		}
+		q.From = dr
+	}
+	return q, p.optionalSemicolon()
+}
+
+func (p *parser) parseFirstLastQuery() (*ast.FirstLastQuery, error) {
+	q := &ast.FirstLastQuery{IsLast: p.curIs(token.LAST)}
+	p.advance() // consume FIRST/LAST
+	ref, err := p.parseSongRef()
+	if err != nil {
+		return nil, err
+	}
+	q.Song = ref
 	return q, p.optionalSemicolon()
 }
 

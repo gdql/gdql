@@ -46,6 +46,119 @@ func TestWriteShows_ResolvesVariantAndAddsAlias(t *testing.T) {
 	require.Equal(t, 1, songID)
 }
 
+func TestWriteShows_PreservesSetBoundaries(t *testing.T) {
+	path, cleanup := fixtures.CreateTestDB(t)
+	defer cleanup()
+
+	conn, err := sql.Open("sqlite", path)
+	require.NoError(t, err)
+	defer conn.Close()
+
+	ctx := context.Background()
+	shows := []Show{
+		{
+			Date:  "1977-05-08",
+			Venue: Venue{Name: "Test Hall", City: "Ithaca", State: "NY", Country: "USA"},
+			Sets: []Set{
+				{Songs: []SongInSet{
+					{Name: "Minglewood Blues"},
+					{Name: "Loser"},
+				}},
+				{Songs: []SongInSet{
+					{Name: "Estimated Prophet"},
+					{Name: "Eyes of the World"},
+				}},
+				{Songs: []SongInSet{
+					{Name: "One More Saturday Night"},
+				}},
+			},
+		},
+	}
+
+	showsAdded, _, err := WriteShows(ctx, conn, shows)
+	require.NoError(t, err)
+	require.Equal(t, 1, showsAdded)
+
+	// Verify set numbers
+	rows, err := conn.QueryContext(ctx, `
+		SELECT s.name, p.set_number, p.position
+		FROM performances p
+		JOIN songs s ON p.song_id = s.id
+		JOIN shows sh ON p.show_id = sh.id
+		WHERE sh.date = '1977-05-08' AND sh.venue_id = (SELECT id FROM venues WHERE name = 'Test Hall')
+		ORDER BY p.set_number, p.position
+	`)
+	require.NoError(t, err)
+	defer rows.Close()
+
+	type perf struct {
+		name      string
+		setNumber int
+		position  int
+	}
+	var perfs []perf
+	for rows.Next() {
+		var p perf
+		require.NoError(t, rows.Scan(&p.name, &p.setNumber, &p.position))
+		perfs = append(perfs, p)
+	}
+	require.NoError(t, rows.Err())
+	require.Len(t, perfs, 5)
+
+	require.Equal(t, perf{"Minglewood Blues", 1, 1}, perfs[0])
+	require.Equal(t, perf{"Loser", 1, 2}, perfs[1])
+	require.Equal(t, perf{"Estimated Prophet", 2, 1}, perfs[2])
+	require.Equal(t, perf{"Eyes of the World", 2, 2}, perfs[3])
+	require.Equal(t, perf{"One More Saturday Night", 3, 1}, perfs[4])
+}
+
+func TestWriteShows_DeduplicatesCaseVariants(t *testing.T) {
+	path, cleanup := fixtures.CreateTestDB(t)
+	defer cleanup()
+
+	conn, err := sql.Open("sqlite", path)
+	require.NoError(t, err)
+	defer conn.Close()
+
+	ctx := context.Background()
+	// Import two shows with different capitalizations of the same song.
+	// Fixture already has "Fire on the Mountain" (id=2).
+	shows := []Show{
+		{
+			Date:  "1977-04-22",
+			Venue: Venue{Name: "The Spectrum", City: "Philadelphia", State: "PA", Country: "USA"},
+			Sets: []Set{
+				{Songs: []SongInSet{{Name: "Fire On The Mountain"}}},
+			},
+		},
+		{
+			Date:  "1977-04-25",
+			Venue: Venue{Name: "Capitol Theater", City: "Passaic", State: "NJ", Country: "USA"},
+			Sets: []Set{
+				{Songs: []SongInSet{{Name: "Fire On THe Mountain"}}},
+			},
+		},
+	}
+
+	showsAdded, songsAdded, err := WriteShows(ctx, conn, shows)
+	require.NoError(t, err)
+	require.Equal(t, 2, showsAdded)
+	require.Equal(t, 0, songsAdded, "case variants should resolve to existing song, not create new ones")
+
+	// Both performances should reference the same song_id (2 = "Fire on the Mountain")
+	var ids []int
+	rows, err := conn.QueryContext(ctx, "SELECT DISTINCT song_id FROM performances WHERE show_id IN (SELECT id FROM shows WHERE date IN ('1977-04-22', '1977-04-25'))")
+	require.NoError(t, err)
+	defer rows.Close()
+	for rows.Next() {
+		var id int
+		require.NoError(t, rows.Scan(&id))
+		ids = append(ids, id)
+	}
+	require.Len(t, ids, 1, "all case variants should map to the same song")
+	require.Equal(t, 2, ids[0])
+}
+
 func TestWriteShows_NewSongStoredWithRawName(t *testing.T) {
 	path, cleanup := fixtures.CreateTestDB(t)
 	defer cleanup()

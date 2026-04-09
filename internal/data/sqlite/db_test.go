@@ -76,6 +76,41 @@ func TestGetSong_ViaAlias(t *testing.T) {
 	require.Equal(t, "Scarlet Begonias", song.Name)
 }
 
+func TestGetSong_FuzzyPunctuation(t *testing.T) {
+	path, cleanup := fixtures.CreateTestDB(t)
+	defer cleanup()
+	db, err := Open(path)
+	require.NoError(t, err)
+	defer db.Close()
+
+	ctx := context.Background()
+
+	// "Help on the Way" in fixture — test without "the"... actually test punctuation
+	// Fixture has "Fire on the Mountain" — try "Fire On The Mountain" (case)
+	song, err := db.GetSong(ctx, "Fire On The Mountain")
+	require.NoError(t, err)
+	require.NotNil(t, song)
+	require.Equal(t, 2, song.ID)
+
+	// Fixture has "Help on the Way" — try without punctuation variations
+	// The fixture doesn't have apostrophe songs, but we can test normalizeName directly
+}
+
+func TestNormalizeName(t *testing.T) {
+	require.Equal(t, "franklins tower", normalizeName("Franklin's Tower"))
+	require.Equal(t, "franklins tower", normalizeName("Franklins Tower"))
+	require.Equal(t, "truckin", normalizeName("Truckin'"))
+	require.Equal(t, "truckin", normalizeName("Truckin"))
+	require.Equal(t, "st stephen", normalizeName("St. Stephen"))
+	require.Equal(t, "st stephen", normalizeName("St Stephen"))
+	require.Equal(t, "us blues", normalizeName("U.S. Blues"))
+	require.Equal(t, "fire on the mountain", normalizeName("Fire on the Mountain"))
+	require.Equal(t, "fire on the mountain", normalizeName("Fire On The Mountain"))
+	require.Equal(t, "good lovin", normalizeName("Good Lovin'"))
+	require.Equal(t, "good lovin", normalizeName("Good Lovin"))
+	require.Equal(t, "", normalizeName(""))
+}
+
 func TestGetSong_NotFound(t *testing.T) {
 	path, cleanup := fixtures.CreateTestDB(t)
 	defer cleanup()

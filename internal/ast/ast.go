@@ -9,9 +9,14 @@ func (*ShowQuery) queryNode()        {}
 func (*SongQuery) queryNode()        {}
 func (*PerformanceQuery) queryNode() {}
 func (*SetlistQuery) queryNode()    {}
+func (*CountQuery) queryNode()      {}
+func (*FirstLastQuery) queryNode()  {}
+func (*RandomShowQuery) queryNode() {}
 
-// ShowQuery represents: SHOWS [FROM date_range] [WHERE conditions] [modifiers]
+// ShowQuery represents: SHOWS [AT "venue"] [TOUR "name"] [FROM date_range] [WHERE conditions] [modifiers]
 type ShowQuery struct {
+	At        string // venue name filter
+	Tour      string // tour name filter
 	From      *DateRange
 	Where     *WhereClause
 	OrderBy   *OrderClause
@@ -21,10 +26,11 @@ type ShowQuery struct {
 
 // SongQuery represents: SONGS [WITH clause] [WRITTEN clause] [modifiers]
 type SongQuery struct {
-	With    *WithClause
-	Written *DateRange
-	OrderBy *OrderClause
-	Limit   *int
+	With      *WithClause
+	Written   *DateRange
+	OrderBy   *OrderClause
+	Limit     *int
+	OutputFmt OutputFormat
 }
 
 // PerformanceQuery represents: PERFORMANCES OF song [FROM range] [WITH clause]
@@ -39,6 +45,24 @@ type PerformanceQuery struct {
 // SetlistQuery represents: SETLIST FOR date
 type SetlistQuery struct {
 	Date *Date
+}
+
+// FirstLastQuery represents: FIRST "Song" or LAST "Song"
+type FirstLastQuery struct {
+	Song  *SongRef
+	IsLast bool // false = FIRST, true = LAST
+}
+
+// RandomShowQuery represents: RANDOM SHOW [FROM date_range]
+type RandomShowQuery struct {
+	From *DateRange
+}
+
+// CountQuery represents: COUNT "Song Name" [FROM date_range] or COUNT SHOWS [FROM date_range]
+type CountQuery struct {
+	Song       *SongRef   // nil for COUNT SHOWS
+	CountShows bool       // true for COUNT SHOWS
+	From       *DateRange
 }
 
 // DateRange represents date ranges: 1977, 1977-1980, 5/8/77, spring-77
@@ -217,4 +241,5 @@ const (
 	OutputSetlist
 	OutputCalendar
 	OutputTable
+	OutputCount
 )

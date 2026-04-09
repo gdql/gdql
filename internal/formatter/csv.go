@@ -40,6 +40,11 @@ func formatCSV(result *executor.Result) (string, error) {
 				w.Write([]string{fmt.Sprint(p.SetNumber), fmt.Sprint(p.Position), p.SegueType, fmt.Sprint(p.LengthSeconds)})
 			}
 		}
+	case executor.ResultCount:
+		if result.Count != nil {
+			w.Write([]string{"song", "count"})
+			w.Write([]string{result.Count.SongName, fmt.Sprint(result.Count.Count)})
+		}
 	}
 	w.Flush()
 	return b.String(), w.Error()

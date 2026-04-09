@@ -3,6 +3,7 @@ package executor
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/gdql/gdql/internal/ast"
@@ -23,7 +24,14 @@ const (
 	ResultSongs
 	ResultPerformances
 	ResultSetlist
+	ResultCount
 )
+
+// CountResult is the result of a COUNT query.
+type CountResult struct {
+	SongName string
+	Count    int
+}
 
 // Result is the output of executing a query.
 type Result struct {
@@ -32,6 +40,7 @@ type Result struct {
 	Songs        []*data.Song
 	Performances []*data.Performance
 	Setlist      *SetlistResult
+	Count        *CountResult
 	OutputFmt    ir.OutputFormat
 	SQL          string
 	Duration     time.Duration
@@ -81,7 +90,6 @@ func (e *executor) Execute(ctx context.Context, query string) (*Result, error) {
 // ExecuteAST plans, generates SQL, executes, and maps rows to Result.
 func (e *executor) ExecuteAST(ctx context.Context, q ast.Query) (*Result, error) {
 	start := time.Now()
-	defer func() { _ = start }()
 
 	irQ, err := e.planner.Plan(ctx, q)
 	if err != nil {
@@ -103,14 +111,39 @@ func (e *executor) ExecuteAST(ctx context.Context, q ast.Query) (*Result, error)
 		out.Type = ResultShows
 		out.Shows, err = mapRowsToShows(rs)
 	case ir.QueryTypeSongs:
-		out.Type = ResultSongs
-		out.Songs, err = mapRowsToSongs(rs)
+		if irQ.OutputFmt == ir.OutputCount {
+			out.Type = ResultCount
+			out.Count = mapRowsToCount(rs)
+		} else {
+			out.Type = ResultSongs
+			out.Songs, err = mapRowsToSongs(rs)
+		}
 	case ir.QueryTypePerformances:
 		out.Type = ResultPerformances
 		out.Performances, err = mapRowsToPerformances(rs)
 	case ir.QueryTypeSetlist:
 		out.Type = ResultSetlist
 		out.Setlist, err = mapRowsToSetlist(rs, irQ.SingleDate)
+	case ir.QueryTypeCount:
+		out.Type = ResultCount
+		out.Count = mapRowsToCount(rs)
+	case ir.QueryTypeFirstLast:
+		out.Type = ResultShows
+		out.Shows, err = mapRowsToShows(rs)
+	case ir.QueryTypeRandomShow:
+		out.Type = ResultSetlist
+		out.Setlist, err = mapRowsToSetlist(rs, nil)
+		// Get the actual show date from DB for display
+		if out.Setlist != nil && out.Setlist.ShowID > 0 {
+			var dateStr string
+			if e.dataSource != nil {
+				if drs, derr := e.dataSource.ExecuteQuery(ctx, "SELECT date FROM shows WHERE id = ?", out.Setlist.ShowID); derr == nil && len(drs.Rows) > 0 {
+					dateStr = strVal(drs.Rows[0][0])
+					t, _ := time.Parse("2006-01-02", dateStr)
+					out.Setlist.Date = t
+				}
+			}
+		}
 	default:
 		return nil, fmt.Errorf("unknown query type %d", irQ.Type)
 	}
@@ -200,6 +233,18 @@ func mapRowsToSetlist(rs *data.ResultSet, singleDate *time.Time) (*SetlistResult
 	}, nil
 }
 
+func mapRowsToCount(rs *data.ResultSet) *CountResult {
+	if len(rs.Rows) == 0 {
+		return &CountResult{}
+	}
+	row := rs.Rows[0]
+	cr := &CountResult{Count: intVal(row[0])}
+	if len(row) >= 2 {
+		cr.SongName = strVal(row[1])
+	}
+	return cr
+}
+
 func intVal(v interface{}) int {
 	switch x := v.(type) {
 	case int:
@@ -208,6 +253,10 @@ func intVal(v interface{}) int {
 		return int(x)
 	case float64:
 		return int(x)
+	case string:
+		if n, err := strconv.Atoi(x); err == nil {
+			return n
+		}
 	}
 	return 0
 }

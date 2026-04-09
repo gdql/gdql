@@ -3,12 +3,34 @@ package sqlite
 import (
 	"context"
 	"database/sql"
+	"strings"
 	"time"
+	"unicode"
 
 	"github.com/gdql/gdql/internal/data"
 
 	_ "modernc.org/sqlite"
 )
+
+// normalizeName strips punctuation, extra whitespace, and lowercases for fuzzy matching.
+// "Franklin's Tower" → "franklins tower", "Truckin'" → "truckin"
+func normalizeName(s string) string {
+	var b strings.Builder
+	lastSpace := false
+	for _, r := range strings.ToLower(s) {
+		if unicode.IsLetter(r) || unicode.IsDigit(r) {
+			b.WriteRune(r)
+			lastSpace = false
+		} else if r == ' ' || r == '\t' {
+			if !lastSpace && b.Len() > 0 {
+				b.WriteRune(' ')
+				lastSpace = true
+			}
+		}
+		// Apostrophes, periods, commas, etc. are silently dropped
+	}
+	return strings.TrimSpace(b.String())
+}
 
 // DB implements data.DataSource using SQLite.
 type DB struct {
@@ -85,50 +107,113 @@ func (db *DB) ExecuteQuery(ctx context.Context, query string, args ...interface{
 	return &data.ResultSet{Columns: cols, Rows: out}, nil
 }
 
-// GetSong returns a song by exact or case-insensitive name match, then by song_aliases, then by a best-effort trim of trailing " -".
-// For 100% accuracy on variants (parentheses, segues, spelling), add explicit rows to song_aliases (see SONG_NORMALIZATION.md).
+// GetSong returns a song by name, trying in order: exact match, case-insensitive, alias,
+// trim trailing dash, then fuzzy (punctuation-stripped). Always prefers the variant with
+// the most performances to handle duplicates like "Franklins Tower" vs "Franklin's Tower".
 func (db *DB) GetSong(ctx context.Context, name string) (*data.Song, error) {
-	var id int
+	// Try exact/case-insensitive, alias, and trim-dash lookups
+	queries := []string{
+		"SELECT s.id, s.name, s.short_name, s.writers, s.first_played, s.last_played, s.times_played FROM songs s WHERE s.name = ? OR LOWER(s.name) = LOWER(?) ORDER BY (SELECT count(*) FROM performances p WHERE p.song_id = s.id) DESC LIMIT 1",
+		"SELECT s.id, s.name, s.short_name, s.writers, s.first_played, s.last_played, s.times_played FROM songs s JOIN song_aliases a ON s.id = a.song_id WHERE a.alias = ? OR LOWER(a.alias) = LOWER(?) LIMIT 1",
+		"SELECT s.id, s.name, s.short_name, s.writers, s.first_played, s.last_played, s.times_played FROM songs s WHERE LOWER(TRIM(s.name, '- ')) = LOWER(TRIM(?, '- ')) ORDER BY (SELECT count(*) FROM performances p WHERE p.song_id = s.id) DESC LIMIT 1",
+	}
+	for _, q := range queries {
+		song, err := db.scanSong(ctx, q, name, name)
+		if err != nil {
+			return nil, err
+		}
+		if song != nil {
+			// Check if fuzzy finds a better match (more performances).
+			// This handles "Franklins Tower" (5 plays) vs "Franklin's Tower" (213 plays).
+			fuzzy, ferr := db.getSongFuzzy(ctx, name)
+			if ferr != nil || fuzzy == nil {
+				return song, nil
+			}
+			if fuzzy.ID == song.ID {
+				return song, nil
+			}
+			// Prefer the one with more performances
+			var songPlays, fuzzyPlays int
+			db.conn.QueryRowContext(ctx, "SELECT count(*) FROM performances WHERE song_id = ?", song.ID).Scan(&songPlays)
+			db.conn.QueryRowContext(ctx, "SELECT count(*) FROM performances WHERE song_id = ?", fuzzy.ID).Scan(&fuzzyPlays)
+			if fuzzyPlays > songPlays {
+				return fuzzy, nil
+			}
+			return song, nil
+		}
+	}
+	return db.getSongFuzzy(ctx, name)
+}
+
+func (db *DB) scanSong(ctx context.Context, query string, args ...interface{}) (*data.Song, error) {
+	var id, times int
 	var sname string
-	var short, writers sql.NullString
-	var first, last sql.NullString
-	var times int
-	err := db.conn.QueryRowContext(ctx, "SELECT id, name, short_name, writers, first_played, last_played, times_played FROM songs WHERE name = ? OR LOWER(name) = LOWER(?) LIMIT 1", name, name).
+	var short, writers, first, last sql.NullString
+	err := db.conn.QueryRowContext(ctx, query, args...).
 		Scan(&id, &sname, &short, &writers, &first, &last, &times)
-	if err == sql.ErrNoRows {
-		// Explicit alias (alias -> song_id) is the only 100% accurate way to handle variants.
-		err = db.conn.QueryRowContext(ctx, "SELECT s.id, s.name, s.short_name, s.writers, s.first_played, s.last_played, s.times_played FROM songs s JOIN song_aliases a ON s.id = a.song_id WHERE a.alias = ? OR LOWER(a.alias) = LOWER(?) LIMIT 1", name, name).
-			Scan(&id, &sname, &short, &writers, &first, &last, &times)
-	}
-	if err == sql.ErrNoRows {
-		// Best-effort: Relisten often uses trailing " -" for segues. Prefer adding an alias.
-		err = db.conn.QueryRowContext(ctx, "SELECT id, name, short_name, writers, first_played, last_played, times_played FROM songs WHERE LOWER(TRIM(name, '- ')) = LOWER(TRIM(?, '- ')) LIMIT 1", name, name).
-			Scan(&id, &sname, &short, &writers, &first, &last, &times)
-	}
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
 	if err != nil {
 		return nil, err
 	}
-	shortVal := ""
+	s := &data.Song{ID: id, Name: sname, TimesPlayed: times}
 	if short.Valid {
-		shortVal = short.String
+		s.ShortName = short.String
 	}
-	writersVal := ""
 	if writers.Valid {
-		writersVal = writers.String
+		s.Writers = writers.String
 	}
-	s := &data.Song{ID: id, Name: sname, ShortName: shortVal, Writers: writersVal, TimesPlayed: times}
 	if first.Valid {
-		t, _ := time.Parse("2006-01-02", first.String)
-		s.FirstPlayed = t
+		s.FirstPlayed, _ = time.Parse("2006-01-02", first.String)
 	}
 	if last.Valid {
-		t, _ := time.Parse("2006-01-02", last.String)
-		s.LastPlayed = t
+		s.LastPlayed, _ = time.Parse("2006-01-02", last.String)
 	}
 	return s, nil
+}
+
+// getSongFuzzy finds a song by normalizing both the query and all song names
+// (stripping punctuation, lowercasing). When multiple variants match, prefers
+// the one with the most performances (via a subquery count).
+func (db *DB) getSongFuzzy(ctx context.Context, name string) (*data.Song, error) {
+	target := normalizeName(name)
+	if target == "" {
+		return nil, nil
+	}
+	rows, err := db.conn.QueryContext(ctx, `
+		SELECT s.id, s.name, s.short_name, s.writers, s.first_played, s.last_played, s.times_played,
+		       (SELECT count(*) FROM performances p WHERE p.song_id = s.id) AS play_count
+		FROM songs s ORDER BY play_count DESC`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var id, times, playCount int
+		var sname string
+		var short, writers, first, last sql.NullString
+		if err := rows.Scan(&id, &sname, &short, &writers, &first, &last, &times, &playCount); err != nil {
+			continue
+		}
+		if normalizeName(sname) == target {
+			s := &data.Song{ID: id, Name: sname, TimesPlayed: times}
+			if short.Valid {
+				s.ShortName = short.String
+			}
+			if writers.Valid {
+				s.Writers = writers.String
+			}
+			if first.Valid {
+				s.FirstPlayed, _ = time.Parse("2006-01-02", first.String)
+			}
+			if last.Valid {
+				s.LastPlayed, _ = time.Parse("2006-01-02", last.String)
+			}
+			return s, nil
+		}
+	}
+	return nil, nil
 }
 
 // GetSongByID returns a song by ID.

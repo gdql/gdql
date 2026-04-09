@@ -67,6 +67,7 @@ func main() {
 		if len(args) < 2 {
 			fmt.Fprintln(os.Stderr, "Usage: gdql [-db <path>] import setlistfm")
 			fmt.Fprintln(os.Stderr, "       gdql [-db <path>] import json <file.json>")
+			fmt.Fprintln(os.Stderr, "       gdql [-db <path>] import lyrics <file.json>")
 			fmt.Fprintln(os.Stderr, "       gdql [-db <path>] import aliases <file.json>")
 			os.Exit(1)
 		}
@@ -106,6 +107,26 @@ func main() {
 				fmt.Fprintf(os.Stderr, "Import error: %v\n", err)
 				os.Exit(1)
 			}
+			return
+		case "lyrics":
+			if len(args) < 3 {
+				fmt.Fprintln(os.Stderr, "Usage: gdql [-db <path>] import lyrics <file.json>")
+				fmt.Fprintln(os.Stderr, "Format: [{\"song\": \"Song Name\", \"lyrics\": \"...\"}, ...]")
+				os.Exit(1)
+			}
+			lyricsPath := args[2]
+			db, err := sqlite.Open(dbPath)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+				os.Exit(1)
+			}
+			defer db.Close()
+			loaded, skipped, err := canonical.ImportLyrics(context.Background(), db.DB(), lyricsPath)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Import error: %v\n", err)
+				os.Exit(1)
+			}
+			fmt.Fprintf(os.Stderr, "Lyrics: %d loaded, %d skipped (song not found or empty)\n", loaded, skipped)
 			return
 		case "aliases":
 			if len(args) < 3 {
@@ -299,9 +320,6 @@ func ensureDefaultDB(path string) (string, error) {
 	}
 	gdqlDir := filepath.Join(configDir, "gdql")
 	dbPath := filepath.Join(gdqlDir, "shows.db")
-	if _, err := os.Stat(dbPath); err == nil {
-		return dbPath, nil
-	}
 	if err := os.MkdirAll(gdqlDir, 0755); err != nil {
 		return "", fmt.Errorf("creating config dir %s: %w", gdqlDir, err)
 	}

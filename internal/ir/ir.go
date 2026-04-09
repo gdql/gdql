@@ -10,6 +10,9 @@ const (
 	QueryTypeSongs
 	QueryTypePerformances
 	QueryTypeSetlist
+	QueryTypeCount
+	QueryTypeFirstLast
+	QueryTypeRandomShow
 )
 
 // QueryIR is the resolved, expanded representation ready for SQL generation.
@@ -18,6 +21,9 @@ type QueryIR struct {
 	DateRange  *ResolvedDateRange
 	SingleDate *time.Time // for SETLIST FOR date
 	SongID     *int       // for PERFORMANCES OF song
+	VenueName  string     // for SHOWS AT "venue"
+	TourName   string     // for SHOWS TOUR "name"
+	IsLast     bool       // for FIRST/LAST
 	SegueChain *SegueChainIR
 	Conditions []ConditionIR
 	OrderBy    *OrderByIR
@@ -143,4 +149,5 @@ const (
 	OutputSetlist
 	OutputCalendar
 	OutputTable
+	OutputCount
 )

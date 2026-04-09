@@ -37,6 +37,12 @@ func (p *planner) Plan(ctx context.Context, q ast.Query) (*ir.QueryIR, error) {
 		return p.planPerformance(ctx, x)
 	case *ast.SetlistQuery:
 		return p.planSetlist(x)
+	case *ast.CountQuery:
+		return p.planCount(ctx, x)
+	case *ast.FirstLastQuery:
+		return p.planFirstLast(ctx, x)
+	case *ast.RandomShowQuery:
+		return p.planRandomShow(x)
 	default:
 		return nil, nil
 	}
@@ -44,6 +50,8 @@ func (p *planner) Plan(ctx context.Context, q ast.Query) (*ir.QueryIR, error) {
 
 func (p *planner) planShow(ctx context.Context, s *ast.ShowQuery) (*ir.QueryIR, error) {
 	out := &ir.QueryIR{Type: ir.QueryTypeShows}
+	out.VenueName = s.At
+	out.TourName = s.Tour
 	var err error
 	if s.From != nil {
 		out.DateRange, err = p.dateExpander.Expand(s.From)
@@ -81,7 +89,11 @@ func (p *planner) planShow(ctx context.Context, s *ast.ShowQuery) (*ir.QueryIR, 
 func (p *planner) planSong(ctx context.Context, s *ast.SongQuery) (*ir.QueryIR, error) {
 	out := &ir.QueryIR{Type: ir.QueryTypeSongs}
 	if s.Written != nil {
-		out.DateRange, _ = p.dateExpander.Expand(s.Written)
+		var err error
+		out.DateRange, err = p.dateExpander.Expand(s.Written)
+		if err != nil {
+			return nil, err
+		}
 	}
 	if s.With != nil {
 		for _, c := range s.With.Conditions {
@@ -96,6 +108,7 @@ func (p *planner) planSong(ctx context.Context, s *ast.SongQuery) (*ir.QueryIR, 
 		out.OrderBy = &ir.OrderByIR{Field: s.OrderBy.Field, Desc: s.OrderBy.Desc}
 	}
 	out.Limit = s.Limit
+	out.OutputFmt = astOutputToIR(s.OutputFmt)
 	return out, nil
 }
 
@@ -107,7 +120,11 @@ func (p *planner) planPerformance(ctx context.Context, perf *ast.PerformanceQuer
 	}
 	out.SongID = &id
 	if perf.From != nil {
-		out.DateRange, _ = p.dateExpander.Expand(perf.From)
+		var err error
+		out.DateRange, err = p.dateExpander.Expand(perf.From)
+		if err != nil {
+			return nil, err
+		}
 	}
 	if perf.With != nil {
 		for _, c := range perf.With.Conditions {
@@ -133,6 +150,49 @@ func (p *planner) planSetlist(sl *ast.SetlistQuery) (*ir.QueryIR, error) {
 			return nil, err
 		}
 		out.SingleDate = &t
+	}
+	return out, nil
+}
+
+func (p *planner) planCount(ctx context.Context, c *ast.CountQuery) (*ir.QueryIR, error) {
+	out := &ir.QueryIR{Type: ir.QueryTypeCount}
+	if c.CountShows {
+		// COUNT SHOWS — no song resolution needed
+	} else {
+		id, err := p.songResolver.Resolve(ctx, c.Song.Name)
+		if err != nil {
+			return nil, p.wrapSongNotFound(ctx, err)
+		}
+		out.SongID = &id
+	}
+	if c.From != nil {
+		var err error
+		out.DateRange, err = p.dateExpander.Expand(c.From)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return out, nil
+}
+
+func (p *planner) planFirstLast(ctx context.Context, fl *ast.FirstLastQuery) (*ir.QueryIR, error) {
+	out := &ir.QueryIR{Type: ir.QueryTypeFirstLast, IsLast: fl.IsLast}
+	id, err := p.songResolver.Resolve(ctx, fl.Song.Name)
+	if err != nil {
+		return nil, p.wrapSongNotFound(ctx, err)
+	}
+	out.SongID = &id
+	return out, nil
+}
+
+func (p *planner) planRandomShow(r *ast.RandomShowQuery) (*ir.QueryIR, error) {
+	out := &ir.QueryIR{Type: ir.QueryTypeRandomShow}
+	if r.From != nil {
+		var err error
+		out.DateRange, err = p.dateExpander.Expand(r.From)
+		if err != nil {
+			return nil, err
+		}
 	}
 	return out, nil
 }
@@ -299,6 +359,8 @@ func astOutputToIR(o ast.OutputFormat) ir.OutputFormat {
 		return ir.OutputCalendar
 	case ast.OutputTable:
 		return ir.OutputTable
+	case ast.OutputCount:
+		return ir.OutputCount
 	}
 	return ir.OutputDefault
 }

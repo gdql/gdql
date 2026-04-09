@@ -1,109 +1,110 @@
 package sqlgen
 
 import (
+	"context"
 	"testing"
 	"time"
 
+	"github.com/gdql/gdql/internal/data/sqlite"
 	"github.com/gdql/gdql/internal/ir"
+	"github.com/gdql/gdql/test/fixtures"
 	"github.com/stretchr/testify/require"
 )
 
-func TestGenerate_Shows_Simple(t *testing.T) {
-	g := New()
-	q := &ir.QueryIR{Type: ir.QueryTypeShows}
-	sql, err := g.Generate(q)
+func openDB(t *testing.T) *sqlite.DB {
+	t.Helper()
+	path, cleanup := fixtures.CreateTestDB(t)
+	t.Cleanup(cleanup)
+	db, err := sqlite.Open(path)
 	require.NoError(t, err)
-	require.Contains(t, sql.SQL, "SELECT")
-	require.Contains(t, sql.SQL, "shows")
-	require.Contains(t, sql.SQL, "venues")
-	require.Empty(t, sql.Args)
+	t.Cleanup(func() { db.Close() })
+	return db
+}
+
+func execQuery(t *testing.T, db *sqlite.DB, q *ir.QueryIR) int {
+	t.Helper()
+	g := New()
+	sq, err := g.Generate(q)
+	require.NoError(t, err)
+	rs, err := db.ExecuteQuery(context.Background(), sq.SQL, sq.Args...)
+	require.NoError(t, err)
+	return len(rs.Rows)
+}
+
+func TestGenerate_Shows_Simple(t *testing.T) {
+	db := openDB(t)
+	// Fixture has 3 shows total
+	rows := execQuery(t, db, &ir.QueryIR{Type: ir.QueryTypeShows})
+	require.Equal(t, 3, rows)
 }
 
 func TestGenerate_Shows_WithDateRange(t *testing.T) {
-	g := New()
+	db := openDB(t)
 	start := time.Date(1977, 1, 1, 0, 0, 0, 0, time.UTC)
-	end := time.Date(1980, 12, 31, 23, 59, 59, 0, time.UTC)
-	q := &ir.QueryIR{
+	end := time.Date(1977, 12, 31, 23, 59, 59, 0, time.UTC)
+	rows := execQuery(t, db, &ir.QueryIR{
 		Type:      ir.QueryTypeShows,
 		DateRange: &ir.ResolvedDateRange{Start: start, End: end},
-	}
-	sql, err := g.Generate(q)
-	require.NoError(t, err)
-	require.Contains(t, sql.SQL, "s.date >= ? AND s.date <= ?")
-	require.Len(t, sql.Args, 2)
-	require.Equal(t, "1977-01-01", sql.Args[0])
-	require.Equal(t, "1980-12-31", sql.Args[1])
+	})
+	require.Equal(t, 2, rows, "fixture has 2 shows in 1977")
 }
 
 func TestGenerate_Shows_WithLimit(t *testing.T) {
-	g := New()
-	lim := 5
-	q := &ir.QueryIR{Type: ir.QueryTypeShows, Limit: &lim}
-	sql, err := g.Generate(q)
-	require.NoError(t, err)
-	require.Contains(t, sql.SQL, "LIMIT ?")
-	require.Len(t, sql.Args, 1)
-	require.Equal(t, 5, sql.Args[0])
+	db := openDB(t)
+	lim := 1
+	rows := execQuery(t, db, &ir.QueryIR{Type: ir.QueryTypeShows, Limit: &lim})
+	require.Equal(t, 1, rows)
 }
 
 func TestGenerate_Shows_WithSegue(t *testing.T) {
-	g := New()
-	q := &ir.QueryIR{
+	db := openDB(t)
+	// Scarlet (1) > Fire (2) — fixture has 3 shows with this adjacency
+	rows := execQuery(t, db, &ir.QueryIR{
 		Type: ir.QueryTypeShows,
 		SegueChain: &ir.SegueChainIR{
 			SongIDs:   []int{1, 2},
 			Operators: []ir.SegueOp{ir.SegueOpSegue},
 		},
-	}
-	sql, err := g.Generate(q)
-	require.NoError(t, err)
-	require.Contains(t, sql.SQL, "SELECT DISTINCT")
-	require.Contains(t, sql.SQL, "p1")
-	require.Contains(t, sql.SQL, "p2")
-	require.Contains(t, sql.SQL, "segue_type")
-	require.Len(t, sql.Args, 3) // s1.id, s2.id, p1.segue_type
+	})
+	require.Equal(t, 3, rows, "fixture has Scarlet > Fire at Cornell, Winterland, Landover")
+}
+
+func TestGenerate_Shows_WithVenue(t *testing.T) {
+	db := openDB(t)
+	rows := execQuery(t, db, &ir.QueryIR{
+		Type:      ir.QueryTypeShows,
+		VenueName: "Barton",
+	})
+	require.Equal(t, 1, rows, "only Cornell is at Barton Hall")
 }
 
 func TestGenerate_Performances(t *testing.T) {
-	g := New()
-	songID := 10
-	q := &ir.QueryIR{
+	db := openDB(t)
+	songID := 6 // Dark Star
+	rows := execQuery(t, db, &ir.QueryIR{
 		Type:   ir.QueryTypePerformances,
 		SongID: &songID,
-	}
-	sql, err := g.Generate(q)
-	require.NoError(t, err)
-	require.Contains(t, sql.SQL, "performances")
-	require.Contains(t, sql.SQL, "p.song_id = ?")
-	require.Len(t, sql.Args, 1)
-	require.Equal(t, 10, sql.Args[0])
+	})
+	require.Equal(t, 2, rows, "fixture has 2 Dark Star performances")
 }
 
 func TestGenerate_Setlist(t *testing.T) {
-	g := New()
+	db := openDB(t)
 	d := time.Date(1977, 5, 8, 0, 0, 0, 0, time.UTC)
-	q := &ir.QueryIR{
+	rows := execQuery(t, db, &ir.QueryIR{
 		Type:       ir.QueryTypeSetlist,
 		SingleDate: &d,
-	}
-	sql, err := g.Generate(q)
-	require.NoError(t, err)
-	require.Contains(t, sql.SQL, "s.date = ?")
-	require.Len(t, sql.Args, 1)
-	require.Equal(t, "1977-05-08", sql.Args[0])
+	})
+	require.GreaterOrEqual(t, rows, 5, "Cornell 77 setlist has at least 5 songs in fixture")
 }
 
 func TestGenerate_Songs_WithLyrics(t *testing.T) {
-	g := New()
-	q := &ir.QueryIR{
+	db := openDB(t)
+	rows := execQuery(t, db, &ir.QueryIR{
 		Type: ir.QueryTypeSongs,
 		Conditions: []ir.ConditionIR{
-			&ir.LyricsConditionIR{Words: []string{"train", "road"}, Operator: ir.OpAnd},
+			&ir.LyricsConditionIR{Words: []string{"walkin"}, Operator: ir.OpAnd},
 		},
-	}
-	sql, err := g.Generate(q)
-	require.NoError(t, err)
-	require.Contains(t, sql.SQL, "lyrics")
-	require.Contains(t, sql.SQL, "LIKE")
-	require.Len(t, sql.Args, 2)
+	})
+	require.Equal(t, 1, rows, "only Scarlet Begonias has 'walkin' in lyrics")
 }

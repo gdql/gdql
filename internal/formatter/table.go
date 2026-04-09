@@ -18,9 +18,21 @@ func formatTable(result *executor.Result) (string, error) {
 		return tablePerformances(result.Performances), nil
 	case executor.ResultSetlist:
 		return tableSetlist(result.Setlist), nil
+	case executor.ResultCount:
+		return tableCount(result.Count), nil
 	default:
 		return "", nil
 	}
+}
+
+func tableCount(cr *executor.CountResult) string {
+	if cr == nil {
+		return "0"
+	}
+	if cr.SongName != "" {
+		return fmt.Sprintf("%s: %d\n", cr.SongName, cr.Count)
+	}
+	return fmt.Sprintf("%d\n", cr.Count)
 }
 
 func tableShows(shows []*data.Show) string {
@@ -28,14 +40,14 @@ func tableShows(shows []*data.Show) string {
 		return "No shows found.\n(Tip: Use a DB with data — run 'gdql init' for seed data, or remove shows.db so the app uses the embedded default.)"
 	}
 	var b strings.Builder
-	b.WriteString("DATE       | VENUE            | CITY         | STATE\n")
-	b.WriteString("-----------+------------------+--------------+-----\n")
+	b.WriteString("DATE       | VENUE                          | CITY                     | STATE\n")
+	b.WriteString("-----------+--------------------------------+--------------------------+------\n")
 	for _, s := range shows {
 		date := s.Date.Format("2006-01-02")
-		venue := truncate(s.Venue, 16)
-		city := truncate(s.City, 12)
+		venue := truncate(s.Venue, 30)
+		city := truncate(s.City, 24)
 		state := truncate(s.State, 5)
-		fmt.Fprintf(&b, "%-10s | %-16s | %-12s | %s\n", date, venue, city, state)
+		fmt.Fprintf(&b, "%-10s | %-30s | %-24s | %s\n", date, venue, city, state)
 	}
 	return b.String()
 }
@@ -58,17 +70,44 @@ func tablePerformances(perfs []*data.Performance) string {
 	if len(perfs) == 0 {
 		return "No performances found."
 	}
-	var b strings.Builder
-	b.WriteString("SHOW_ID | SET | POS | SEGUE | LENGTH\n")
-	b.WriteString("--------+-----+-----+-------+-------\n")
+	// Check if any performance has length data
+	hasLength := false
 	for _, p := range perfs {
-		seg := p.SegueType
-		if seg == "" {
-			seg = "-"
+		if p.LengthSeconds > 0 {
+			hasLength = true
+			break
 		}
-		fmt.Fprintf(&b, "%7d | %3d | %3d | %-5s | %d\n", p.ShowID, p.SetNumber, p.Position, seg, p.LengthSeconds)
+	}
+	var b strings.Builder
+	if hasLength {
+		b.WriteString("SHOW_ID | SET | POS | SEGUE | LENGTH\n")
+		b.WriteString("--------+-----+-----+-------+-------\n")
+		for _, p := range perfs {
+			seg := p.SegueType
+			if seg == "" {
+				seg = "-"
+			}
+			fmt.Fprintf(&b, "%7d | %3d | %3d | %-5s | %s\n", p.ShowID, p.SetNumber, p.Position, seg, formatLength(p.LengthSeconds))
+		}
+	} else {
+		b.WriteString("SHOW_ID | SET | POS | SEGUE\n")
+		b.WriteString("--------+-----+-----+------\n")
+		for _, p := range perfs {
+			seg := p.SegueType
+			if seg == "" {
+				seg = "-"
+			}
+			fmt.Fprintf(&b, "%7d | %3d | %3d | %s\n", p.ShowID, p.SetNumber, p.Position, seg)
+		}
 	}
 	return b.String()
+}
+
+func formatLength(seconds int) string {
+	if seconds <= 0 {
+		return "-"
+	}
+	return fmt.Sprintf("%d:%02d", seconds/60, seconds%60)
 }
 
 func tableSetlist(sl *executor.SetlistResult) string {
@@ -95,8 +134,9 @@ func tableSetlist(sl *executor.SetlistResult) string {
 }
 
 func truncate(s string, max int) string {
-	if len(s) <= max {
+	runes := []rune(s)
+	if len(runes) <= max {
 		return s
 	}
-	return s[:max]
+	return string(runes[:max])
 }

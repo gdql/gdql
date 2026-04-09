@@ -33,6 +33,8 @@ const (
 	ENCORE
 	OPENED
 	CLOSED
+	OPENER
+	CLOSER
 	LYRICS
 	LENGTH
 	FIRST
@@ -41,6 +43,11 @@ const (
 	DISTINCT
 	PLAYED
 	GUEST
+	AT
+	BEFORE
+	AFTER
+	TOUR
+	RANDOM
 	FOR
 	ASC
 	DESC
@@ -98,6 +105,8 @@ var tokens = [...]string{
 	ENCORE:       "ENCORE",
 	OPENED:       "OPENED",
 	CLOSED:       "CLOSED",
+	OPENER:       "OPENER",
+	CLOSER:       "CLOSER",
 	LYRICS:       "LYRICS",
 	LENGTH:       "LENGTH",
 	FIRST:        "FIRST",
@@ -106,6 +115,11 @@ var tokens = [...]string{
 	DISTINCT:     "DISTINCT",
 	PLAYED:       "PLAYED",
 	GUEST:        "GUEST",
+	AT:           "AT",
+	BEFORE:       "BEFORE",
+	AFTER:        "AFTER",
+	TOUR:         "TOUR",
+	RANDOM:       "RANDOM",
 	FOR:          "FOR",
 	ASC:          "ASC",
 	DESC:         "DESC",

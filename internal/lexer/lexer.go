@@ -366,7 +366,7 @@ func isDurationSuffix(s string) bool {
 
 func lookupIdent(ident string) token.TokenType {
 	switch ident {
-	case "SHOWS":
+	case "SHOWS", "SHOW":
 		return token.SHOWS
 	case "SONGS":
 		return token.SONGS
@@ -416,6 +416,10 @@ func lookupIdent(ident string) token.TokenType {
 		return token.OPENED
 	case "CLOSED":
 		return token.CLOSED
+	case "OPENER":
+		return token.OPENER
+	case "CLOSER":
+		return token.CLOSER
 	case "LYRICS":
 		return token.LYRICS
 	case "LENGTH":
@@ -432,6 +436,16 @@ func lookupIdent(ident string) token.TokenType {
 		return token.PLAYED
 	case "GUEST":
 		return token.GUEST
+	case "AT":
+		return token.AT
+	case "BEFORE":
+		return token.BEFORE
+	case "AFTER":
+		return token.AFTER
+	case "TOUR":
+		return token.TOUR
+	case "RANDOM":
+		return token.RANDOM
 	case "FOR":
 		return token.FOR
 	case "ASC":
