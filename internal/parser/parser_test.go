@@ -465,6 +465,42 @@ func TestParseError_NegativeLimit(t *testing.T) {
 	require.Error(t, err)
 }
 
+// === SECURITY: ORDER BY SQL injection regression ===
+
+func TestParseError_OrderBySQLInjectionBlocked(t *testing.T) {
+	// Previously: a quoted STRING would flow into the SQL ORDER BY clause as-is.
+	// Exploit: ORDER BY "date, (SELECT ...)--" exposed sqlite_master via subquery.
+	exploits := []string{
+		`SHOWS FROM 1977 ORDER BY "date, (SELECT group_concat(name) FROM sqlite_master)--";`,
+		`SHOWS ORDER BY "anything";`,
+		`SHOWS ORDER BY "1; DROP TABLE shows";`,
+	}
+	for _, q := range exploits {
+		t.Run(q, func(t *testing.T) {
+			p := NewFromString(q)
+			_, err := p.Parse()
+			require.Error(t, err, "exploit should be rejected")
+			require.Contains(t, err.Error(), "expected field name")
+		})
+	}
+}
+
+func TestParseError_OrderByUnknownField(t *testing.T) {
+	// Even bare identifiers must be in the whitelist
+	p := NewFromString("SHOWS ORDER BY VENUE;")
+	_, err := p.Parse()
+	require.Error(t, err)
+}
+
+func TestParseShowQuery_LimitCapped(t *testing.T) {
+	p := NewFromString("SHOWS LIMIT 999999999;")
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.NotNil(t, sq.Limit)
+	require.LessOrEqual(t, *sq.Limit, 1000, "LIMIT should be capped at 1000")
+}
+
 // === Modifier combinations ===
 
 func TestParseShowQuery_AllModifiers(t *testing.T) {

@@ -589,8 +589,13 @@ func (p *parser) parseModifiers(show *ast.ShowQuery, song *ast.SongQuery, perf *
 				return &errors.ParseError{Pos: p.cur.Pos, Message: "expected BY after ORDER", Query: p.query}
 			}
 			p.advance()
-			if p.cur.Type != token.STRING && !isOrderField(p.cur) {
-				return &errors.ParseError{Pos: p.cur.Pos, Message: "expected field name (DATE, LENGTH, RATING, etc.)", Query: p.query}
+			if !isOrderField(p.cur) {
+				return &errors.ParseError{
+					Pos:     p.cur.Pos,
+					Message: "expected field name after ORDER BY",
+					Query:   p.query,
+					Hint:    "Allowed fields: DATE, LENGTH, NAME, TIMES_PLAYED, POSITION",
+				}
 			}
 			field := p.cur.Literal
 			p.advance()
@@ -622,6 +627,11 @@ func (p *parser) parseModifiers(show *ast.ShowQuery, song *ast.SongQuery, perf *
 			if err != nil || n < 0 {
 				return &errors.ParseError{Pos: p.cur.Pos, Message: "LIMIT must be a non-negative integer", Query: p.query}
 			}
+			// SECURITY: cap LIMIT to prevent OOM/DoS via huge result sets
+			const maxLimit = 1000
+			if n > maxLimit {
+				n = maxLimit
+			}
 			p.advance()
 			if show != nil {
 				show.Limit = &n
@@ -651,13 +661,12 @@ func (p *parser) parseModifiers(show *ast.ShowQuery, song *ast.SongQuery, perf *
 	return nil
 }
 
+// isOrderField returns true if the token is a known ORDER BY field name.
+// SECURITY: do NOT accept arbitrary STRING tokens — that allowed SQL injection
+// because the field name was concatenated into the generated SQL.
 func isOrderField(t token.Token) bool {
-	switch t.Type {
-	case token.STRING:
-		return true
-	}
-	s := t.Literal
-	return s == "DATE" || s == "LENGTH" || s == "RATING" || s == "NAME" || s == "TIMES_PLAYED"
+	s := strings.ToUpper(t.Literal)
+	return s == "DATE" || s == "LENGTH" || s == "NAME" || s == "TIMES_PLAYED" || s == "POSITION"
 }
 
 func (p *parser) parseOutputFormat() ast.OutputFormat {

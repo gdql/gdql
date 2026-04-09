@@ -279,16 +279,17 @@ func (g *generator) orderBy(q *ir.QueryIR, prefix string) string {
 	if q.OrderBy == nil {
 		return ""
 	}
-	field := q.OrderBy.Field
+	field := strings.ToUpper(q.OrderBy.Field)
 	if field == "" {
-		field = "date"
+		field = "DATE"
 	}
 	dir := "ASC"
 	if q.OrderBy.Desc {
 		dir = "DESC"
 	}
-	col := prefix + "." + strings.ToLower(field)
-	switch strings.ToUpper(field) {
+	// SECURITY: only allow whitelisted columns. Never interpolate user input.
+	var col string
+	switch field {
 	case "DATE":
 		if prefix == "p" {
 			col = "s.date" // performances join shows as s
@@ -298,13 +299,22 @@ func (g *generator) orderBy(q *ir.QueryIR, prefix string) string {
 	case "LENGTH":
 		if prefix == "p" {
 			col = "p.length_seconds"
+		} else {
+			return "" // LENGTH only valid for performances
 		}
-	case "RATING":
-		col = prefix + ".rating"
 	case "NAME":
 		col = prefix + ".name"
 	case "TIMES_PLAYED":
 		col = prefix + ".times_played"
+	case "POSITION":
+		if prefix == "p" {
+			col = "p.position"
+		} else {
+			return ""
+		}
+	default:
+		// Unknown field — silently drop the ORDER BY rather than risk injection.
+		return ""
 	}
 	return "ORDER BY " + col + " " + dir
 }
