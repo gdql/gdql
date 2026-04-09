@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-const baseURL = "https://api.setlist.fm/rest/1.0"
+const defaultBaseURL = "https://api.setlist.fm/rest/1.0"
 
 // Grateful Dead MusicBrainz ID
 const GratefulDeadMBID = "6faa7ca7-0d99-4a5e-bfa6-1fd5037520c6"
@@ -18,18 +18,27 @@ const GratefulDeadMBID = "6faa7ca7-0d99-4a5e-bfa6-1fd5037520c6"
 // Client calls the setlist.fm REST API.
 type Client struct {
 	APIKey     string
+	BaseURL    string // overridable for testing; defaults to setlist.fm production
 	HTTPClient *http.Client
 }
 
 // NewClient returns a client that uses the given API key (x-api-key header).
 func NewClient(apiKey string) *Client {
 	return &Client{
-		APIKey: apiKey,
+		APIKey:  apiKey,
+		BaseURL: defaultBaseURL,
 		HTTPClient: &http.Client{
 			Timeout:   30 * time.Second,
 			Transport: &throttleTransport{perSec: 1, rt: http.DefaultTransport},
 		},
 	}
+}
+
+func (c *Client) baseURL() string {
+	if c.BaseURL != "" {
+		return c.BaseURL
+	}
+	return defaultBaseURL
 }
 
 // throttleTransport limits requests to perSec per second.
@@ -120,7 +129,7 @@ func (c *Client) GetSetlist(versionID string) (*Setlist, error) {
 	if c.APIKey == "" {
 		return nil, fmt.Errorf("setlist.fm API key required")
 	}
-	url := fmt.Sprintf("%s/setlist/version/%s", baseURL, versionID)
+	url := fmt.Sprintf("%s/setlist/version/%s", c.baseURL(), versionID)
 	var lastErr error
 	for attempt := 0; attempt < 3; attempt++ {
 		req, err := http.NewRequest(http.MethodGet, url, nil)
@@ -166,7 +175,7 @@ func (c *Client) GetArtistSetlists(mbid string, page int) (*SetlistsResponse, er
 	if c.APIKey == "" {
 		return nil, fmt.Errorf("setlist.fm API key required (SETLISTFM_API_KEY or -api-key)")
 	}
-	url := fmt.Sprintf("%s/artist/%s/setlists?p=%d", baseURL, mbid, page)
+	url := fmt.Sprintf("%s/artist/%s/setlists?p=%d", c.baseURL(), mbid, page)
 	var lastErr error
 	for attempt := 0; attempt < 3; attempt++ {
 		req, err := http.NewRequest(http.MethodGet, url, nil)
