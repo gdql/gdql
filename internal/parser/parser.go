@@ -95,10 +95,16 @@ func (p *parser) Parse() (ast.Query, error) {
 	case token.RANDOM:
 		return p.parseRandomShowQuery()
 	default:
+		// Suggest closest matching top-level keyword
+		topLevel := []string{"SHOWS", "SONGS", "PERFORMANCES", "SETLIST", "COUNT", "FIRST", "LAST", "RANDOM"}
+		suggestion := errors.SuggestKeyword(p.cur.Literal, topLevel)
+		hint := "Queries start with SHOWS, SONGS, PERFORMANCES, SETLIST, COUNT, FIRST, LAST, or RANDOM."
 		return nil, &errors.ParseError{
-			Pos:     p.cur.Pos,
-			Message: fmt.Sprintf("unexpected %s, expected SHOWS, SONGS, PERFORMANCES, SETLIST, or COUNT", p.cur.Type),
-			Query:   p.query,
+			Pos:        p.cur.Pos,
+			Message:    fmt.Sprintf("unexpected %q, expected a query keyword", p.cur.Literal),
+			Query:      p.query,
+			Hint:       hint,
+			DidYouMean: suggestion,
 		}
 	}
 }
@@ -219,7 +225,17 @@ func (p *parser) parseDate() (*ast.Date, *ast.EraAlias, error) {
 	default:
 		break
 	}
-	return nil, nil, &errors.ParseError{Pos: p.cur.Pos, Message: "expected date (year or era alias)", Query: p.query}
+	// Suggest closest era alias if input looks like an attempted era
+	eras := []string{"PRIMAL", "EUROPE72", "WALLOFSOUND", "HIATUS", "BRENT_ERA", "VINCE_ERA"}
+	suggestion := errors.SuggestKeyword(p.cur.Literal, eras)
+	hint := "Use a year (1977), range (1977-1980), date (5/8/77), or era alias (PRIMAL, EUROPE72, BRENT_ERA, etc.)."
+	return nil, nil, &errors.ParseError{
+		Pos:        p.cur.Pos,
+		Message:    fmt.Sprintf("expected date or era, got %q", p.cur.Literal),
+		Query:      p.query,
+		Hint:       hint,
+		DidYouMean: suggestion,
+	}
 }
 
 func (p *parser) parseEraAlias() *ast.EraAlias {
@@ -670,12 +686,44 @@ func (p *parser) optionalSemicolon() error {
 	for p.curIs(token.SEMICOLON) {
 		p.advance()
 	}
-	if !p.curIs(token.EOF) {
-		msg := fmt.Sprintf("unexpected token after query (got %s %q)", p.cur.Type, p.cur.Literal)
-		hint := "Remove any extra text or invisible characters after the semicolon; ensure the file ends with a single newline or no trailing content."
-		return &errors.ParseError{Pos: p.cur.Pos, Message: msg, Query: p.query, Hint: hint}
+	if p.curIs(token.EOF) {
+		return nil
 	}
-	return nil
+
+	// Detect common "wrong order" mistakes — clause keywords appearing too late.
+	var msg, hint string
+	switch p.cur.Type {
+	case token.FROM:
+		msg = "FROM must come before WHERE"
+		hint = "Try: SHOWS FROM 1977 WHERE PLAYED \"Bertha\";"
+	case token.AT:
+		msg = "AT must come before FROM and WHERE"
+		hint = "Try: SHOWS AT \"Fillmore West\" FROM 1969;"
+	case token.TOUR:
+		msg = "TOUR must come before FROM and WHERE"
+		hint = "Try: SHOWS TOUR \"Spring 1977\";"
+	case token.WHERE:
+		msg = "WHERE must come after FROM (or directly after SHOWS)"
+		hint = "Try: SHOWS FROM 1977 WHERE \"Bertha\";"
+	case token.ORDER:
+		msg = "ORDER BY must come after WHERE"
+	case token.LIMIT:
+		msg = "LIMIT must come after ORDER BY (or after WHERE)"
+	case token.AS:
+		msg = "AS must come at the end of the query"
+		hint = "Try: SHOWS FROM 1977 LIMIT 5 AS JSON;"
+	}
+	if msg == "" {
+		// Generic — try to suggest a closest keyword
+		clauseKeywords := []string{"FROM", "WHERE", "AT", "TOUR", "ORDER", "LIMIT", "AS", "WITH", "WRITTEN"}
+		suggestion := errors.SuggestKeyword(p.cur.Literal, clauseKeywords)
+		msg = fmt.Sprintf("unexpected %q after query", p.cur.Literal)
+		if suggestion == "" {
+			hint = "End the query with a semicolon, or remove unexpected text."
+		}
+		return &errors.ParseError{Pos: p.cur.Pos, Message: msg, Query: p.query, Hint: hint, DidYouMean: suggestion}
+	}
+	return &errors.ParseError{Pos: p.cur.Pos, Message: msg, Query: p.query, Hint: hint}
 }
 
 func (p *parser) parseSongQuery() (*ast.SongQuery, error) {
@@ -831,12 +879,16 @@ func (p *parser) parseCountQuery() (*ast.CountQuery, error) {
 	if p.curIs(token.SHOWS) {
 		q.CountShows = true
 		p.advance()
-	} else {
-		ref, err := p.parseSongRef()
-		if err != nil {
-			return nil, err
-		}
+	} else if p.curIs(token.STRING) {
+		ref, _ := p.parseSongRef()
 		q.Song = ref
+	} else {
+		return nil, &errors.ParseError{
+			Pos:     p.cur.Pos,
+			Message: "expected song name or SHOWS after COUNT",
+			Query:   p.query,
+			Hint:    "Try: COUNT \"Dark Star\" or COUNT SHOWS FROM 1977;",
+		}
 	}
 	if p.curIs(token.FROM) || p.curIs(token.AFTER) || p.curIs(token.BEFORE) {
 		dr, err := p.parseDateRangeWithDirection()
