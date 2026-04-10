@@ -147,27 +147,38 @@ func (g *generator) positionCondition(c *ir.PositionConditionIR) (string, []inte
 	if c.SegueChain != nil {
 		return positionConditionWithSegue(c)
 	}
+	// Build set filter: Encore matches set >= 3 (covers both set 3 and set 4 encores)
+	var setFilter string
+	var setArgs []interface{}
+	isEncore := c.Set == ir.Encore
 	setNum := setPositionToNumber(c.Set)
-	setFilter := " AND p.set_number = ?"
-	if setNum == 0 {
-		setFilter = "" // SetAny: don't filter by set
+	if isEncore {
+		setFilter = " AND p.set_number >= 3"
+	} else if setNum > 0 {
+		setFilter = " AND p.set_number = ?"
+		setArgs = append(setArgs, setNum)
 	}
+	// SetAny (setNum == 0 and not encore): no set filter
+
 	switch c.Operator {
 	case ir.PosOpened:
-		if setNum == 0 {
+		args := append(setArgs, c.SongID)
+		if setFilter == "" {
 			return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.song_id = ? AND p.is_opener = 1)", []interface{}{c.SongID}
 		}
-		return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id" + setFilter + " AND p.song_id = ? AND p.is_opener = 1)", []interface{}{setNum, c.SongID}
+		return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id" + setFilter + " AND p.song_id = ? AND p.is_opener = 1)", args
 	case ir.PosClosed:
-		if setNum == 0 {
+		args := append(setArgs, c.SongID)
+		if setFilter == "" {
 			return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.song_id = ? AND p.is_closer = 1)", []interface{}{c.SongID}
 		}
-		return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id" + setFilter + " AND p.song_id = ? AND p.is_closer = 1)", []interface{}{setNum, c.SongID}
+		return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id" + setFilter + " AND p.song_id = ? AND p.is_closer = 1)", args
 	case ir.PosEquals:
-		if setNum == 0 {
+		args := append(setArgs, c.SongID)
+		if setFilter == "" {
 			return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.song_id = ?)", []interface{}{c.SongID}
 		}
-		return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id" + setFilter + " AND p.song_id = ?)", []interface{}{setNum, c.SongID}
+		return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id" + setFilter + " AND p.song_id = ?)", args
 	}
 	return "", nil
 }
@@ -217,6 +228,8 @@ func positionConditionWithSegue(c *ir.PositionConditionIR) (string, []interface{
 	return b.String(), args
 }
 
+// setPositionToNumber maps set position to set_number.
+// Returns 0 for Encore — callers handle encore specially with >= 3.
 func setPositionToNumber(s ir.SetPosition) int {
 	switch s {
 	case ir.Set1:
@@ -226,7 +239,7 @@ func setPositionToNumber(s ir.SetPosition) int {
 	case ir.Set3:
 		return 3
 	case ir.Encore:
-		return 4
+		return 0 // handled specially
 	}
 	return 0
 }

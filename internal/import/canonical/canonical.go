@@ -120,7 +120,7 @@ func WriteShows(ctx context.Context, db *sql.DB, shows []Show) (showsAdded, song
 					segueType = ">"
 				}
 				isOpener := 0
-				if setNumber == 1 && position == 1 {
+				if position == 1 {
 					isOpener = 1
 				}
 				isCloser := 0
