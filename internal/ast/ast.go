@@ -58,11 +58,12 @@ type RandomShowQuery struct {
 	From *DateRange
 }
 
-// CountQuery represents: COUNT "Song Name" [FROM date_range] or COUNT SHOWS [FROM date_range]
+// CountQuery represents: COUNT "Song Name" [FROM date_range] or COUNT SHOWS [FROM date_range] [WHERE ...]
 type CountQuery struct {
-	Song       *SongRef   // nil for COUNT SHOWS
-	CountShows bool       // true for COUNT SHOWS
+	Song       *SongRef     // nil for COUNT SHOWS
+	CountShows bool         // true for COUNT SHOWS
 	From       *DateRange
+	Where      *WhereClause // optional WHERE conditions (COUNT SHOWS WHERE ...)
 }
 
 // DateRange represents date ranges: 1977, 1977-1980, 5/8/77, spring-77

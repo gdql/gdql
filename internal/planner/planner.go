@@ -172,6 +172,25 @@ func (p *planner) planCount(ctx context.Context, c *ast.CountQuery) (*ir.QueryIR
 			return nil, err
 		}
 	}
+	if c.Where != nil {
+		for _, cond := range c.Where.Conditions {
+			if seg, ok := cond.(*ast.SegueCondition); ok {
+				chain, err := p.segueToIR(ctx, seg)
+				if err != nil {
+					return nil, p.wrapSongNotFound(ctx, err)
+				}
+				out.SegueChain = chain
+				continue
+			}
+			irCond, err := p.conditionToIR(ctx, cond)
+			if err != nil {
+				return nil, p.wrapSongNotFound(ctx, err)
+			}
+			if irCond != nil {
+				out.Conditions = append(out.Conditions, irCond)
+			}
+		}
+	}
 	return out, nil
 }
 

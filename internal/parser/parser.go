@@ -930,6 +930,14 @@ func (p *parser) parseCountQuery() (*ast.CountQuery, error) {
 		}
 		q.From = dr
 	}
+	if p.curIs(token.WHERE) {
+		p.advance()
+		wc, err := p.parseWhereClause()
+		if err != nil {
+			return nil, err
+		}
+		q.Where = wc
+	}
 	return q, p.optionalSemicolon()
 }
 

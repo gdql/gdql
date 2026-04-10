@@ -320,6 +320,23 @@ func (g *generator) genSetlist(q *ir.QueryIR) (*SQLQuery, error) {
 }
 
 func (g *generator) genCount(q *ir.QueryIR) (*SQLQuery, error) {
+	// COUNT SHOWS with WHERE/segue — reuse the shows query and wrap in COUNT
+	if q.SongID == nil && (q.SegueChain != nil || len(q.Conditions) > 0) {
+		showsQ := &ir.QueryIR{
+			Type:       ir.QueryTypeShows,
+			DateRange:  q.DateRange,
+			VenueName:  q.VenueName,
+			SegueChain: q.SegueChain,
+			Conditions: q.Conditions,
+		}
+		inner, err := g.genShows(showsQ)
+		if err != nil {
+			return nil, err
+		}
+		sql := "SELECT count(*) AS count, 'shows' AS name FROM (" + inner.SQL + ")"
+		return &SQLQuery{SQL: sql, Args: inner.Args}, nil
+	}
+
 	var b strings.Builder
 	var args []interface{}
 	if q.SongID == nil {
