@@ -203,11 +203,22 @@ func (db *DB) GetSongVariantIDs(ctx context.Context, name string) ([]int, error)
 // getSongFuzzy finds a song by normalizing both the query and all song names
 // (stripping punctuation, lowercasing). When multiple variants match, prefers
 // the one with the most performances (via a subquery count).
+// Falls back to prefix/substring matching if no exact normalized match found.
 func (db *DB) getSongFuzzy(ctx context.Context, name string) (*data.Song, error) {
 	target := normalizeName(name)
 	if target == "" {
 		return nil, nil
 	}
+
+	type candidate struct {
+		id, times int
+		sname     string
+		short     sql.NullString
+		writers   sql.NullString
+		first     sql.NullString
+		last      sql.NullString
+	}
+
 	rows, err := db.conn.QueryContext(ctx, `
 		SELECT s.id, s.name, s.short_name, s.writers, s.first_played, s.last_played, s.times_played,
 		       (SELECT count(*) FROM performances p WHERE p.song_id = s.id) AS play_count
@@ -216,31 +227,58 @@ func (db *DB) getSongFuzzy(ctx context.Context, name string) (*data.Song, error)
 		return nil, err
 	}
 	defer rows.Close()
+
+	// Track the best prefix match as fallback.
+	// Results are ordered by play_count DESC so the first match has the most performances.
+	var prefixMatch *candidate
+
 	for rows.Next() {
-		var id, times, playCount int
-		var sname string
-		var short, writers, first, last sql.NullString
-		if err := rows.Scan(&id, &sname, &short, &writers, &first, &last, &times, &playCount); err != nil {
+		var c candidate
+		var playCount int
+		if err := rows.Scan(&c.id, &c.sname, &c.short, &c.writers, &c.first, &c.last, &c.times, &playCount); err != nil {
 			continue
 		}
-		if normalizeName(sname) == target {
-			s := &data.Song{ID: id, Name: sname, TimesPlayed: times}
-			if short.Valid {
-				s.ShortName = short.String
+		norm := normalizeName(c.sname)
+
+		// Exact normalized match — return immediately.
+		if norm == target {
+			return db.buildSong(c.id, c.sname, c.short, c.writers, c.first, c.last, c.times), nil
+		}
+
+		// Track the best prefix match. Require target to be at least 5 chars
+		// and cover at least 40% of the song name to avoid overly broad matching
+		// (e.g. "Fire" matching "Fire on the Mountain").
+		if prefixMatch == nil && len(target) >= 5 && strings.HasPrefix(norm, target) {
+			ratio := float64(len(target)) / float64(len(norm))
+			if ratio >= 0.4 {
+				prefixMatch = &c
 			}
-			if writers.Valid {
-				s.Writers = writers.String
-			}
-			if first.Valid {
-				s.FirstPlayed, _ = time.Parse("2006-01-02", first.String)
-			}
-			if last.Valid {
-				s.LastPlayed, _ = time.Parse("2006-01-02", last.String)
-			}
-			return s, nil
 		}
 	}
+
+	// Auto-resolve prefix match (first found = most performances).
+	if prefixMatch != nil {
+		return db.buildSong(prefixMatch.id, prefixMatch.sname, prefixMatch.short, prefixMatch.writers, prefixMatch.first, prefixMatch.last, prefixMatch.times), nil
+	}
+
 	return nil, nil
+}
+
+func (db *DB) buildSong(id int, name string, short, writers, first, last sql.NullString, times int) *data.Song {
+	s := &data.Song{ID: id, Name: name, TimesPlayed: times}
+	if short.Valid {
+		s.ShortName = short.String
+	}
+	if writers.Valid {
+		s.Writers = writers.String
+	}
+	if first.Valid {
+		s.FirstPlayed, _ = time.Parse("2006-01-02", first.String)
+	}
+	if last.Valid {
+		s.LastPlayed, _ = time.Parse("2006-01-02", last.String)
+	}
+	return s
 }
 
 // GetSongByID returns a song by ID.

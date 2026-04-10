@@ -30,13 +30,29 @@ func (r *DataSourceResolver) Resolve(ctx context.Context, name string) (int, err
 
 // ResolveVariants returns ALL song IDs whose normalized name matches.
 // Used for set-membership tests (PLAYED, NOT PLAYED) so duplicates count as one song.
+// Falls back to GetSong (which supports fuzzy/prefix matching) if no exact variants found.
 func (r *DataSourceResolver) ResolveVariants(ctx context.Context, name string) ([]int, error) {
 	ids, err := r.DataSource.GetSongVariantIDs(ctx, name)
 	if err != nil {
 		return nil, err
 	}
-	if len(ids) == 0 {
+	if len(ids) > 0 {
+		return ids, nil
+	}
+	// Fallback: try GetSong which does fuzzy/prefix matching, then get variants by resolved name.
+	song, err := r.DataSource.GetSong(ctx, name)
+	if err != nil {
+		return nil, err
+	}
+	if song == nil {
 		return nil, &ErrSongNotFound{Name: name}
+	}
+	ids, err = r.DataSource.GetSongVariantIDs(ctx, song.Name)
+	if err != nil {
+		return nil, err
+	}
+	if len(ids) == 0 {
+		return []int{song.ID}, nil
 	}
 	return ids, nil
 }
