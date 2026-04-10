@@ -19,6 +19,7 @@ import (
 	"github.com/gdql/gdql/internal/data/sqlite"
 	"github.com/gdql/gdql/internal/import/canonical"
 	"github.com/gdql/gdql/internal/import/setlistfm"
+	"github.com/gdql/gdql/run"
 )
 
 // defaultDB is the embedded default database (schema + seed).
@@ -173,19 +174,25 @@ func main() {
 	defer db.Close()
 
 	ex := executor.New(db)
-	result, err := ex.Execute(context.Background(), query)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
-		os.Exit(1)
-	}
-
 	fmtr := formatter.New()
-	out, err := fmtr.Format(result, formatter.FromIR(result.OutputFmt))
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error formatting: %v\n", err)
-		os.Exit(1)
+
+	stmts := run.SplitStatements(query)
+	for i, stmt := range stmts {
+		result, err := ex.Execute(context.Background(), stmt)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+		out, err := fmtr.Format(result, formatter.FromIR(result.OutputFmt))
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error formatting: %v\n", err)
+			os.Exit(1)
+		}
+		fmt.Println(out)
+		if i < len(stmts)-1 {
+			fmt.Println()
+		}
 	}
-	fmt.Println(out)
 }
 
 func runREPL(dbPath string) {
