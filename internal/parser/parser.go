@@ -333,11 +333,11 @@ func (p *parser) parseCondition() (ast.Condition, error) {
 		return &ast.PositionCondition{Set: set, Operator: op, Song: ref}, nil
 	}
 
-	// OPENER "Song" / CLOSER "Song" — any set opened/closed with this song
+	// OPENER/OPENED "Song" / CLOSER/CLOSED "Song" — any set opened/closed with this song
 	// OPENER ("Song" > "Song") / CLOSER ("Song" > "Song") — segue chain variant
-	if p.curIs(token.OPENER) || p.curIs(token.CLOSER) {
+	if p.curIs(token.OPENER) || p.curIs(token.CLOSER) || p.curIs(token.OPENED) || p.curIs(token.CLOSED) {
 		op := ast.PosOpened
-		if p.curIs(token.CLOSER) {
+		if p.curIs(token.CLOSER) || p.curIs(token.CLOSED) {
 			op = ast.PosClosed
 		}
 		p.advance()
