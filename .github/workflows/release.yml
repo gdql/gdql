@@ -100,3 +100,12 @@ jobs:
           files: release/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Trigger sandbox update
+        if: steps.prerelease.outputs.is_prerelease == 'false'
+        run: |
+          curl -s -X POST \
+            -H "Authorization: token ${{ secrets.SANDBOX_DISPATCH_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/gdql/sandbox/dispatches \
+            -d '{"event_type":"gdql-release","client_payload":{"tag":"${{ github.ref_name }}"}}'
+        continue-on-error: true
