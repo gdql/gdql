@@ -10,6 +10,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/gdql/gdql/internal/import/canonical"
@@ -68,6 +69,53 @@ func (c *Client) FetchShow(showID int) (*canonical.Show, error) {
 		return nil, err
 	}
 	return parseShow(body)
+}
+
+// FetchShowsConcurrent fetches multiple shows in parallel with a concurrency limit.
+func (c *Client) FetchShowsConcurrent(ids []int, workers int) []*canonical.Show {
+	type result struct {
+		show *canonical.Show
+		id   int
+		err  error
+	}
+	results := make(chan result, len(ids))
+	sem := make(chan struct{}, workers)
+
+	var wg sync.WaitGroup
+	for _, id := range ids {
+		wg.Add(1)
+		go func(showID int) {
+			defer wg.Done()
+			sem <- struct{}{}
+			defer func() { <-sem }()
+
+			url := fmt.Sprintf("%s/?show_id=%d", c.BaseURL, showID)
+			body, err := c.get(url)
+			if err != nil {
+				results <- result{id: showID, err: err}
+				return
+			}
+			show, err := parseShow(body)
+			results <- result{show: show, id: showID, err: err}
+		}(id)
+	}
+
+	go func() {
+		wg.Wait()
+		close(results)
+	}()
+
+	var shows []*canonical.Show
+	for r := range results {
+		if r.err != nil {
+			fmt.Fprintf(io.Discard, "  show %d: %v\n", r.id, r.err)
+			continue
+		}
+		if r.show != nil {
+			shows = append(shows, r.show)
+		}
+	}
+	return shows
 }
 
 func (c *Client) get(url string) (string, error) {

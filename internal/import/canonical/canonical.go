@@ -127,7 +127,7 @@ func WriteShows(ctx context.Context, db *sql.DB, shows []Show) (showsAdded, song
 				if j == len(set.Songs)-1 {
 					isCloser = 1
 				}
-				_, execErr := db.ExecContext(ctx, "INSERT INTO performances (id, show_id, song_id, set_number, position, segue_type, is_opener, is_closer) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+				_, execErr := db.ExecContext(ctx, "INSERT OR IGNORE INTO performances (id, show_id, song_id, set_number, position, segue_type, is_opener, is_closer) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
 					nextPerfID, showID, songID, setNumber, position, shared.NullStr(segueType), isOpener, isCloser)
 				if execErr != nil {
 					return showsAdded, int(nextSongID - startSongID), execErr

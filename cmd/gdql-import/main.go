@@ -161,6 +161,7 @@ func importDeadlists(dbPath string, firstYear, lastYear int) error {
 
 	client := deadlists.NewClient()
 	var allShows []canonical.Show
+	var allIDs []int
 
 	for year := firstYear; year <= lastYear; year++ {
 		ids, err := client.FetchShowIDs(year)
@@ -169,16 +170,15 @@ func importDeadlists(dbPath string, firstYear, lastYear int) error {
 			continue
 		}
 		fmt.Fprintf(os.Stderr, "%d: %d shows\n", year, len(ids))
-
-		for _, id := range ids {
-			show, err := client.FetchShow(id)
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "  show %d: %v\n", id, err)
-				continue
-			}
-			allShows = append(allShows, *show)
-		}
+		allIDs = append(allIDs, ids...)
 	}
+
+	fmt.Fprintf(os.Stderr, "Fetching %d shows (10 concurrent)...\n", len(allIDs))
+	shows := client.FetchShowsConcurrent(allIDs, 10)
+	for _, s := range shows {
+		allShows = append(allShows, *s)
+	}
+	fmt.Fprintf(os.Stderr, "Fetched %d shows successfully\n", len(allShows))
 
 	if len(allShows) == 0 {
 		fmt.Fprintln(os.Stderr, "No shows fetched.")
