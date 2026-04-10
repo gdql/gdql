@@ -1,16 +1,62 @@
 // Package run exposes a single entry point for executing GDQL queries
 // (e.g. from the sandbox API). It uses the internal executor and formatter.
+//
+// The default database is embedded in this package. Use RunWithEmbeddedDB
+// for zero-config query execution, or RunWithDB for a custom database path.
 package run
 
 import (
 	"context"
+	_ "embed"
 	"encoding/json"
+	"os"
+	"path/filepath"
 	"strings"
+	"sync"
 
 	"github.com/gdql/gdql/internal/data/sqlite"
 	"github.com/gdql/gdql/internal/executor"
 	"github.com/gdql/gdql/internal/formatter"
 )
+
+//go:embed embeddb/default.db
+var embeddedDB []byte
+
+// EmbeddedDB returns the raw bytes of the embedded default database.
+func EmbeddedDB() []byte { return embeddedDB }
+
+var (
+	embeddedDBPath string
+	embeddedDBOnce sync.Once
+	embeddedDBErr  error
+)
+
+// ensureEmbeddedDB unpacks the embedded DB to a temp file once and returns the path.
+func ensureEmbeddedDB() (string, error) {
+	embeddedDBOnce.Do(func() {
+		dir, err := os.MkdirTemp("", "gdql-*")
+		if err != nil {
+			embeddedDBErr = err
+			return
+		}
+		path := filepath.Join(dir, "gdql.db")
+		if err := os.WriteFile(path, embeddedDB, 0644); err != nil {
+			embeddedDBErr = err
+			return
+		}
+		embeddedDBPath = path
+	})
+	return embeddedDBPath, embeddedDBErr
+}
+
+// RunWithEmbeddedDB executes GDQL queries against the embedded default database.
+func RunWithEmbeddedDB(ctx context.Context, query string) (string, error) {
+	dbPath, err := ensureEmbeddedDB()
+	if err != nil {
+		return "", err
+	}
+	return RunWithDB(ctx, dbPath, query)
+}
 
 // RunWithDB executes one or more semicolon-separated GDQL queries against
 // the SQLite database at dbPath and returns the result as JSON.

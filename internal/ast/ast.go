@@ -42,9 +42,10 @@ type PerformanceQuery struct {
 	Limit   *int
 }
 
-// SetlistQuery represents: SETLIST FOR date
+// SetlistQuery represents: SETLIST FOR date [AS format]
 type SetlistQuery struct {
-	Date *Date
+	Date      *Date
+	OutputFmt OutputFormat
 }
 
 // FirstLastQuery represents: FIRST "Song" or LAST "Song"

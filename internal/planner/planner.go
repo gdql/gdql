@@ -151,6 +151,7 @@ func (p *planner) planSetlist(sl *ast.SetlistQuery) (*ir.QueryIR, error) {
 		}
 		out.SingleDate = &t
 	}
+	out.OutputFmt = astOutputToIR(sl.OutputFmt)
 	return out, nil
 }
 

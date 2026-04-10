@@ -2,7 +2,6 @@
 package main
 
 import (
-	_ "embed"
 	"bufio"
 	"context"
 	"fmt"
@@ -18,12 +17,6 @@ import (
 	"github.com/gdql/gdql/internal/data/sqlite"
 	"github.com/gdql/gdql/run"
 )
-
-// defaultDB is the embedded default database (schema + seed).
-// Regenerate with: go run ./cmd/build_embed_db (from repo root).
-//
-//go:embed embeddb/default.db
-var defaultDB []byte
 
 func main() {
 	args := os.Args[1:]
@@ -204,8 +197,8 @@ func ensureDefaultDB(path string) (string, error) {
 	if err := os.MkdirAll(gdqlDir, 0755); err != nil {
 		return "", fmt.Errorf("creating config dir %s: %w", gdqlDir, err)
 	}
-	if len(defaultDB) > 0 {
-		if err := os.WriteFile(dbPath, defaultDB, 0644); err != nil {
+	if len(run.EmbeddedDB()) > 0 {
+		if err := os.WriteFile(dbPath, run.EmbeddedDB(), 0644); err != nil {
 			return "", fmt.Errorf("writing database to %s: %w", dbPath, err)
 		}
 	} else {

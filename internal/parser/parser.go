@@ -902,6 +902,11 @@ func (p *parser) parseSetlistQuery() (*ast.SetlistQuery, error) {
 		return nil, err
 	}
 	q.Date = date
+	if p.curIs(token.AS) {
+		p.advance()
+		q.OutputFmt = p.parseOutputFormat()
+		p.advance()
+	}
 	return q, p.optionalSemicolon()
 }
 
