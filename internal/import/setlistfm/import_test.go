@@ -2,6 +2,7 @@ package setlistfm
 
 import (
 	"database/sql"
+	"fmt"
 	"testing"
 
 	"github.com/gdql/gdql/internal/data/sqlite"
@@ -229,6 +230,104 @@ func TestSplitSongName(t *testing.T) {
 	names, segue = splitSongName("")
 	require.Nil(t, names)
 	require.Nil(t, segue)
+}
+
+func TestInferSetBreaks_WithDrums(t *testing.T) {
+	songs := []Song{
+		{Name: "Jack Straw"}, {Name: "Sugaree"}, {Name: "Cassidy"},
+		{Name: "Deal"}, {Name: "Brown Eyed Women"}, {Name: "Loser"},
+		// Set 2 starts at Drums
+		{Name: "Scarlet Begonias"}, {Name: "Fire on the Mountain"},
+		{Name: "Drums"}, {Name: "Space"}, {Name: "Wharf Rat"},
+		{Name: "Sugar Magnolia"},
+		// Encore
+		{Name: "One More Saturday Night"},
+	}
+	sets := inferSetBreaks(songs)
+	require.Len(t, sets, 3, "should produce set1, set2, encore")
+	require.Equal(t, "Set 1", sets[0].Name)
+	require.Len(t, sets[0].Songs, 8, "set 1: everything before Drums")
+	require.Equal(t, "Set 2", sets[1].Name)
+	require.Len(t, sets[1].Songs, 4, "set 2: Drums through Sugar Magnolia")
+	require.Equal(t, 1, sets[2].Encore)
+	require.Len(t, sets[2].Songs, 1, "encore: One More Saturday Night")
+}
+
+func TestInferSetBreaks_NoDrums_LongShow(t *testing.T) {
+	songs := make([]Song, 20)
+	for i := range songs {
+		songs[i] = Song{Name: fmt.Sprintf("Song %d", i+1)}
+	}
+	// Put an encore marker at the end
+	songs[19] = Song{Name: "U.S. Blues"}
+
+	sets := inferSetBreaks(songs)
+	require.Len(t, sets, 3)
+	require.Equal(t, "Set 1", sets[0].Name)
+	require.Equal(t, "Set 2", sets[1].Name)
+	require.Equal(t, 1, sets[2].Encore)
+	require.Equal(t, "U.S. Blues", sets[2].Songs[0].Name)
+}
+
+func TestInferSetBreaks_ShortShow(t *testing.T) {
+	songs := []Song{
+		{Name: "A"}, {Name: "B"}, {Name: "C"}, {Name: "D"}, {Name: "E"},
+	}
+	sets := inferSetBreaks(songs)
+	require.Len(t, sets, 1, "short show stays as one set")
+	require.Len(t, sets[0].Songs, 5)
+}
+
+func TestUpsertShow_InfersSetBreaks(t *testing.T) {
+	dir := t.TempDir()
+	dbPath := dir + "/test.db"
+	require.NoError(t, sqlite.InitSchema(dbPath))
+	db, err := sql.Open("sqlite", dbPath)
+	require.NoError(t, err)
+	defer db.Close()
+
+	venueByKey := make(map[string]int64)
+	songByName := make(map[string]int64)
+	var nextVenueID, nextShowID, nextSongID, nextPerfID int64 = 1, 1, 1, 1
+
+	// Single set with Drums — should be split
+	sl := &Setlist{
+		EventDate: "31-12-1976",
+		Venue: Venue{
+			Name: "Cow Palace",
+			City: &City{Name: "Daly City", StateCode: "CA", Country: &Country{Code: "US"}},
+		},
+		Set: []Set{{
+			Songs: []Song{
+				{Name: "Jack Straw"}, {Name: "Sugaree"}, {Name: "Cassidy"},
+				{Name: "Deal"}, {Name: "Brown Eyed Women"}, {Name: "Loser"},
+				{Name: "Scarlet Begonias"}, {Name: "Fire on the Mountain"},
+				{Name: "Drums"}, {Name: "Space"}, {Name: "Wharf Rat"},
+				{Name: "Sugar Magnolia"},
+				{Name: "One More Saturday Night"},
+			},
+		}},
+	}
+
+	added, err := upsertShow(db, sl, venueByKey, songByName, &nextVenueID, &nextShowID, &nextSongID, &nextPerfID)
+	require.NoError(t, err)
+	require.True(t, added)
+
+	// Check set numbers
+	rows, err := db.Query("SELECT set_number, count(*) FROM performances GROUP BY set_number ORDER BY set_number")
+	require.NoError(t, err)
+	defer rows.Close()
+
+	setMap := make(map[int]int)
+	for rows.Next() {
+		var sn, cnt int
+		require.NoError(t, rows.Scan(&sn, &cnt))
+		setMap[sn] = cnt
+	}
+	require.NoError(t, rows.Err())
+	require.Greater(t, len(setMap), 1, "should have multiple sets, got: %v", setMap)
+	require.Contains(t, setMap, 1, "should have set 1")
+	require.Contains(t, setMap, 2, "should have set 2")
 }
 
 func TestUpsertShow_SingleSetAllInSet1(t *testing.T) {

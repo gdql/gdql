@@ -179,8 +179,14 @@ func upsertShow(db *sql.DB, sl *Setlist, venueByKey map[string]int64, songByName
 	}
 	*nextShowID++
 
+	// If the API gave us a single set with many songs, infer set breaks
+	sets := sl.Set
+	if len(sets) == 1 && len(sets[0].Songs) > 8 {
+		sets = inferSetBreaks(sets[0].Songs)
+	}
+
 	setNumber := 0
-	for _, set := range sl.Set {
+	for _, set := range sets {
 		if set.Encore > 0 {
 			setNumber = 3 + set.Encore // encore 1 → 4, encore 2 → 5
 		} else {
@@ -242,6 +248,85 @@ func upsertShow(db *sql.DB, sl *Setlist, venueByKey map[string]int64, songByName
 		}
 	}
 	return true, nil
+}
+
+// inferSetBreaks splits a single flat set into set 1, set 2, and encore
+// using Grateful Dead-specific heuristics. Only applies when the API
+// returns all songs in one set object (common for older shows).
+func inferSetBreaks(songs []Song) []Set {
+	if len(songs) <= 8 {
+		return []Set{{Songs: songs}}
+	}
+
+	// Flatten song names for analysis
+	names := make([]string, len(songs))
+	for i, s := range songs {
+		names[i] = strings.ToLower(strings.TrimSpace(s.Name))
+	}
+
+	// Find Drums/Space — reliable set 2 marker
+	drumsIdx := -1
+	for i, n := range names {
+		if n == "drums" || n == "space" || n == "drums/space" || n == "rhythm devils" {
+			drumsIdx = i
+			break
+		}
+	}
+
+	// Known encore openers (last few songs)
+	encoreOpeners := map[string]bool{
+		"one more saturday night": true, "u.s. blues": true,
+		"johnny b. goode": true, "not fade away": true,
+		"brokedown palace": true, "we bid you goodnight": true,
+		"and we bid you good night": true, "box of rain": true,
+		"satisfaction": true, "turn on your lovelight": true,
+	}
+
+	// Find encore start — scan from end, max 3 songs
+	encoreStart := len(songs)
+	for i := len(songs) - 1; i >= len(songs)-3 && i >= 0; i-- {
+		if encoreOpeners[names[i]] {
+			encoreStart = i
+			break
+		}
+	}
+	// If Drums was found very late and no encore marker, don't misidentify
+	if encoreStart == len(songs) && drumsIdx >= 0 && drumsIdx < len(songs)-3 {
+		// No explicit encore, that's fine
+	}
+
+	var sets []Set
+	if drumsIdx >= 0 {
+		// Set 1: everything before Drums
+		// Set 2: Drums through end (or through encore start)
+		sets = append(sets, Set{Name: "Set 1", Songs: songs[:drumsIdx]})
+		if encoreStart < len(songs) && encoreStart > drumsIdx {
+			sets = append(sets, Set{Name: "Set 2", Songs: songs[drumsIdx:encoreStart]})
+			sets = append(sets, Set{Encore: 1, Songs: songs[encoreStart:]})
+		} else {
+			sets = append(sets, Set{Name: "Set 2", Songs: songs[drumsIdx:]})
+		}
+	} else if len(songs) > 12 {
+		// No Drums found — split roughly in half
+		mid := len(songs) / 2
+		if encoreStart < len(songs) {
+			sets = append(sets, Set{Name: "Set 1", Songs: songs[:mid]})
+			sets = append(sets, Set{Name: "Set 2", Songs: songs[mid:encoreStart]})
+			sets = append(sets, Set{Encore: 1, Songs: songs[encoreStart:]})
+		} else {
+			sets = append(sets, Set{Name: "Set 1", Songs: songs[:mid]})
+			sets = append(sets, Set{Name: "Set 2", Songs: songs[mid:]})
+		}
+	} else {
+		// Short-ish show with no Drums — leave as one set, maybe with encore
+		if encoreStart < len(songs) {
+			sets = append(sets, Set{Name: "Set 1", Songs: songs[:encoreStart]})
+			sets = append(sets, Set{Encore: 1, Songs: songs[encoreStart:]})
+		} else {
+			sets = append(sets, Set{Songs: songs})
+		}
+	}
+	return sets
 }
 
 func splitSongName(s string) (names []string, segueAfter []bool) {
