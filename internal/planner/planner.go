@@ -60,7 +60,7 @@ func (p *planner) planShow(ctx context.Context, s *ast.ShowQuery) (*ir.QueryIR, 
 		}
 	}
 	if s.Where != nil {
-		for _, c := range s.Where.Conditions {
+		for i, c := range s.Where.Conditions {
 			if seg, ok := c.(*ast.SegueCondition); ok {
 				chain, err := p.segueToIR(ctx, seg)
 				if err != nil {
@@ -74,6 +74,10 @@ func (p *planner) planShow(ctx context.Context, s *ast.ShowQuery) (*ir.QueryIR, 
 				return nil, p.wrapSongNotFound(ctx, err)
 			}
 			if cond != nil {
+				// Add the operator *before* this condition (between prev and this)
+				if len(out.Conditions) > 0 && i > 0 && i-1 < len(s.Where.Operators) {
+					out.ConditionOps = append(out.ConditionOps, astLogicOpToIR(s.Where.Operators[i-1]))
+				}
 				out.Conditions = append(out.Conditions, cond)
 			}
 		}
@@ -174,7 +178,7 @@ func (p *planner) planCount(ctx context.Context, c *ast.CountQuery) (*ir.QueryIR
 		}
 	}
 	if c.Where != nil {
-		for _, cond := range c.Where.Conditions {
+		for i, cond := range c.Where.Conditions {
 			if seg, ok := cond.(*ast.SegueCondition); ok {
 				chain, err := p.segueToIR(ctx, seg)
 				if err != nil {
@@ -188,6 +192,9 @@ func (p *planner) planCount(ctx context.Context, c *ast.CountQuery) (*ir.QueryIR
 				return nil, p.wrapSongNotFound(ctx, err)
 			}
 			if irCond != nil {
+				if len(out.Conditions) > 0 && i > 0 && i-1 < len(c.Where.Operators) {
+					out.ConditionOps = append(out.ConditionOps, astLogicOpToIR(c.Where.Operators[i-1]))
+				}
 				out.Conditions = append(out.Conditions, irCond)
 			}
 		}

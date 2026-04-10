@@ -47,31 +47,34 @@ func BuildSegueShowsSQL(q *ir.QueryIR) (*SQLQuery, error) {
 	}
 	b.WriteString(" JOIN shows s ON p1.show_id = s.id LEFT JOIN venues v ON s.venue_id = v.id")
 
-	var whereParts []string
+	// Fixed parts (venue, date) always ANDed
+	var fixedParts []string
 	if q.VenueName != "" {
-		whereParts = append(whereParts, "(v.name LIKE ? OR v.city LIKE ?)")
+		fixedParts = append(fixedParts, "(v.name LIKE ? OR v.city LIKE ?)")
 		args = append(args, "%"+q.VenueName+"%", "%"+q.VenueName+"%")
 	}
 	if q.DateRange != nil {
-		whereParts = append(whereParts, "s.date >= ? AND s.date <= ?")
+		fixedParts = append(fixedParts, "s.date >= ? AND s.date <= ?")
 		args = append(args, formatDate(q.DateRange.Start), formatDate(q.DateRange.End))
 	}
+	// Condition parts respect AND/OR operators
+	var condParts []string
 	for _, c := range q.Conditions {
 		switch x := c.(type) {
 		case *ir.PositionConditionIR:
 			if x.SegueChain != nil {
 				part, a := positionConditionWithSegue(x)
-				whereParts = append(whereParts, part)
+				condParts = append(condParts, part)
 				args = append(args, a...)
 			} else {
 				setNum := setPositionToNumber(x.Set)
 				switch x.Operator {
 				case ir.PosOpened:
-					whereParts = append(whereParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.set_number = ? AND px.song_id = ? AND px.is_opener = 1)")
+					condParts = append(condParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.set_number = ? AND px.song_id = ? AND px.is_opener = 1)")
 				case ir.PosClosed:
-					whereParts = append(whereParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.set_number = ? AND px.song_id = ? AND px.is_closer = 1)")
+					condParts = append(condParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.set_number = ? AND px.song_id = ? AND px.is_closer = 1)")
 				case ir.PosEquals:
-					whereParts = append(whereParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.set_number = ? AND px.song_id = ?)")
+					condParts = append(condParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.set_number = ? AND px.song_id = ?)")
 				}
 				args = append(args, setNum, x.SongID)
 			}
@@ -83,18 +86,40 @@ func BuildSegueShowsSQL(q *ir.QueryIR) (*SQLQuery, error) {
 			}
 			inClause := "px.song_id IN (" + strings.Join(placeholders, ",") + ")"
 			if x.Negated {
-				whereParts = append(whereParts, "NOT EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND "+inClause+")")
+				condParts = append(condParts, "NOT EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND "+inClause+")")
 			} else {
-				whereParts = append(whereParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND "+inClause+")")
+				condParts = append(condParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND "+inClause+")")
 			}
 		case *ir.GuestConditionIR:
-			whereParts = append(whereParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.guest IS NOT NULL AND (px.guest = ? OR px.guest LIKE ?))")
+			condParts = append(condParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.guest IS NOT NULL AND (px.guest = ? OR px.guest LIKE ?))")
 			args = append(args, x.Name, "%"+x.Name+"%")
 		case *ir.SegueIntoConditionIR:
 			part, a := segueIntoCondition(x)
-			whereParts = append(whereParts, part)
+			condParts = append(condParts, part)
 			args = append(args, a...)
 		}
+	}
+	// Build combined WHERE
+	var whereParts []string
+	whereParts = append(whereParts, fixedParts...)
+	if len(condParts) > 0 {
+		// Join conditions with their operators
+		var condSQL strings.Builder
+		condSQL.WriteString(condParts[0])
+		for i := 1; i < len(condParts); i++ {
+			op := " AND "
+			if i-1 < len(q.ConditionOps) && q.ConditionOps[i-1] == ir.OpOr {
+				op = " OR "
+			}
+			condSQL.WriteString(op)
+			condSQL.WriteString(condParts[i])
+		}
+		// Wrap in parens if mixed with fixed parts and has OR
+		condStr := condSQL.String()
+		if len(fixedParts) > 0 && strings.Contains(condStr, " OR ") {
+			condStr = "(" + condStr + ")"
+		}
+		whereParts = append(whereParts, condStr)
 	}
 	if len(whereParts) > 0 {
 		b.WriteString(" WHERE ")

@@ -75,24 +75,27 @@ func (g *generator) genShows(q *ir.QueryIR) (*SQLQuery, error) {
 }
 
 func (g *generator) whereShows(q *ir.QueryIR) (clause string, args []interface{}) {
-	var parts []string
+	// Fixed parts (venue, tour, date) — always ANDed
+	var fixedParts []string
 	if q.VenueName != "" {
-		parts = append(parts, "(v.name LIKE ? OR v.city LIKE ?)")
+		fixedParts = append(fixedParts, "(v.name LIKE ? OR v.city LIKE ?)")
 		args = append(args, "%"+q.VenueName+"%", "%"+q.VenueName+"%")
 	}
 	if q.TourName != "" {
-		parts = append(parts, "s.tour LIKE ?")
+		fixedParts = append(fixedParts, "s.tour LIKE ?")
 		args = append(args, "%"+q.TourName+"%")
 	}
 	if q.DateRange != nil {
-		parts = append(parts, "s.date >= ? AND s.date <= ?")
+		fixedParts = append(fixedParts, "s.date >= ? AND s.date <= ?")
 		args = append(args, formatDate(q.DateRange.Start), formatDate(q.DateRange.End))
 	}
+	// Condition parts — respect AND/OR operators
+	var condParts []string
 	for _, c := range q.Conditions {
 		switch x := c.(type) {
 		case *ir.PositionConditionIR:
 			part, a := g.positionCondition(x)
-			parts = append(parts, part)
+			condParts = append(condParts, part)
 			args = append(args, a...)
 		case *ir.PlayedConditionIR:
 			placeholders := make([]string, len(x.SongIDs))
@@ -102,20 +105,40 @@ func (g *generator) whereShows(q *ir.QueryIR) (clause string, args []interface{}
 			}
 			inClause := "p.song_id IN (" + strings.Join(placeholders, ",") + ")"
 			if x.Negated {
-				parts = append(parts, "NOT EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND "+inClause+")")
+				condParts = append(condParts, "NOT EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND "+inClause+")")
 			} else {
-				parts = append(parts, "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND "+inClause+")")
+				condParts = append(condParts, "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND "+inClause+")")
 			}
 		case *ir.GuestConditionIR:
-			parts = append(parts, "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.guest IS NOT NULL AND p.guest != '' AND (p.guest = ? OR p.guest LIKE ?))")
+			condParts = append(condParts, "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.guest IS NOT NULL AND p.guest != '' AND (p.guest = ? OR p.guest LIKE ?))")
 			args = append(args, x.Name, "%"+x.Name+"%")
 		case *ir.SegueIntoConditionIR:
 			part, a := segueIntoCondition(x)
-			parts = append(parts, part)
+			condParts = append(condParts, part)
 			args = append(args, a...)
 		}
 	}
-	return strings.Join(parts, " AND "), args
+	// Build combined WHERE
+	var whereParts []string
+	whereParts = append(whereParts, fixedParts...)
+	if len(condParts) > 0 {
+		var condSQL strings.Builder
+		condSQL.WriteString(condParts[0])
+		for i := 1; i < len(condParts); i++ {
+			op := " AND "
+			if i-1 < len(q.ConditionOps) && q.ConditionOps[i-1] == ir.OpOr {
+				op = " OR "
+			}
+			condSQL.WriteString(op)
+			condSQL.WriteString(condParts[i])
+		}
+		condStr := condSQL.String()
+		if len(fixedParts) > 0 && strings.Contains(condStr, " OR ") {
+			condStr = "(" + condStr + ")"
+		}
+		whereParts = append(whereParts, condStr)
+	}
+	return strings.Join(whereParts, " AND "), args
 }
 
 // segueIntoCondition generates SQL for standalone segue-into conditions: >"Song", >>"Song", ~>"Song".

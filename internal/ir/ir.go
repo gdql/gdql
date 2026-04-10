@@ -24,9 +24,10 @@ type QueryIR struct {
 	VenueName  string     // for SHOWS AT "venue"
 	TourName   string     // for SHOWS TOUR "name"
 	IsLast     bool       // for FIRST/LAST
-	SegueChain *SegueChainIR
-	Conditions []ConditionIR
-	OrderBy    *OrderByIR
+	SegueChain     *SegueChainIR
+	Conditions     []ConditionIR
+	ConditionOps   []LogicOp // AND/OR between conditions (len = len(Conditions)-1)
+	OrderBy        *OrderByIR
 	Limit      *int
 	OutputFmt  OutputFormat
 }
