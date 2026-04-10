@@ -16,8 +16,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strconv"
 	"github.com/gdql/gdql/internal/data/sqlite"
 	"github.com/gdql/gdql/internal/import/canonical"
+	"github.com/gdql/gdql/internal/import/deadlists"
 	"github.com/gdql/gdql/internal/import/setlistfm"
 
 	_ "modernc.org/sqlite"
@@ -122,6 +124,18 @@ func main() {
 		}
 		fmt.Fprintf(os.Stderr, "Aliases: %d loaded, %d skipped\n", loaded, skipped)
 
+	case "deadlists":
+		firstYear, lastYear := 1965, 1995
+		if len(args) >= 2 {
+			firstYear, _ = strconv.Atoi(args[1])
+		}
+		if len(args) >= 3 {
+			lastYear, _ = strconv.Atoi(args[2])
+		}
+		if err := importDeadlists(dbPath, firstYear, lastYear); err != nil {
+			fatal(err)
+		}
+
 	case "fix-sets":
 		if err := fixSets(dbPath); err != nil {
 			fatal(err)
@@ -132,6 +146,51 @@ func main() {
 		printUsage()
 		os.Exit(1)
 	}
+}
+
+// importDeadlists crawls setlists.net for shows with proper set structure.
+func importDeadlists(dbPath string, firstYear, lastYear int) error {
+	if err := sqlite.InitSchema(dbPath); err != nil {
+		return err
+	}
+	db, err := sqlite.Open(dbPath)
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	client := deadlists.NewClient()
+	var allShows []canonical.Show
+
+	for year := firstYear; year <= lastYear; year++ {
+		ids, err := client.FetchShowIDs(year)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Warning: %d: %v\n", year, err)
+			continue
+		}
+		fmt.Fprintf(os.Stderr, "%d: %d shows\n", year, len(ids))
+
+		for _, id := range ids {
+			show, err := client.FetchShow(id)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "  show %d: %v\n", id, err)
+				continue
+			}
+			allShows = append(allShows, *show)
+		}
+	}
+
+	if len(allShows) == 0 {
+		fmt.Fprintln(os.Stderr, "No shows fetched.")
+		return nil
+	}
+
+	showsAdded, songsAdded, err := canonical.WriteShows(context.Background(), db.DB(), allShows)
+	if err != nil {
+		return err
+	}
+	fmt.Fprintf(os.Stderr, "Import complete: %d shows, %d songs (from %d fetched)\n", showsAdded, songsAdded, len(allShows))
+	return nil
 }
 
 // fixSets re-infers set numbers for all shows that have everything in set 1.
@@ -283,11 +342,12 @@ func printUsage() {
 	fmt.Fprintln(w, "Usage: gdql-import [-db <path>] <command> [args]")
 	fmt.Fprintln(w)
 	fmt.Fprintln(w, "Commands:")
-	fmt.Fprintln(w, "  setlistfm          Import shows from setlist.fm (requires SETLISTFM_API_KEY)")
-	fmt.Fprintln(w, "  json <file>        Import from canonical JSON")
-	fmt.Fprintln(w, "  lyrics <file>      Import lyrics from JSON")
-	fmt.Fprintln(w, "  aliases <file>     Import song alias mappings")
-	fmt.Fprintln(w, "  fix-sets           Re-infer set numbers for shows with flat set data")
+	fmt.Fprintln(w, "  deadlists [first] [last]   Crawl setlists.net for proper set data (default: 1965-1995)")
+	fmt.Fprintln(w, "  setlistfm                  Import shows from setlist.fm (requires SETLISTFM_API_KEY)")
+	fmt.Fprintln(w, "  json <file>                Import from canonical JSON")
+	fmt.Fprintln(w, "  lyrics <file>              Import lyrics from JSON")
+	fmt.Fprintln(w, "  aliases <file>             Import song alias mappings")
+	fmt.Fprintln(w, "  fix-sets                   Re-infer set numbers for shows with flat set data")
 	fmt.Fprintln(w)
 	fmt.Fprintln(w, "Options:")
 	fmt.Fprintln(w, "  -db <path>         Database path (default: shows.db, or GDQL_DB env)")
