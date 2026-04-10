@@ -25,10 +25,10 @@ func TestClient_GetSetlist_Success(t *testing.T) {
 		"versionId": "v1",
 		"eventDate": "08-05-1977",
 		"venue": {"id":"v1","name":"Barton Hall","city":{"name":"Ithaca","stateCode":"NY","country":{"code":"US","name":"USA"}}},
-		"set": [
+		"sets": {"set": [
 			{"name":"Set 1","encore":0,"song":[{"name":"Minglewood Blues"},{"name":"Loser"}]},
 			{"name":"","encore":1,"song":[{"name":"One More Saturday Night"}]}
-		]
+		]}
 	}`
 	c := newTestClient(t, func(w http.ResponseWriter, r *http.Request) {
 		require.Equal(t, "test-key", r.Header.Get("x-api-key"))

@@ -70,15 +70,21 @@ type SetlistsResponse struct {
 
 // Setlist is a single setlist (one show).
 type Setlist struct {
-	ID          string `json:"id"`
-	VersionID   string `json:"versionId"`
-	EventDate   string `json:"eventDate"`   // dd-MM-yyyy
-	LastUpdated string `json:"lastUpdated"`
-	Info        string `json:"info"`
-	URL         string `json:"url"`
-	Venue       Venue  `json:"venue"`
-	Tour        *Tour  `json:"tour"`
-	Set         []Set  `json:"set"`
+	ID          string  `json:"id"`
+	VersionID   string  `json:"versionId"`
+	EventDate   string  `json:"eventDate"` // dd-MM-yyyy
+	LastUpdated string  `json:"lastUpdated"`
+	Info        string  `json:"info"`
+	URL         string  `json:"url"`
+	Venue       Venue   `json:"venue"`
+	Tour        *Tour   `json:"tour"`
+	Sets        SetList `json:"sets"` // API nests as {"sets": {"set": [...]}}
+	Set         []Set   `json:"-"`    // populated from Sets.Set after decode
+}
+
+// SetList wraps the inner set array from the API response.
+type SetList struct {
+	Set []Set `json:"set"`
 }
 
 // Venue is the venue of a setlist.
@@ -123,6 +129,13 @@ type Song struct {
 	Tape bool   `json:"tape"`
 }
 
+// fixSets copies Sets.Set into the flat Set field after JSON decode.
+func (sl *Setlist) fixSets() {
+	if len(sl.Set) == 0 && len(sl.Sets.Set) > 0 {
+		sl.Set = sl.Sets.Set
+	}
+}
+
 // GetSetlist fetches a single setlist by version ID (full details including sets/songs).
 // On 429 Too Many Requests retries up to 3 times with backoff (respecting Retry-After if present).
 func (c *Client) GetSetlist(versionID string) (*Setlist, error) {
@@ -148,6 +161,7 @@ func (c *Client) GetSetlist(versionID string) (*Setlist, error) {
 			if err := json.NewDecoder(resp.Body).Decode(&out); err != nil {
 				return nil, err
 			}
+			out.fixSets()
 			return &out, nil
 		}
 		io.Copy(io.Discard, resp.Body)
@@ -195,6 +209,9 @@ func (c *Client) GetArtistSetlists(mbid string, page int) (*SetlistsResponse, er
 			var out SetlistsResponse
 			if err := json.NewDecoder(resp.Body).Decode(&out); err != nil {
 				return nil, err
+			}
+			for i := range out.Setlist {
+				out.Setlist[i].fixSets()
 			}
 			return &out, nil
 		}
