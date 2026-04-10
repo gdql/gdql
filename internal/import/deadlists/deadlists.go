@@ -269,28 +269,53 @@ func parseSongs(body string) []canonical.SongInSet {
 }
 
 func parseVenue(html string) (venue, city, state string) {
-	// Look for the title tag or show header
-	titleRe := regexp.MustCompile(`<title>([^<]+)</title>`)
-	m := titleRe.FindStringSubmatch(html)
-	if len(m) < 2 {
-		return "Unknown", "", ""
+	// Venue is in a bold tag after the date, before Set 1:
+	// <b> The Mosque - Richmond, VA</b>
+	set1Idx := strings.Index(html, "Set 1:")
+	if set1Idx < 0 {
+		set1Idx = len(html)
 	}
-	title := strings.TrimSpace(m[1])
-	// Title format often: "Grateful Dead Setlist - MM/DD/YY - Venue, City, ST"
-	parts := strings.SplitN(title, " - ", 3)
-	if len(parts) >= 3 {
-		venuePart := strings.TrimSpace(parts[2])
-		// Split venue from city/state
-		vParts := strings.Split(venuePart, ", ")
-		if len(vParts) >= 2 {
-			venue = strings.TrimSpace(vParts[0])
-			city = strings.TrimSpace(vParts[1])
-			if len(vParts) >= 3 {
-				state = strings.TrimSpace(vParts[2])
+	before := html[:set1Idx]
+	bolds := regexp.MustCompile(`<b>([^<]+)</b>`).FindAllStringSubmatch(before, -1)
+
+	// The venue is typically the last bold item before Set 1 that isn't
+	// the date or "N Show(s) Found"
+	for i := len(bolds) - 1; i >= 0; i-- {
+		text := strings.TrimSpace(bolds[i][1])
+		if text == "" {
+			continue
+		}
+		// Skip date patterns and "Show Found"
+		if dateRe.MatchString(text) || strings.Contains(text, "Show") {
+			continue
+		}
+		// Parse "Venue - City, ST" or "Venue, City, ST"
+		if idx := strings.Index(text, " - "); idx >= 0 {
+			venue = strings.TrimSpace(text[:idx])
+			location := strings.TrimSpace(text[idx+3:])
+			parts := strings.Split(location, ", ")
+			if len(parts) >= 1 {
+				city = strings.TrimSpace(parts[0])
+			}
+			if len(parts) >= 2 {
+				state = strings.TrimSpace(parts[1])
 			}
 			return venue, city, state
 		}
-		return venuePart, "", ""
+		// Try "Venue, City, ST" format
+		parts := strings.Split(text, ", ")
+		if len(parts) >= 3 {
+			venue = strings.TrimSpace(parts[0])
+			city = strings.TrimSpace(parts[1])
+			state = strings.TrimSpace(parts[2])
+			return venue, city, state
+		}
+		if len(parts) >= 2 {
+			venue = strings.TrimSpace(parts[0])
+			city = strings.TrimSpace(parts[1])
+			return venue, city, ""
+		}
+		return text, "", ""
 	}
 	return "Unknown", "", ""
 }
