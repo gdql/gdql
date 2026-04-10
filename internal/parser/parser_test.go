@@ -465,6 +465,46 @@ func TestParseError_NegativeLimit(t *testing.T) {
 	require.Error(t, err)
 }
 
+// === NOT PLAYED ===
+
+func TestParseShowQuery_NotPlayed(t *testing.T) {
+	cases := []string{
+		`SHOWS WHERE NOT PLAYED "Saint Stephen";`,
+		`SHOWS WHERE NOT "Saint Stephen";`,
+	}
+	for _, c := range cases {
+		t.Run(c, func(t *testing.T) {
+			p := NewFromString(c)
+			q, err := p.Parse()
+			require.NoError(t, err)
+			sq := q.(*ast.ShowQuery)
+			require.Len(t, sq.Where.Conditions, 1)
+			pc, ok := sq.Where.Conditions[0].(*ast.PlayedCondition)
+			require.True(t, ok)
+			assert.True(t, pc.Negated)
+			assert.Equal(t, "Saint Stephen", pc.Song.Name)
+		})
+	}
+}
+
+func TestParseShowQuery_PlayedAndNotPlayed(t *testing.T) {
+	p := NewFromString(`SHOWS WHERE PLAYED "Dark Star" AND NOT PLAYED "Saint Stephen";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.Len(t, sq.Where.Conditions, 2)
+	require.Len(t, sq.Where.Operators, 1)
+	assert.Equal(t, ast.OpAnd, sq.Where.Operators[0])
+
+	played := sq.Where.Conditions[0].(*ast.PlayedCondition)
+	assert.False(t, played.Negated)
+	assert.Equal(t, "Dark Star", played.Song.Name)
+
+	notPlayed := sq.Where.Conditions[1].(*ast.PlayedCondition)
+	assert.True(t, notPlayed.Negated)
+	assert.Equal(t, "Saint Stephen", notPlayed.Song.Name)
+}
+
 // === SECURITY: ORDER BY SQL injection regression ===
 
 func TestParseError_OrderBySQLInjectionBlocked(t *testing.T) {

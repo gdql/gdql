@@ -83,9 +83,10 @@ type LengthConditionIR struct {
 	Seconds  int
 }
 
-// PlayedConditionIR: PLAYED "Song"
+// PlayedConditionIR: PLAYED "Song" or NOT PLAYED "Song"
 type PlayedConditionIR struct {
-	SongID int
+	SongID  int
+	Negated bool
 }
 
 // GuestConditionIR: GUEST "Name"

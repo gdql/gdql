@@ -159,9 +159,10 @@ const (
 	PosEquals
 )
 
-// PlayedCondition represents: PLAYED "Song"
+// PlayedCondition represents: PLAYED "Song" or NOT PLAYED "Song"
 type PlayedCondition struct {
-	Song *SongRef
+	Song    *SongRef
+	Negated bool
 }
 
 // LengthCondition represents: LENGTH("Song") > 20min or LENGTH > 20min

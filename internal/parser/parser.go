@@ -296,17 +296,18 @@ func (p *parser) parseWhereClause() (*ast.WhereClause, error) {
 }
 
 func (p *parser) parseCondition() (ast.Condition, error) {
-	// NOT song_ref
+	// NOT PLAYED "Song" / NOT "Song" — negated played condition
 	if p.curIs(token.NOT) {
 		p.advance()
+		// Optional PLAYED keyword: NOT PLAYED "X" === NOT "X"
+		if p.curIs(token.PLAYED) {
+			p.advance()
+		}
 		ref, err := p.parseSongRef()
 		if err != nil {
 			return nil, err
 		}
-		ref.Negated = true
-		// Single NOT "X" isn't a full condition in our grammar; treat as segue with one negated song (unusual). Or require segue after.
-		// For simplicity: NOT "X" means played condition with negated (we don't support that in WHERE). Omit for now.
-		return &ast.PlayedCondition{Song: ref}, nil
+		return &ast.PlayedCondition{Song: ref, Negated: true}, nil
 	}
 
 	// SET1 OPENED "Song" / ENCORE = "Song"
