@@ -253,8 +253,9 @@ func (g *generator) genSongs(q *ir.QueryIR) (*SQLQuery, error) {
 			}
 			likes := make([]string, len(x.Words))
 			for i, w := range x.Words {
-				likes[i] = "l.lyrics LIKE ?"
-				args = append(args, "%"+w+"%")
+				// Whole-word match: normalize punctuation to spaces, then match with space boundaries
+				likes[i] = "(' ' || REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(l.lyrics), ',', ' '), '.', ' '), '!', ' '), '?', ' '), '''', ' ') || ' ') LIKE ?"
+				args = append(args, "% "+strings.ToLower(w)+" %")
 			}
 			op := " AND "
 			if x.Operator == ir.OpOr {
