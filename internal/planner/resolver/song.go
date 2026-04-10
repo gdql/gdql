@@ -8,6 +8,7 @@ import (
 // SongResolver resolves song names to canonical IDs.
 type SongResolver interface {
 	Resolve(ctx context.Context, name string) (int, error)
+	ResolveVariants(ctx context.Context, name string) ([]int, error)
 	ResolveFuzzy(ctx context.Context, name string) ([]SongMatch, error)
 	Suggest(ctx context.Context, name string) []string
 }
@@ -46,6 +47,15 @@ func (s *StaticResolver) Resolve(ctx context.Context, name string) (int, error) 
 		}
 	}
 	return 0, &ErrSongNotFound{Name: name}
+}
+
+// ResolveVariants returns just the resolved ID (StaticResolver has no duplicates).
+func (s *StaticResolver) ResolveVariants(ctx context.Context, name string) ([]int, error) {
+	id, err := s.Resolve(ctx, name)
+	if err != nil {
+		return nil, err
+	}
+	return []int{id}, nil
 }
 
 // ErrSongNotFound is returned when a song name cannot be resolved.

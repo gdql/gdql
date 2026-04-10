@@ -8,11 +8,12 @@ import (
 
 // DataSource is a mock that returns configurable results (for executor/planner tests without a real DB).
 type DataSource struct {
-	ExecuteQueryFunc func(ctx context.Context, sql string, args ...interface{}) (*data.ResultSet, error)
-	GetSongFunc      func(ctx context.Context, name string) (*data.Song, error)
-	GetSongByIDFunc  func(ctx context.Context, id int) (*data.Song, error)
-	SearchSongsFunc  func(ctx context.Context, pattern string) ([]*data.Song, error)
-	CloseFunc        func() error
+	ExecuteQueryFunc       func(ctx context.Context, sql string, args ...interface{}) (*data.ResultSet, error)
+	GetSongFunc            func(ctx context.Context, name string) (*data.Song, error)
+	GetSongByIDFunc        func(ctx context.Context, id int) (*data.Song, error)
+	GetSongVariantIDsFunc  func(ctx context.Context, name string) ([]int, error)
+	SearchSongsFunc        func(ctx context.Context, pattern string) ([]*data.Song, error)
+	CloseFunc              func() error
 }
 
 // ExecuteQuery calls ExecuteQueryFunc if set, else returns empty result.
@@ -37,6 +38,18 @@ func (m *DataSource) GetSongByID(ctx context.Context, id int) (*data.Song, error
 		return m.GetSongByIDFunc(ctx, id)
 	}
 	return nil, nil
+}
+
+// GetSongVariantIDs calls the func if set, else returns just the resolved song's ID.
+func (m *DataSource) GetSongVariantIDs(ctx context.Context, name string) ([]int, error) {
+	if m.GetSongVariantIDsFunc != nil {
+		return m.GetSongVariantIDsFunc(ctx, name)
+	}
+	s, _ := m.GetSong(ctx, name)
+	if s == nil {
+		return nil, nil
+	}
+	return []int{s.ID}, nil
 }
 
 // SearchSongs calls SearchSongsFunc if set, else returns nil slice.

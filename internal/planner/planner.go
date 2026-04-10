@@ -247,11 +247,11 @@ func (p *planner) conditionToIR(ctx context.Context, c ast.Condition) (ir.Condit
 			SongID:   id,
 		}, nil
 	case *ast.PlayedCondition:
-		id, err := p.songResolver.Resolve(ctx, x.Song.Name)
+		ids, err := p.songResolver.ResolveVariants(ctx, x.Song.Name)
 		if err != nil {
 			return nil, p.wrapSongNotFound(ctx, err)
 		}
-		return &ir.PlayedConditionIR{SongID: id, Negated: x.Negated}, nil
+		return &ir.PlayedConditionIR{SongIDs: ids, Negated: x.Negated}, nil
 	case *ast.LengthCondition:
 		var songID *int
 		if x.Song != nil {

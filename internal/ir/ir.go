@@ -84,8 +84,10 @@ type LengthConditionIR struct {
 }
 
 // PlayedConditionIR: PLAYED "Song" or NOT PLAYED "Song"
+// SongIDs holds all variant IDs (e.g. "Fire on the Mountain" and "Fire On The Mountain")
+// so the EXISTS check matches any spelling.
 type PlayedConditionIR struct {
-	SongID  int
+	SongIDs []int
 	Negated bool
 }
 

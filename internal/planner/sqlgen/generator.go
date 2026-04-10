@@ -95,12 +95,17 @@ func (g *generator) whereShows(q *ir.QueryIR) (clause string, args []interface{}
 			parts = append(parts, part)
 			args = append(args, a...)
 		case *ir.PlayedConditionIR:
-			if x.Negated {
-				parts = append(parts, "NOT EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.song_id = ?)")
-			} else {
-				parts = append(parts, "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.song_id = ?)")
+			placeholders := make([]string, len(x.SongIDs))
+			for i, id := range x.SongIDs {
+				placeholders[i] = "?"
+				args = append(args, id)
 			}
-			args = append(args, x.SongID)
+			inClause := "p.song_id IN (" + strings.Join(placeholders, ",") + ")"
+			if x.Negated {
+				parts = append(parts, "NOT EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND "+inClause+")")
+			} else {
+				parts = append(parts, "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND "+inClause+")")
+			}
 		case *ir.GuestConditionIR:
 			parts = append(parts, "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.guest IS NOT NULL AND p.guest != '' AND (p.guest = ? OR p.guest LIKE ?))")
 			args = append(args, x.Name, "%"+x.Name+"%")

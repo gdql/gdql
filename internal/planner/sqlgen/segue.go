@@ -70,12 +70,17 @@ func BuildSegueShowsSQL(q *ir.QueryIR) (*SQLQuery, error) {
 			}
 			args = append(args, setNum, x.SongID)
 		case *ir.PlayedConditionIR:
-			if x.Negated {
-				whereParts = append(whereParts, "NOT EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.song_id = ?)")
-			} else {
-				whereParts = append(whereParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.song_id = ?)")
+			placeholders := make([]string, len(x.SongIDs))
+			for i, id := range x.SongIDs {
+				placeholders[i] = "?"
+				args = append(args, id)
 			}
-			args = append(args, x.SongID)
+			inClause := "px.song_id IN (" + strings.Join(placeholders, ",") + ")"
+			if x.Negated {
+				whereParts = append(whereParts, "NOT EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND "+inClause+")")
+			} else {
+				whereParts = append(whereParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND "+inClause+")")
+			}
 		case *ir.GuestConditionIR:
 			whereParts = append(whereParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.guest IS NOT NULL AND (px.guest = ? OR px.guest LIKE ?))")
 			args = append(args, x.Name, "%"+x.Name+"%")

@@ -10,6 +10,7 @@ type DataSource interface {
 	ExecuteQuery(ctx context.Context, sql string, args ...interface{}) (*ResultSet, error)
 	GetSong(ctx context.Context, name string) (*Song, error)
 	GetSongByID(ctx context.Context, id int) (*Song, error)
+	GetSongVariantIDs(ctx context.Context, name string) ([]int, error)
 	SearchSongs(ctx context.Context, pattern string) ([]*Song, error)
 	Close() error
 }

@@ -173,6 +173,33 @@ func (db *DB) scanSong(ctx context.Context, query string, args ...interface{}) (
 	return s, nil
 }
 
+// GetSongVariantIDs returns ALL song IDs whose normalized name matches.
+// Used by PLAYED/NOT PLAYED so multiple spellings of the same song are
+// treated as one for set-membership tests.
+func (db *DB) GetSongVariantIDs(ctx context.Context, name string) ([]int, error) {
+	target := normalizeName(name)
+	if target == "" {
+		return nil, nil
+	}
+	rows, err := db.conn.QueryContext(ctx, "SELECT id, name FROM songs")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var ids []int
+	for rows.Next() {
+		var id int
+		var n string
+		if err := rows.Scan(&id, &n); err != nil {
+			continue
+		}
+		if normalizeName(n) == target {
+			ids = append(ids, id)
+		}
+	}
+	return ids, rows.Err()
+}
+
 // getSongFuzzy finds a song by normalizing both the query and all song names
 // (stripping punctuation, lowercasing). When multiple variants match, prefers
 // the one with the most performances (via a subquery count).
