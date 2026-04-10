@@ -109,12 +109,44 @@ func (g *generator) whereShows(q *ir.QueryIR) (clause string, args []interface{}
 		case *ir.GuestConditionIR:
 			parts = append(parts, "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.guest IS NOT NULL AND p.guest != '' AND (p.guest = ? OR p.guest LIKE ?))")
 			args = append(args, x.Name, "%"+x.Name+"%")
+		case *ir.SegueIntoConditionIR:
+			part, a := segueIntoCondition(x)
+			parts = append(parts, part)
+			args = append(args, a...)
 		}
 	}
 	return strings.Join(parts, " AND "), args
 }
 
+// segueIntoCondition generates SQL for standalone segue-into conditions: >"Song", >>"Song", ~>"Song".
+// The segue_type is stored on the *preceding* performance row.
+func segueIntoCondition(c *ir.SegueIntoConditionIR) (string, []interface{}) {
+	placeholders := make([]string, len(c.SongIDs))
+	var args []interface{}
+	for i, id := range c.SongIDs {
+		placeholders[i] = "?"
+		args = append(args, id)
+	}
+	inClause := strings.Join(placeholders, ",")
+	var segueMatch string
+	switch c.Operator {
+	case ir.SegueOpTease:
+		segueMatch = "prev.segue_type = '~>'"
+	case ir.SegueOpBreak:
+		// >> means played in same show but not directly segued
+		segueMatch = "(prev.segue_type IS NULL OR prev.segue_type = '' OR prev.segue_type = '>>')"
+	default:
+		// > means directly segued into
+		segueMatch = "prev.segue_type = '>'"
+	}
+	sql := "EXISTS (SELECT 1 FROM performances p JOIN performances prev ON prev.show_id = p.show_id AND prev.set_number = p.set_number AND prev.position = p.position - 1 WHERE p.show_id = s.id AND p.song_id IN (" + inClause + ") AND " + segueMatch + ")"
+	return sql, args
+}
+
 func (g *generator) positionCondition(c *ir.PositionConditionIR) (string, []interface{}) {
+	if c.SegueChain != nil {
+		return positionConditionWithSegue(c)
+	}
 	setNum := setPositionToNumber(c.Set)
 	setFilter := " AND p.set_number = ?"
 	if setNum == 0 {
@@ -138,6 +170,51 @@ func (g *generator) positionCondition(c *ir.PositionConditionIR) (string, []inte
 		return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id" + setFilter + " AND p.song_id = ?)", []interface{}{setNum, c.SongID}
 	}
 	return "", nil
+}
+
+// positionConditionWithSegue handles OPENER/CLOSER with a segue chain.
+// E.g., OPENER ("Help on the Way" > "Slipknot!") means: first song in some set
+// is "Help on the Way" and next song is "Slipknot!" with adjacency.
+func positionConditionWithSegue(c *ir.PositionConditionIR) (string, []interface{}) {
+	chain := c.SegueChain
+	n := len(chain.SongIDs)
+	if n < 2 {
+		return "", nil
+	}
+	ops := chain.Operators
+	for len(ops) < n-1 {
+		ops = append(ops, ir.SegueOpSegue)
+	}
+
+	var b strings.Builder
+	var args []interface{}
+	b.WriteString("EXISTS (SELECT 1 FROM ")
+	for i := 0; i < n; i++ {
+		alias := fmt.Sprintf("pc%d", i+1)
+		if i == 0 {
+			b.WriteString("performances " + alias)
+		} else {
+			prev := fmt.Sprintf("pc%d", i)
+			b.WriteString(" JOIN performances " + alias + " ON " + joinForOp(prev, alias, ops[i-1]))
+		}
+	}
+	b.WriteString(" WHERE pc1.show_id = s.id")
+
+	// First song must be opener or closer
+	if c.Operator == ir.PosOpened {
+		b.WriteString(" AND pc1.is_opener = 1")
+	} else if c.Operator == ir.PosClosed {
+		// Last song in chain must be closer
+		b.WriteString(fmt.Sprintf(" AND pc%d.is_closer = 1", n))
+	}
+
+	// Match each song ID
+	for i, id := range chain.SongIDs {
+		fmt.Fprintf(&b, " AND pc%d.song_id = ?", i+1)
+		args = append(args, id)
+	}
+	b.WriteString(")")
+	return b.String(), args
 }
 
 func setPositionToNumber(s ir.SetPosition) int {

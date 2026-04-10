@@ -334,12 +334,25 @@ func (p *parser) parseCondition() (ast.Condition, error) {
 	}
 
 	// OPENER "Song" / CLOSER "Song" — any set opened/closed with this song
+	// OPENER ("Song" > "Song") / CLOSER ("Song" > "Song") — segue chain variant
 	if p.curIs(token.OPENER) || p.curIs(token.CLOSER) {
 		op := ast.PosOpened
 		if p.curIs(token.CLOSER) {
 			op = ast.PosClosed
 		}
 		p.advance()
+		if p.curIs(token.LPAREN) {
+			p.advance()
+			seg, err := p.parseSegueCondition()
+			if err != nil {
+				return nil, err
+			}
+			if !p.curIs(token.RPAREN) {
+				return nil, &errors.ParseError{Pos: p.cur.Pos, Message: "expected ) after segue chain", Query: p.query}
+			}
+			p.advance()
+			return &ast.PositionCondition{Set: ast.SetAny, Operator: op, SegueChain: seg}, nil
+		}
 		ref, err := p.parseSongRef()
 		if err != nil {
 			return nil, err
@@ -398,6 +411,17 @@ func (p *parser) parseCondition() (ast.Condition, error) {
 		}
 		p.advance()
 		return &ast.LengthCondition{Song: songRef, Operator: *op, Duration: dur}, nil
+	}
+
+	// Standalone segue operator: >"Song", >>"Song", ~>"Song"
+	if p.curIs(token.GT) || p.curIs(token.GTGT) || p.curIs(token.TILDE_GT) {
+		op := p.parseSegueOp()
+		p.advance()
+		ref, err := p.parseSongRef()
+		if err != nil {
+			return nil, err
+		}
+		return &ast.SegueIntoCondition{Song: ref, Operator: *op}, nil
 	}
 
 	// Segue: "Song" > "Song" [> "Song" ...] — or bare "Song" implies PLAYED
@@ -787,7 +811,7 @@ func (p *parser) parseWithClause() (*ast.WithClause, error) {
 			}
 			p.advance()
 			wc.Conditions = append(wc.Conditions, &ast.LyricsCondition{Words: words})
-			if p.curIs(token.COMMA) {
+			if p.curIs(token.COMMA) || p.curIs(token.AND) || p.curIs(token.OR) {
 				p.advance()
 				continue
 			}
@@ -806,7 +830,7 @@ func (p *parser) parseWithClause() (*ast.WithClause, error) {
 			dur := p.cur.Literal
 			p.advance()
 			wc.Conditions = append(wc.Conditions, &ast.LengthWithCondition{Operator: *op, Duration: dur})
-			if p.curIs(token.COMMA) {
+			if p.curIs(token.COMMA) || p.curIs(token.AND) || p.curIs(token.OR) {
 				p.advance()
 				continue
 			}
@@ -819,7 +843,7 @@ func (p *parser) parseWithClause() (*ast.WithClause, error) {
 			}
 			wc.Conditions = append(wc.Conditions, &ast.GuestWithCondition{Name: p.cur.Literal})
 			p.advance()
-			if p.curIs(token.COMMA) {
+			if p.curIs(token.COMMA) || p.curIs(token.AND) || p.curIs(token.OR) {
 				p.advance()
 				continue
 			}

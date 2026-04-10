@@ -307,3 +307,21 @@ func TestLexer_OnlyComment(t *testing.T) {
 	l := New("-- just a comment\n")
 	assert.Equal(t, token.EOF, l.NextToken().Type)
 }
+
+func TestLexer_ArrowAsSegue(t *testing.T) {
+	l := New(`"Dark Star" -> "St. Stephen"`)
+	require.Equal(t, token.STRING, l.NextToken().Type)
+	tok := l.NextToken()
+	assert.Equal(t, token.GT, tok.Type, "-> should be lexed as GT")
+	assert.Equal(t, "->", tok.Literal)
+	require.Equal(t, token.STRING, l.NextToken().Type)
+	require.Equal(t, token.EOF, l.NextToken().Type)
+}
+
+func TestLexer_ArrowDoesNotBreakDateRange(t *testing.T) {
+	// - followed by a digit is MINUS (date range), not ->
+	l := New("1977-1980")
+	require.Equal(t, token.NUMBER, l.NextToken().Type)
+	require.Equal(t, token.MINUS, l.NextToken().Type)
+	require.Equal(t, token.NUMBER, l.NextToken().Type)
+}

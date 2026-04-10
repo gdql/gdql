@@ -192,6 +192,12 @@ func (l *lexer) nextToken() token.Token {
 			l.readChar()
 			return token.Token{Type: token.GT, Literal: ">", Pos: pos}
 		case '-':
+			if l.peekChar() == '>' {
+				// -> treated as > (segue operator)
+				l.readChar()
+				l.readChar()
+				return token.Token{Type: token.GT, Literal: "->", Pos: pos}
+			}
 			l.readChar()
 			return token.Token{Type: token.MINUS, Literal: "-", Pos: pos}
 		case '~':

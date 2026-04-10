@@ -558,3 +558,136 @@ func TestParseShowQuery_AllModifiers(t *testing.T) {
 	assert.Equal(t, 5, *sq.Limit)
 	assert.Equal(t, ast.OutputJSON, sq.OutputFmt)
 }
+
+// === Arrow -> as segue ===
+
+func TestParseShowQuery_ArrowSegue(t *testing.T) {
+	p := NewFromString(`SHOWS WHERE "Dark Star" -> "St. Stephen";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.NotNil(t, sq.Where)
+	require.Len(t, sq.Where.Conditions, 1)
+	seg, ok := sq.Where.Conditions[0].(*ast.SegueCondition)
+	require.True(t, ok, "expected SegueCondition")
+	require.Len(t, seg.Songs, 2)
+	assert.Equal(t, "Dark Star", seg.Songs[0].Name)
+	assert.Equal(t, "St. Stephen", seg.Songs[1].Name)
+}
+
+// === AND/OR between WITH conditions ===
+
+func TestParseSongQuery_WithAndBetweenLyrics(t *testing.T) {
+	p := NewFromString(`SONGS WITH LYRICS("sun") AND LYRICS("bus");`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq, ok := q.(*ast.SongQuery)
+	require.True(t, ok)
+	require.NotNil(t, sq.With)
+	require.Len(t, sq.With.Conditions, 2, "expected two LYRICS conditions separated by AND")
+	lc1, ok := sq.With.Conditions[0].(*ast.LyricsCondition)
+	require.True(t, ok)
+	assert.Equal(t, []string{"sun"}, lc1.Words)
+	lc2, ok := sq.With.Conditions[1].(*ast.LyricsCondition)
+	require.True(t, ok)
+	assert.Equal(t, []string{"bus"}, lc2.Words)
+}
+
+// === Standalone segue-into conditions ===
+
+func TestParseShowQuery_TildeGtStandalone(t *testing.T) {
+	p := NewFromString(`SHOWS WHERE ~>"Dark Star";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.NotNil(t, sq.Where)
+	require.Len(t, sq.Where.Conditions, 1)
+	sc, ok := sq.Where.Conditions[0].(*ast.SegueIntoCondition)
+	require.True(t, ok, "expected SegueIntoCondition")
+	assert.Equal(t, "Dark Star", sc.Song.Name)
+	assert.Equal(t, ast.SegueOpTease, sc.Operator)
+}
+
+func TestParseShowQuery_GtStandalone(t *testing.T) {
+	p := NewFromString(`SHOWS WHERE >"Fire on the Mountain";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.NotNil(t, sq.Where)
+	require.Len(t, sq.Where.Conditions, 1)
+	sc, ok := sq.Where.Conditions[0].(*ast.SegueIntoCondition)
+	require.True(t, ok, "expected SegueIntoCondition")
+	assert.Equal(t, "Fire on the Mountain", sc.Song.Name)
+	assert.Equal(t, ast.SegueOpSegue, sc.Operator)
+}
+
+func TestParseShowQuery_GtGtStandalone(t *testing.T) {
+	p := NewFromString(`SHOWS WHERE >>"Morning Dew";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.NotNil(t, sq.Where)
+	require.Len(t, sq.Where.Conditions, 1)
+	sc, ok := sq.Where.Conditions[0].(*ast.SegueIntoCondition)
+	require.True(t, ok, "expected SegueIntoCondition")
+	assert.Equal(t, "Morning Dew", sc.Song.Name)
+	assert.Equal(t, ast.SegueOpBreak, sc.Operator)
+}
+
+// === OPENER/CLOSER with segue chain ===
+
+func TestParseShowQuery_OpenerWithSegueChain(t *testing.T) {
+	p := NewFromString(`SHOWS WHERE OPENER ("Help on the Way" > "Slipknot!");`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.NotNil(t, sq.Where)
+	require.Len(t, sq.Where.Conditions, 1)
+	pc, ok := sq.Where.Conditions[0].(*ast.PositionCondition)
+	require.True(t, ok, "expected PositionCondition")
+	assert.Equal(t, ast.SetAny, pc.Set)
+	assert.Equal(t, ast.PosOpened, pc.Operator)
+	assert.Nil(t, pc.Song, "Song should be nil when SegueChain is set")
+	require.NotNil(t, pc.SegueChain)
+	require.Len(t, pc.SegueChain.Songs, 2)
+	assert.Equal(t, "Help on the Way", pc.SegueChain.Songs[0].Name)
+	assert.Equal(t, "Slipknot!", pc.SegueChain.Songs[1].Name)
+}
+
+func TestParseShowQuery_CloserWithSegueChain(t *testing.T) {
+	p := NewFromString(`SHOWS WHERE CLOSER ("Sugar Magnolia" > "Sunshine Daydream");`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.NotNil(t, sq.Where)
+	require.Len(t, sq.Where.Conditions, 1)
+	pc, ok := sq.Where.Conditions[0].(*ast.PositionCondition)
+	require.True(t, ok)
+	assert.Equal(t, ast.PosClosed, pc.Operator)
+	require.NotNil(t, pc.SegueChain)
+	require.Len(t, pc.SegueChain.Songs, 2)
+}
+
+// === Combined: OPENER segue + AND + CLOSER ===
+
+func TestParseShowQuery_OpenerSegueAndCloser(t *testing.T) {
+	p := NewFromString(`SHOWS WHERE OPENER ("Help on the Way" > "Slipknot!") AND CLOSER "Brokedown Palace";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.NotNil(t, sq.Where)
+	require.Len(t, sq.Where.Conditions, 2)
+
+	// First condition: OPENER with segue chain
+	pc1, ok := sq.Where.Conditions[0].(*ast.PositionCondition)
+	require.True(t, ok)
+	assert.Equal(t, ast.PosOpened, pc1.Operator)
+	require.NotNil(t, pc1.SegueChain)
+
+	// Second condition: CLOSER with single song
+	pc2, ok := sq.Where.Conditions[1].(*ast.PositionCondition)
+	require.True(t, ok)
+	assert.Equal(t, ast.PosClosed, pc2.Operator)
+	require.NotNil(t, pc2.Song)
+	assert.Equal(t, "Brokedown Palace", pc2.Song.Name)
+}

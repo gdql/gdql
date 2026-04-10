@@ -57,17 +57,20 @@ type ConditionIR interface {
 	conditionIRNode()
 }
 
-func (*PositionConditionIR) conditionIRNode() {}
-func (*LyricsConditionIR) conditionIRNode() {}
-func (*LengthConditionIR) conditionIRNode() {}
-func (*PlayedConditionIR) conditionIRNode() {}
-func (*GuestConditionIR) conditionIRNode()  {}
+func (*PositionConditionIR) conditionIRNode()  {}
+func (*LyricsConditionIR) conditionIRNode()   {}
+func (*LengthConditionIR) conditionIRNode()   {}
+func (*PlayedConditionIR) conditionIRNode()   {}
+func (*GuestConditionIR) conditionIRNode()    {}
+func (*SegueIntoConditionIR) conditionIRNode() {}
 
 // PositionConditionIR: SET1 OPENED "Song", ENCORE = "Song"
+// When SegueChain is set, SongID is ignored and the condition uses a segue chain.
 type PositionConditionIR struct {
-	Set      SetPosition
-	Operator PositionOp
-	SongID   int
+	Set        SetPosition
+	Operator   PositionOp
+	SongID     int
+	SegueChain *SegueChainIR
 }
 
 // LyricsConditionIR: LYRICS("word1", "word2")
@@ -94,6 +97,13 @@ type PlayedConditionIR struct {
 // GuestConditionIR: GUEST "Name"
 type GuestConditionIR struct {
 	Name string
+}
+
+// SegueIntoConditionIR: >"Song", >>"Song", ~>"Song"
+// Matches shows where the song was preceded by the given segue type.
+type SegueIntoConditionIR struct {
+	SongIDs  []int   // all variant IDs for the song
+	Operator SegueOp // the type of transition leading into this song
 }
 
 // SetPosition is SET1, SET2, SET3, or ENCORE.

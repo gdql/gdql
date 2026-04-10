@@ -59,16 +59,22 @@ func BuildSegueShowsSQL(q *ir.QueryIR) (*SQLQuery, error) {
 	for _, c := range q.Conditions {
 		switch x := c.(type) {
 		case *ir.PositionConditionIR:
-			setNum := setPositionToNumber(x.Set)
-			switch x.Operator {
-			case ir.PosOpened:
-				whereParts = append(whereParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.set_number = ? AND px.song_id = ? AND px.is_opener = 1)")
-			case ir.PosClosed:
-				whereParts = append(whereParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.set_number = ? AND px.song_id = ? AND px.is_closer = 1)")
-			case ir.PosEquals:
-				whereParts = append(whereParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.set_number = ? AND px.song_id = ?)")
+			if x.SegueChain != nil {
+				part, a := positionConditionWithSegue(x)
+				whereParts = append(whereParts, part)
+				args = append(args, a...)
+			} else {
+				setNum := setPositionToNumber(x.Set)
+				switch x.Operator {
+				case ir.PosOpened:
+					whereParts = append(whereParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.set_number = ? AND px.song_id = ? AND px.is_opener = 1)")
+				case ir.PosClosed:
+					whereParts = append(whereParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.set_number = ? AND px.song_id = ? AND px.is_closer = 1)")
+				case ir.PosEquals:
+					whereParts = append(whereParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.set_number = ? AND px.song_id = ?)")
+				}
+				args = append(args, setNum, x.SongID)
 			}
-			args = append(args, setNum, x.SongID)
 		case *ir.PlayedConditionIR:
 			placeholders := make([]string, len(x.SongIDs))
 			for i, id := range x.SongIDs {
@@ -84,6 +90,10 @@ func BuildSegueShowsSQL(q *ir.QueryIR) (*SQLQuery, error) {
 		case *ir.GuestConditionIR:
 			whereParts = append(whereParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.guest IS NOT NULL AND (px.guest = ? OR px.guest LIKE ?))")
 			args = append(args, x.Name, "%"+x.Name+"%")
+		case *ir.SegueIntoConditionIR:
+			part, a := segueIntoCondition(x)
+			whereParts = append(whereParts, part)
+			args = append(args, a...)
 		}
 	}
 	if len(whereParts) > 0 {

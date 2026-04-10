@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"unicode"
 
 	"github.com/gdql/gdql/internal/ast"
 	"github.com/gdql/gdql/internal/data"
@@ -203,7 +204,7 @@ func mapRowsToSongs(rs *data.ResultSet) ([]*data.Song, error) {
 		}
 		s := &data.Song{
 			ID:          intVal(row[0]),
-			Name:        strVal(row[1]),
+			Name:        normalizeSongName(strVal(row[1])),
 			ShortName:   strVal(row[2]),
 			Writers:     strVal(row[3]),
 			TimesPlayed: intVal(row[6]),
@@ -307,4 +308,37 @@ func timeVal(v interface{}) time.Time {
 		return t
 	}
 	return time.Time{}
+}
+
+// normalizeSongName converts ALL CAPS song names to title case for display.
+// Names that are already mixed-case are returned unchanged.
+func normalizeSongName(name string) string {
+	if name == "" {
+		return name
+	}
+	// Only normalize if the name is all uppercase (with allowed non-letter chars)
+	hasLower := false
+	for _, r := range name {
+		if unicode.IsLower(r) {
+			hasLower = true
+			break
+		}
+	}
+	if hasLower {
+		return name
+	}
+	// Title-case: capitalize first letter of each word, lowercase rest.
+	// Preserve short words (articles/prepositions) in lowercase except at start.
+	lower := map[string]bool{
+		"a": true, "an": true, "the": true, "of": true, "on": true,
+		"in": true, "at": true, "to": true, "for": true, "and": true,
+		"or": true, "but": true, "is": true, "it": true, "by": true,
+	}
+	words := strings.Fields(strings.ToLower(name))
+	for i, w := range words {
+		if i == 0 || !lower[w] {
+			words[i] = strings.ToUpper(w[:1]) + w[1:]
+		}
+	}
+	return strings.Join(words, " ")
 }

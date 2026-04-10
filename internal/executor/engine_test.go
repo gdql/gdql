@@ -180,3 +180,22 @@ func TestMapRowsToCount_Empty(t *testing.T) {
 	require.NotNil(t, cr)
 	require.Equal(t, 0, cr.Count)
 }
+
+func TestNormalizeSongName(t *testing.T) {
+	tests := []struct {
+		input string
+		want  string
+	}{
+		{"I KNOW YOU RIDER", "I Know You Rider"},
+		{"FIRE ON THE MOUNTAIN", "Fire on the Mountain"},
+		{"Dark Star", "Dark Star"},           // mixed case: unchanged
+		{"", ""},                              // empty
+		{"HELP ON THE WAY", "Help on the Way"},
+		{"THE OTHER ONE", "The Other One"},    // "the" at start is capitalized
+	}
+	for _, tt := range tests {
+		t.Run(tt.input, func(t *testing.T) {
+			require.Equal(t, tt.want, normalizeSongName(tt.input))
+		})
+	}
+}

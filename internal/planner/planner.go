@@ -237,6 +237,17 @@ func (p *planner) conditionToIR(ctx context.Context, c ast.Condition) (ir.Condit
 		// Handled in planShow by lifting to SegueChain; should not appear here for first condition.
 		return nil, nil
 	case *ast.PositionCondition:
+		if x.SegueChain != nil {
+			chain, err := p.segueToIR(ctx, x.SegueChain)
+			if err != nil {
+				return nil, p.wrapSongNotFound(ctx, err)
+			}
+			return &ir.PositionConditionIR{
+				Set:        astSetPosToIR(x.Set),
+				Operator:   astPosOpToIR(x.Operator),
+				SegueChain: chain,
+			}, nil
+		}
 		id, err := p.songResolver.Resolve(ctx, x.Song.Name)
 		if err != nil {
 			return nil, p.wrapSongNotFound(ctx, err)
@@ -265,6 +276,12 @@ func (p *planner) conditionToIR(ctx context.Context, c ast.Condition) (ir.Condit
 		return &ir.LengthConditionIR{SongID: songID, Operator: astCompOpToIR(x.Operator), Seconds: sec}, nil
 	case *ast.GuestCondition:
 		return &ir.GuestConditionIR{Name: x.Name}, nil
+	case *ast.SegueIntoCondition:
+		ids, err := p.songResolver.ResolveVariants(ctx, x.Song.Name)
+		if err != nil {
+			return nil, p.wrapSongNotFound(ctx, err)
+		}
+		return &ir.SegueIntoConditionIR{SongIDs: ids, Operator: astSegueOpToIR(x.Operator)}, nil
 	default:
 		return nil, nil
 	}

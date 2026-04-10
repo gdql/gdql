@@ -116,6 +116,7 @@ func (*PositionCondition) conditionNode()  {}
 func (*PlayedCondition) conditionNode()   {}
 func (*LengthCondition) conditionNode()   {}
 func (*GuestCondition) conditionNode()     {}
+func (*SegueIntoCondition) conditionNode() {}
 
 // SegueCondition represents: "Song A" > "Song B" > "Song C"
 type SegueCondition struct {
@@ -133,10 +134,13 @@ const (
 )
 
 // PositionCondition represents: SET1 OPENED "Song", ENCORE = "Song"
+// When SegueChain is set, Song is nil and the condition uses a segue chain
+// (e.g., OPENER ("Help on the Way" > "Slipknot!")).
 type PositionCondition struct {
-	Set      SetPosition
-	Operator PositionOp
-	Song     *SongRef
+	Set        SetPosition
+	Operator   PositionOp
+	Song       *SongRef
+	SegueChain *SegueCondition
 }
 
 // SetPosition is SET1, SET2, SET3, or ENCORE.
@@ -175,6 +179,13 @@ type LengthCondition struct {
 // GuestCondition represents: GUEST "Name"
 type GuestCondition struct {
 	Name string
+}
+
+// SegueIntoCondition represents a standalone segue operator before a song:
+// >"Song" (segued into), >>"Song" (then played), ~>"Song" (teased into).
+type SegueIntoCondition struct {
+	Song     *SongRef
+	Operator SegueOp
 }
 
 // CompOp is a comparison operator.
