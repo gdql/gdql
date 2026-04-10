@@ -136,6 +136,14 @@ func WriteShows(ctx context.Context, db *sql.DB, shows []Show) (showsAdded, song
 			}
 		}
 	}
+	// Update song stats from actual performance data
+	_, _ = db.ExecContext(ctx, `
+		UPDATE songs SET
+			times_played = (SELECT count(*) FROM performances WHERE performances.song_id = songs.id),
+			first_played = (SELECT min(s.date) FROM performances p JOIN shows s ON p.show_id = s.id WHERE p.song_id = songs.id),
+			last_played = (SELECT max(s.date) FROM performances p JOIN shows s ON p.show_id = s.id WHERE p.song_id = songs.id)
+	`)
+
 	return showsAdded, int(nextSongID - startSongID), nil
 }
 
