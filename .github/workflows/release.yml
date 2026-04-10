@@ -1,5 +1,11 @@
 # Build and publish a GitHub Release when a tag v* is pushed.
 # Creates binaries for linux/amd64, darwin/amd64, darwin/arm64, windows/amd64.
+#
+# Stable releases: tags like v1.0.0 (no hyphen suffix)
+# Pre-releases:    tags like v1.0.0-nightly.20260410 or v1.0.0-rc.1
+#
+# Only stable releases are marked as "latest" in GitHub Releases.
+# The docs "Get the CLI" link points to /releases/latest (stable only).
 name: Release
 
 on:
@@ -49,7 +55,9 @@ jobs:
           CGO_ENABLED: "0"
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
-        run: go build -ldflags "-s -w" -o gdql${{ matrix.suffix }} ./cmd/gdql
+        run: |
+          go build -ldflags "-s -w -X main.version=${{ github.ref_name }}" \
+            -o gdql${{ matrix.suffix }} ./cmd/gdql
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -72,10 +80,23 @@ jobs:
           cp artifacts/gdql-darwin-arm64/gdql release/gdql-darwin-arm64
           cp artifacts/gdql-windows-amd64/gdql.exe release/gdql-windows-amd64.exe
           ls -la release/
+      - name: Determine if prerelease
+        id: prerelease
+        run: |
+          TAG="${{ github.ref_name }}"
+          if [[ "$TAG" == *-* ]]; then
+            echo "is_prerelease=true" >> "$GITHUB_OUTPUT"
+            echo "make_latest=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_prerelease=false" >> "$GITHUB_OUTPUT"
+            echo "make_latest=true" >> "$GITHUB_OUTPUT"
+          fi
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
+          prerelease: ${{ steps.prerelease.outputs.is_prerelease == 'true' }}
+          make_latest: ${{ steps.prerelease.outputs.make_latest }}
           files: release/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
