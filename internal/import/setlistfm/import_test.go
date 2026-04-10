@@ -243,7 +243,7 @@ func TestInferSetBreaks_WithDrums(t *testing.T) {
 		// Encore
 		{Name: "One More Saturday Night"},
 	}
-	sets := inferSetBreaks(songs)
+	sets := InferSetBreaks(songs)
 	require.Len(t, sets, 3, "should produce set1, set2, encore")
 	require.Equal(t, "Set 1", sets[0].Name)
 	require.Len(t, sets[0].Songs, 8, "set 1: everything before Drums")
@@ -261,7 +261,7 @@ func TestInferSetBreaks_NoDrums_LongShow(t *testing.T) {
 	// Put an encore marker at the end
 	songs[19] = Song{Name: "U.S. Blues"}
 
-	sets := inferSetBreaks(songs)
+	sets := InferSetBreaks(songs)
 	require.Len(t, sets, 3)
 	require.Equal(t, "Set 1", sets[0].Name)
 	require.Equal(t, "Set 2", sets[1].Name)
@@ -273,7 +273,7 @@ func TestInferSetBreaks_ShortShow(t *testing.T) {
 	songs := []Song{
 		{Name: "A"}, {Name: "B"}, {Name: "C"}, {Name: "D"}, {Name: "E"},
 	}
-	sets := inferSetBreaks(songs)
+	sets := InferSetBreaks(songs)
 	require.Len(t, sets, 1, "short show stays as one set")
 	require.Len(t, sets[0].Songs, 5)
 }

@@ -182,7 +182,7 @@ func upsertShow(db *sql.DB, sl *Setlist, venueByKey map[string]int64, songByName
 	// If the API gave us a single set with many songs, infer set breaks
 	sets := sl.Set
 	if len(sets) == 1 && len(sets[0].Songs) > 8 {
-		sets = inferSetBreaks(sets[0].Songs)
+		sets = InferSetBreaks(sets[0].Songs)
 	}
 
 	setNumber := 0
@@ -250,10 +250,10 @@ func upsertShow(db *sql.DB, sl *Setlist, venueByKey map[string]int64, songByName
 	return true, nil
 }
 
-// inferSetBreaks splits a single flat set into set 1, set 2, and encore
+// InferSetBreaks splits a single flat set into set 1, set 2, and encore
 // using Grateful Dead-specific heuristics. Only applies when the API
 // returns all songs in one set object (common for older shows).
-func inferSetBreaks(songs []Song) []Set {
+func InferSetBreaks(songs []Song) []Set {
 	if len(songs) <= 8 {
 		return []Set{{Songs: songs}}
 	}
