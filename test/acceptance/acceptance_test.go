@@ -2,10 +2,12 @@ package acceptance
 
 import (
 	"context"
+	"encoding/json"
 	"testing"
 
 	"github.com/gdql/gdql/internal/executor"
 	"github.com/gdql/gdql/internal/data/sqlite"
+	"github.com/gdql/gdql/run"
 	"github.com/gdql/gdql/test/fixtures"
 	"github.com/stretchr/testify/require"
 )
@@ -165,4 +167,135 @@ func TestE2E_ExamplePerformancesDarkStarFile(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, executor.ResultPerformances, result.Type)
 	require.GreaterOrEqual(t, len(result.Performances), 1)
+}
+
+// === Integration tests using RunWithEmbeddedDB ===
+
+func TestIntegration_ShowsIN(t *testing.T) {
+	result, err := run.RunWithEmbeddedDB(context.Background(), `SHOWS IN 1977 LIMIT 5`)
+	require.NoError(t, err)
+	require.NotEmpty(t, result)
+	var data map[string]interface{}
+	require.NoError(t, json.Unmarshal([]byte(result), &data))
+	require.Contains(t, data, "shows")
+	shows := data["shows"].([]interface{})
+	require.NotEmpty(t, shows, "expected non-empty shows for IN 1977")
+}
+
+func TestIntegration_EncoreWithoutEquals(t *testing.T) {
+	result, err := run.RunWithEmbeddedDB(context.Background(), `SHOWS WHERE ENCORE "U.S. Blues" LIMIT 5`)
+	require.NoError(t, err)
+	require.NotEmpty(t, result)
+	var data map[string]interface{}
+	require.NoError(t, json.Unmarshal([]byte(result), &data))
+	require.Contains(t, data, "shows")
+}
+
+func TestIntegration_NegatedSegueNOTINTO(t *testing.T) {
+	result, err := run.RunWithEmbeddedDB(context.Background(), `SHOWS WHERE "Scarlet Begonias" NOT INTO "Fire on the Mountain" LIMIT 5`)
+	require.NoError(t, err)
+	require.NotEmpty(t, result)
+	var data map[string]interface{}
+	require.NoError(t, json.Unmarshal([]byte(result), &data))
+	require.Contains(t, data, "shows")
+}
+
+func TestIntegration_NotGTToken(t *testing.T) {
+	result, err := run.RunWithEmbeddedDB(context.Background(), `SHOWS WHERE "Scarlet Begonias" !> "Fire on the Mountain" LIMIT 5`)
+	require.NoError(t, err)
+	require.NotEmpty(t, result)
+	var data map[string]interface{}
+	require.NoError(t, json.Unmarshal([]byte(result), &data))
+	require.Contains(t, data, "shows")
+}
+
+func TestIntegration_SongsFromOrderByTimesPlayed(t *testing.T) {
+	result, err := run.RunWithEmbeddedDB(context.Background(), `SONGS FROM 1977 ORDER BY TIMES_PLAYED DESC LIMIT 5`)
+	require.NoError(t, err)
+	require.NotEmpty(t, result)
+	var data map[string]interface{}
+	require.NoError(t, json.Unmarshal([]byte(result), &data))
+	require.Contains(t, data, "songs")
+	songs := data["songs"].([]interface{})
+	require.NotEmpty(t, songs, "expected non-empty songs for FROM 1977")
+}
+
+func TestIntegration_SongsPlayedIn(t *testing.T) {
+	result, err := run.RunWithEmbeddedDB(context.Background(), `SONGS PLAYED IN 1977 ORDER BY TIMES_PLAYED DESC LIMIT 5`)
+	require.NoError(t, err)
+	require.NotEmpty(t, result)
+	var data map[string]interface{}
+	require.NoError(t, json.Unmarshal([]byte(result), &data))
+	require.Contains(t, data, "songs")
+	songs := data["songs"].([]interface{})
+	require.NotEmpty(t, songs, "expected non-empty songs for PLAYED IN 1977")
+}
+
+func TestIntegration_CountShowsWhereOpener(t *testing.T) {
+	result, err := run.RunWithEmbeddedDB(context.Background(), `COUNT SHOWS WHERE OPENER "Bertha"`)
+	require.NoError(t, err)
+	require.NotEmpty(t, result)
+	var data map[string]interface{}
+	require.NoError(t, json.Unmarshal([]byte(result), &data))
+	require.Contains(t, data, "count")
+	// The count field may be a nested object or a direct number depending on structure
+	require.NotContains(t, result, `"count":0`, "expected count > 0 for OPENER Bertha")
+}
+
+func TestIntegration_SetlistYYYYMMDD(t *testing.T) {
+	result, err := run.RunWithEmbeddedDB(context.Background(), `SETLIST 1977-05-08`)
+	require.NoError(t, err)
+	require.NotEmpty(t, result)
+	var data map[string]interface{}
+	require.NoError(t, json.Unmarshal([]byte(result), &data))
+	require.Contains(t, data, "setlist")
+}
+
+func TestIntegration_NotClosedAndPlayed(t *testing.T) {
+	result, err := run.RunWithEmbeddedDB(context.Background(), `SHOWS WHERE NOT CLOSED "U.S. Blues" AND PLAYED "U.S. Blues" LIMIT 5`)
+	require.NoError(t, err)
+	require.NotEmpty(t, result)
+	var data map[string]interface{}
+	require.NoError(t, json.Unmarshal([]byte(result), &data))
+	require.Contains(t, data, "shows")
+}
+
+func TestIntegration_OpenerSegueChain(t *testing.T) {
+	result, err := run.RunWithEmbeddedDB(context.Background(), `SHOWS WHERE OPENER "Help on the Way" > "Slipknot!" LIMIT 5`)
+	require.NoError(t, err)
+	require.NotEmpty(t, result)
+	var data map[string]interface{}
+	require.NoError(t, json.Unmarshal([]byte(result), &data))
+	require.Contains(t, data, "shows")
+}
+
+func TestIntegration_ShowsAsSetlist(t *testing.T) {
+	result, err := run.RunWithEmbeddedDB(context.Background(), `SHOWS FROM 77-80 WHERE "Scarlet Begonias" > "Fire on the Mountain" AS SETLIST`)
+	require.NoError(t, err)
+	require.NotEmpty(t, result)
+	var data map[string]interface{}
+	require.NoError(t, json.Unmarshal([]byte(result), &data))
+	require.Contains(t, data, "setlists")
+	setlists := data["setlists"].([]interface{})
+	require.NotEmpty(t, setlists, "expected non-empty setlists for Scarlet > Fire 77-80")
+}
+
+func TestIntegration_ShowsWithOR(t *testing.T) {
+	result, err := run.RunWithEmbeddedDB(context.Background(), `SHOWS WHERE PLAYED "Dark Star" OR PLAYED "St. Stephen" LIMIT 5`)
+	require.NoError(t, err)
+	require.NotEmpty(t, result)
+	var data map[string]interface{}
+	require.NoError(t, json.Unmarshal([]byte(result), &data))
+	require.Contains(t, data, "shows")
+	shows := data["shows"].([]interface{})
+	require.NotEmpty(t, shows, "expected non-empty shows for OR query")
+}
+
+func TestIntegration_ShowsTourWithFrom(t *testing.T) {
+	result, err := run.RunWithEmbeddedDB(context.Background(), `SHOWS TOUR "Europe" FROM 1972 LIMIT 5`)
+	require.NoError(t, err)
+	require.NotEmpty(t, result)
+	var data map[string]interface{}
+	require.NoError(t, json.Unmarshal([]byte(result), &data))
+	require.Contains(t, data, "shows")
 }

@@ -12,7 +12,12 @@ func formatJSON(result *executor.Result) (string, error) {
 	}
 	switch result.Type {
 	case executor.ResultShows:
-		out["shows"] = result.Shows
+		if len(result.Setlists) > 0 {
+			out["setlists"] = result.Setlists
+			out["type"] = "setlist"
+		} else {
+			out["shows"] = result.Shows
+		}
 	case executor.ResultSongs:
 		out["songs"] = result.Songs
 	case executor.ResultPerformances:

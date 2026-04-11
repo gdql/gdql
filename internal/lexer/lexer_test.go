@@ -325,3 +325,72 @@ func TestLexer_ArrowDoesNotBreakDateRange(t *testing.T) {
 	require.Equal(t, token.MINUS, l.NextToken().Type)
 	require.Equal(t, token.NUMBER, l.NextToken().Type)
 }
+
+// === IN keyword ===
+
+func TestLexer_INKeyword(t *testing.T) {
+	for _, in := range []string{"IN", "in", "In"} {
+		t.Run(in, func(t *testing.T) {
+			l := New(in)
+			tok := l.NextToken()
+			assert.Equal(t, token.IN, tok.Type)
+		})
+	}
+}
+
+func TestLexer_INInContext(t *testing.T) {
+	l := New("SHOWS IN 1977;")
+	assert.Equal(t, token.SHOWS, l.NextToken().Type)
+	assert.Equal(t, token.IN, l.NextToken().Type)
+	assert.Equal(t, token.NUMBER, l.NextToken().Type)
+	assert.Equal(t, token.SEMICOLON, l.NextToken().Type)
+	assert.Equal(t, token.EOF, l.NextToken().Type)
+}
+
+// === !> (NOT_GT) and !>> (NOT_GTGT) tokens ===
+
+func TestLexer_NotGT(t *testing.T) {
+	l := New("!>")
+	tok := l.NextToken()
+	assert.Equal(t, token.NOT_GT, tok.Type)
+	assert.Equal(t, "!>", tok.Literal)
+	assert.Equal(t, token.EOF, l.NextToken().Type)
+}
+
+func TestLexer_NotGTGT(t *testing.T) {
+	l := New("!>>")
+	tok := l.NextToken()
+	assert.Equal(t, token.NOT_GTGT, tok.Type)
+	assert.Equal(t, "!>>", tok.Literal)
+	assert.Equal(t, token.EOF, l.NextToken().Type)
+}
+
+func TestLexer_NotGTInContext(t *testing.T) {
+	l := New(`"Song A" !> "Song B"`)
+	assert.Equal(t, token.STRING, l.NextToken().Type)
+	tok := l.NextToken()
+	assert.Equal(t, token.NOT_GT, tok.Type)
+	assert.Equal(t, "!>", tok.Literal)
+	assert.Equal(t, token.STRING, l.NextToken().Type)
+	assert.Equal(t, token.EOF, l.NextToken().Type)
+}
+
+func TestLexer_NotGTGTInContext(t *testing.T) {
+	l := New(`"Song A" !>> "Song B"`)
+	assert.Equal(t, token.STRING, l.NextToken().Type)
+	tok := l.NextToken()
+	assert.Equal(t, token.NOT_GTGT, tok.Type)
+	assert.Equal(t, "!>>", tok.Literal)
+	assert.Equal(t, token.STRING, l.NextToken().Type)
+	assert.Equal(t, token.EOF, l.NextToken().Type)
+}
+
+// === -> token (GT with literal "->") ===
+
+func TestLexer_ArrowLiteral(t *testing.T) {
+	l := New("->")
+	tok := l.NextToken()
+	assert.Equal(t, token.GT, tok.Type, "-> should lex as GT")
+	assert.Equal(t, "->", tok.Literal, "literal should be ->")
+	assert.Equal(t, token.EOF, l.NextToken().Type)
+}

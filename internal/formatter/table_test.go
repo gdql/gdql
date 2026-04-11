@@ -319,3 +319,38 @@ func TestTableShows_WithRows(t *testing.T) {
 	require.Contains(t, out, "Ithaca")
 	require.Contains(t, out, "1977-05-08")
 }
+
+func TestFormatSetlist_MultiShow(t *testing.T) {
+	result := &executor.Result{
+		Type: executor.ResultShows,
+		Shows: []*data.Show{
+			{ID: 1, Date: time.Date(1977, 5, 8, 0, 0, 0, 0, time.UTC), Venue: "Barton Hall"},
+		},
+		Setlists: []*executor.SetlistResult{
+			{
+				Date:   time.Date(1977, 5, 8, 0, 0, 0, 0, time.UTC),
+				ShowID: 1,
+				Performances: []*data.Performance{
+					{ShowID: 1, SetNumber: 1, Position: 1, SongName: "Minglewood Blues"},
+					{ShowID: 1, SetNumber: 1, Position: 2, SongName: "Loser"},
+					{ShowID: 1, SetNumber: 2, Position: 1, SongName: "Scarlet Begonias"},
+				},
+			},
+			{
+				Date:   time.Date(1977, 5, 9, 0, 0, 0, 0, time.UTC),
+				ShowID: 2,
+				Performances: []*data.Performance{
+					{ShowID: 2, SetNumber: 1, Position: 1, SongName: "Jack Straw"},
+				},
+			},
+		},
+	}
+	f := New()
+	out, err := f.Format(result, FormatSetlist)
+	require.NoError(t, err)
+	require.Contains(t, out, "Minglewood Blues")
+	require.Contains(t, out, "Jack Straw")
+	require.Contains(t, out, "Set 1")
+	require.Contains(t, out, "Set 2")
+	require.Contains(t, out, "---") // separator between shows
+}

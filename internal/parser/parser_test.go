@@ -691,3 +691,272 @@ func TestParseShowQuery_OpenerSegueAndCloser(t *testing.T) {
 	require.NotNil(t, pc2.Song)
 	assert.Equal(t, "Brokedown Palace", pc2.Song.Name)
 }
+
+// === IN as FROM alias ===
+
+func TestParseShowQuery_InAsFromAlias(t *testing.T) {
+	p := NewFromString("SHOWS IN 1977;")
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.NotNil(t, sq.From)
+	require.NotNil(t, sq.From.Start)
+	assert.Equal(t, 1977, sq.From.Start.Year)
+}
+
+// === ENCORE "Song" without = sign ===
+
+func TestParseShowQuery_EncoreWithoutEquals(t *testing.T) {
+	p := NewFromString(`SHOWS WHERE ENCORE "U.S. Blues";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.Len(t, sq.Where.Conditions, 1)
+	pc, ok := sq.Where.Conditions[0].(*ast.PositionCondition)
+	require.True(t, ok)
+	assert.Equal(t, ast.Encore, pc.Set)
+	assert.Equal(t, ast.PosEquals, pc.Operator)
+	assert.Equal(t, "U.S. Blues", pc.Song.Name)
+}
+
+// === CLOSER("Song") no space before paren ===
+
+func TestParseShowQuery_CloserNoSpaceBeforeParen(t *testing.T) {
+	p := NewFromString(`SHOWS WHERE CLOSER("Morning Dew");`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.Len(t, sq.Where.Conditions, 1)
+	pc, ok := sq.Where.Conditions[0].(*ast.PositionCondition)
+	require.True(t, ok)
+	assert.Equal(t, ast.PosClosed, pc.Operator)
+	require.NotNil(t, pc.Song)
+	assert.Equal(t, "Morning Dew", pc.Song.Name)
+}
+
+// === NOT CLOSED, NOT OPENER, NOT ENCORE ===
+
+func TestParseShowQuery_NotClosed(t *testing.T) {
+	p := NewFromString(`SHOWS WHERE NOT CLOSED "U.S. Blues";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.Len(t, sq.Where.Conditions, 1)
+	pc, ok := sq.Where.Conditions[0].(*ast.PositionCondition)
+	require.True(t, ok)
+	assert.Equal(t, ast.PosClosed, pc.Operator)
+	assert.True(t, pc.Negated)
+	assert.Equal(t, "U.S. Blues", pc.Song.Name)
+}
+
+func TestParseShowQuery_NotOpener(t *testing.T) {
+	p := NewFromString(`SHOWS WHERE NOT OPENER "Bertha";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.Len(t, sq.Where.Conditions, 1)
+	pc, ok := sq.Where.Conditions[0].(*ast.PositionCondition)
+	require.True(t, ok)
+	assert.Equal(t, ast.PosOpened, pc.Operator)
+	assert.True(t, pc.Negated)
+	assert.Equal(t, "Bertha", pc.Song.Name)
+}
+
+func TestParseShowQuery_NotEncore(t *testing.T) {
+	p := NewFromString(`SHOWS WHERE NOT ENCORE "U.S. Blues";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.Len(t, sq.Where.Conditions, 1)
+	pc, ok := sq.Where.Conditions[0].(*ast.PositionCondition)
+	require.True(t, ok)
+	assert.Equal(t, ast.Encore, pc.Set)
+	assert.Equal(t, ast.PosEquals, pc.Operator)
+	assert.True(t, pc.Negated)
+	assert.Equal(t, "U.S. Blues", pc.Song.Name)
+}
+
+// === NegatedSegueCondition: "Song A" NOT > "Song B" ===
+
+func TestParseShowQuery_NegatedSegueWithNOT(t *testing.T) {
+	p := NewFromString(`SHOWS WHERE "Scarlet Begonias" NOT > "Fire on the Mountain";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.Len(t, sq.Where.Conditions, 1)
+	ns, ok := sq.Where.Conditions[0].(*ast.NegatedSegueCondition)
+	require.True(t, ok, "expected NegatedSegueCondition")
+	assert.Equal(t, "Scarlet Begonias", ns.Song.Name)
+	assert.Equal(t, "Fire on the Mountain", ns.NotSong.Name)
+}
+
+// === NOT_GT token: "Song A" !> "Song B" ===
+
+func TestParseShowQuery_NotGTToken(t *testing.T) {
+	p := NewFromString(`SHOWS WHERE "Scarlet Begonias" !> "Fire on the Mountain";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.Len(t, sq.Where.Conditions, 1)
+	ns, ok := sq.Where.Conditions[0].(*ast.NegatedSegueCondition)
+	require.True(t, ok, "expected NegatedSegueCondition for !>")
+	assert.Equal(t, "Scarlet Begonias", ns.Song.Name)
+	assert.Equal(t, "Fire on the Mountain", ns.NotSong.Name)
+}
+
+// === NOT_GTGT token: "Song A" !>> "Song B" ===
+
+func TestParseShowQuery_NotGTGTToken(t *testing.T) {
+	p := NewFromString(`SHOWS WHERE "Scarlet Begonias" !>> "Fire on the Mountain";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.Len(t, sq.Where.Conditions, 1)
+	ns, ok := sq.Where.Conditions[0].(*ast.NegatedSegueCondition)
+	require.True(t, ok, "expected NegatedSegueCondition for !>>")
+	assert.Equal(t, "Scarlet Begonias", ns.Song.Name)
+	assert.Equal(t, "Fire on the Mountain", ns.NotSong.Name)
+}
+
+// === OPENER "A" > "B" without parens ===
+
+func TestParseShowQuery_OpenerSegueWithoutParens(t *testing.T) {
+	p := NewFromString(`SHOWS WHERE OPENER "Help on the Way" > "Slipknot!";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.Len(t, sq.Where.Conditions, 1)
+	pc, ok := sq.Where.Conditions[0].(*ast.PositionCondition)
+	require.True(t, ok, "expected PositionCondition")
+	assert.Equal(t, ast.PosOpened, pc.Operator)
+	assert.Nil(t, pc.Song, "Song should be nil when SegueChain is set")
+	require.NotNil(t, pc.SegueChain)
+	require.Len(t, pc.SegueChain.Songs, 2)
+	assert.Equal(t, "Help on the Way", pc.SegueChain.Songs[0].Name)
+	assert.Equal(t, "Slipknot!", pc.SegueChain.Songs[1].Name)
+}
+
+// === SETLIST YYYY-MM-DD without FOR ===
+
+func TestParseSetlistQuery_YYYYMMDD_WithoutFor(t *testing.T) {
+	p := NewFromString("SETLIST 1977-05-08;")
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq, ok := q.(*ast.SetlistQuery)
+	require.True(t, ok)
+	require.NotNil(t, sq.Date)
+	assert.Equal(t, 1977, sq.Date.Year)
+	assert.Equal(t, 5, sq.Date.Month)
+	assert.Equal(t, 8, sq.Date.Day)
+}
+
+// === SETLIST M/D/YY without FOR ===
+
+func TestParseSetlistQuery_MDY_WithoutFor(t *testing.T) {
+	p := NewFromString("SETLIST 5/8/77;")
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq, ok := q.(*ast.SetlistQuery)
+	require.True(t, ok)
+	require.NotNil(t, sq.Date)
+	assert.Equal(t, 1977, sq.Date.Year)
+	assert.Equal(t, 5, sq.Date.Month)
+	assert.Equal(t, 8, sq.Date.Day)
+}
+
+// === SONGS FROM 1977 ORDER BY TIMES_PLAYED DESC ===
+
+func TestParseSongQuery_FromWithOrderBy(t *testing.T) {
+	p := NewFromString("SONGS FROM 1977 ORDER BY TIMES_PLAYED DESC;")
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq, ok := q.(*ast.SongQuery)
+	require.True(t, ok)
+	require.NotNil(t, sq.From)
+	assert.Equal(t, 1977, sq.From.Start.Year)
+	require.NotNil(t, sq.OrderBy)
+	assert.Equal(t, "TIMES_PLAYED", sq.OrderBy.Field)
+	assert.True(t, sq.OrderBy.Desc)
+}
+
+// === SONGS PLAYED IN 1977 ===
+
+func TestParseSongQuery_PlayedIn(t *testing.T) {
+	p := NewFromString("SONGS PLAYED IN 1977;")
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq, ok := q.(*ast.SongQuery)
+	require.True(t, ok)
+	require.NotNil(t, sq.From)
+	assert.Equal(t, 1977, sq.From.Start.Year)
+}
+
+// === SONGS PLAYED FROM 1977 ===
+
+func TestParseSongQuery_PlayedFrom(t *testing.T) {
+	p := NewFromString("SONGS PLAYED FROM 1977;")
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq, ok := q.(*ast.SongQuery)
+	require.True(t, ok)
+	require.NotNil(t, sq.From)
+	assert.Equal(t, 1977, sq.From.Start.Year)
+}
+
+// === COUNT SHOWS WHERE "A" > "B" ===
+
+func TestParseCountQuery_ShowsWhere(t *testing.T) {
+	p := NewFromString(`COUNT SHOWS WHERE "Scarlet Begonias" > "Fire on the Mountain";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	cq, ok := q.(*ast.CountQuery)
+	require.True(t, ok)
+	assert.True(t, cq.CountShows)
+	require.NotNil(t, cq.Where)
+	require.Len(t, cq.Where.Conditions, 1)
+	seg, ok := cq.Where.Conditions[0].(*ast.SegueCondition)
+	require.True(t, ok)
+	require.Len(t, seg.Songs, 2)
+	assert.Equal(t, "Scarlet Begonias", seg.Songs[0].Name)
+	assert.Equal(t, "Fire on the Mountain", seg.Songs[1].Name)
+}
+
+// === SHOWS TOUR "name" ===
+
+func TestParseShowQuery_TourWithFrom(t *testing.T) {
+	p := NewFromString(`SHOWS TOUR "Europe" FROM 1972;`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	assert.Equal(t, "Europe", sq.Tour)
+	require.NotNil(t, sq.From)
+	assert.Equal(t, 1972, sq.From.Start.Year)
+}
+
+// === Multi-statement with comments ===
+
+func TestParseMultiStatement_WithComments(t *testing.T) {
+	input := "SHOWS LIMIT 1; -- comment\nSETLIST FOR 5/8/77;"
+
+	// First statement
+	p1 := NewFromString("SHOWS LIMIT 1;")
+	q1, err := p1.Parse()
+	require.NoError(t, err)
+	sq1, ok := q1.(*ast.ShowQuery)
+	require.True(t, ok)
+	require.NotNil(t, sq1.Limit)
+	assert.Equal(t, 1, *sq1.Limit)
+
+	// Second statement (after comment)
+	p2 := NewFromString("SETLIST FOR 5/8/77;")
+	q2, err := p2.Parse()
+	require.NoError(t, err)
+	sq2, ok := q2.(*ast.SetlistQuery)
+	require.True(t, ok)
+	require.NotNil(t, sq2.Date)
+	assert.Equal(t, 1977, sq2.Date.Year)
+
+	// Verify SplitStatements handles this correctly via the run package
+	// (we test the individual parses above; the split is tested in acceptance)
+	_ = input
+}
