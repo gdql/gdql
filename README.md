@@ -55,88 +55,43 @@ SETLIST FOR 5/8/77;
 
 **Try in Sandbox:** [Scarlet→Fire](https://sandbox.gdql.dev?q=U0hPV1MgRlJPTSA3Ny03OSBXSEVSRSAiU2NhcmxldCBCZWdvbmlhcyIgPiAiRmlyZSBvbiB0aGUgTW91bnRhaW4iOw&run=1) · [SONGS LYRICS](https://sandbox.gdql.dev?q=U09OR1MgV0lUSCBMWVJJQ1MoInRyYWluIiwgInJhaWxyb2FkIiwgImVuZ2luZWVyIik7&run=1) · [Dark Star by length](https://sandbox.gdql.dev?q=UEVSRk9STUFOQ0VTIE9GICJEYXJrIFN0YXIiIE9SREVSIEJZIExFTkdUSCBERVNDIExJTUlUIDEwOw&run=1) · [Cornell setlist](https://sandbox.gdql.dev?q=U0VUTElTVCBGT1IgNS84Lzc3Ow&run=1)
 
-## What gets built
-
-**One binary. The entire Grateful Dead. No external database required.**
-
-- The **default DB** (schema + seed: Cornell ’77, Scarlet > Fire, a few songs) is **embedded** in the binary (`cmd/gdql/embeddb/default.db`). When the user runs `gdql` without `-db`, that file is unpacked to the config dir (e.g. `~/.config/gdql/shows.db`) and used. Use `-db <path>` to point at a different database.
-- **`gdql init [path]`** still creates a fresh DB from embedded schema+seed at the given path. To **regenerate** the embedded default DB after changing schema or seed, run from repo root: `go run ./cmd/build_embed_db`, then rebuild.
-
 ## Installation
 
 ### Download a release (recommended)
 
-Pre-built binaries and a pre-built **shows.db** are published on GitHub Releases. No build or import required.
-
-- **[Releases](https://github.com/gdql/gdql/releases)** — download `gdql` (or `gdql.exe` on Windows) and optionally `shows.db`. Put the binary on your PATH; use `-db shows.db` or `GDQL_DB` if the database is not in the current directory.
-
-### Where to put files when you install the binary
-
-| What | Where | Notes |
-|------|--------|------|
-| **Binary** | Anywhere on your PATH (e.g. `/usr/local/bin`, `~/bin`, or `C:\tools`) | Only file required; see below. |
-| **Database** | Any path you like | Default: embedded DB (unpacked to config dir, e.g. `~/.config/gdql/shows.db`). Use `-db <path>` to override. |
-| **Alias file** | Any path | Optional. Pass path when running: `gdql import aliases <path/to/aliases.json>`. Example: [data/song_aliases.json](data/song_aliases.json). |
-| **Query files** | Any path | Pass with `-f`: `gdql -db shows.db -f query.gdql`. |
-
-### Packaging for easy install (one binary)
-
-**The default database is embedded in the binary.** When someone runs `gdql` without `-db`, the program uses the embedded DB, unpacking it to the config directory (e.g. `~/.config/gdql/shows.db`) on first use. So:
-
-- **Package = single binary.** Install the `gdql` (or `gdql.exe`) binary to a directory on PATH. No separate DB file is required. First run unpacks the embedded default DB to the config dir; the user can run queries immediately.
-- **To change the embedded default DB:** from repo root run `go run ./cmd/build_embed_db`, then rebuild. Use `go run ./cmd/build_embed_db --from full.db` to embed a DB you built (e.g. after `gdql import json shows.json -db full.db`); see [scripts/README.md](scripts/README.md) for the full flow. The file `cmd/gdql/embeddb/default.db` is committed so normal `go build` works.
-- **Optional:** To ship a *larger* pre-filled database without embedding, build one (e.g. `gdql import json shows.json -db full.db`), then install it as e.g. `/usr/share/gdql/shows.db` and set `GDQL_DB` or document `-db /usr/share/gdql/shows.db`.
-
-### Build from source (requires Go 1.21+)
+1. Download `gdql` from **[Releases](https://github.com/gdql/gdql/releases/latest)** (`gdql.exe` on Windows)
+2. Put it on your PATH
+3. Run it
 
 ```bash
-cd /path/to/gdql
-go mod tidy
-go install ./cmd/...
+gdql "SHOWS FROM 1977 LIMIT 5"
 ```
 
-This installs the `gdql` binary to `$GOBIN` (default `$GOPATH/bin`). Ensure that directory is on your `PATH`.
+The database is baked into the binary. No separate files to download.
 
-To build without installing:
+### Build from source (requires Go 1.24+)
 
 ```bash
+git clone https://github.com/gdql/gdql
+cd gdql
 go build -o gdql ./cmd/gdql
 ```
-
-On **Windows**, the binary is `gdql.exe`. Run it explicitly so the shell doesn't prompt "open with":
-
-```powershell
-go build -o gdql.exe ./cmd/gdql
-.\gdql.exe -f query.gdql
-```
-
-**Data:** Use `shows.db` from [Releases](https://github.com/gdql/gdql/releases), or run `gdql init` for a minimal DB, or `gdql import setlistfm` (with `SETLISTFM_API_KEY`) to import from setlist.fm. To add song name variants (e.g. so `"Scarlet Begonias"` matches sources that store `"Scarlet Begonias-"`), use **`gdql import aliases <file.json>`** — see [data/song_aliases.json](data/song_aliases.json) and [SONG_NORMALIZATION.md](SONG_NORMALIZATION.md).
 
 ## Usage
 
 ```bash
-# Run a query (needs a database; default path: shows.db or GDQL_DB env)
-gdql -db shows.db "SHOWS FROM 1977 LIMIT 5"
-
-# From a file. Save as UTF-8 without BOM.
-gdql -db shows.db -f query.gdql
-
-# From stdin
-echo 'SHOWS FROM 1977;' | gdql -db shows.db -
+gdql "SHOWS FROM 1977 LIMIT 5"
+gdql -f query.gdql
+echo ‘SHOWS FROM 1977;’ | gdql -
 ```
 
-**On Windows PowerShell** the current directory is not on `PATH`. Run the executable explicitly:
+Use `-db <path>` to query a custom database instead of the embedded one.
+
+**PowerShell:** queries with `>` or quotes can get mangled. Use `-f query.gdql` or wrap in single quotes:
 
 ```powershell
-.\gdql.exe -db shows.db "SHOWS FROM 1977 LIMIT 5"
-.\gdql.exe -db shows.db -f query.gdql
+gdql ‘SHOWS WHERE "Scarlet Begonias" > "Fire on the Mountain";’
 ```
-
-**Queries with song names** are often mangled by PowerShell (quotes stripped or `>` treated as redirection). Use one of:
-
-- **`-f` file** (recommended): put the query in `query.gdql` and run `.\gdql.exe -f query.gdql`.
-- **Whole query in single quotes**, double quotes for song names:  
-  `.\gdql.exe 'SHOWS FROM 1969 WHERE PLAYED "St Stephen" > "The Eleven";'`
 - **Backtick-escape** the inner double quotes:  
   `.\gdql.exe "SHOWS WHERE \`"Scarlet Begonias\`" > \`"Fire on the Mountain\`""`
 
