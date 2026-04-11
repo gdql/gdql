@@ -366,12 +366,14 @@ func (p *parser) parseCondition() (ast.Condition, error) {
 		return &ast.PositionCondition{Set: set, Operator: op, Song: ref}, nil
 	}
 
-	// OPENER/OPENED "Song" / CLOSER/CLOSED "Song" — any set opened/closed with this song
-	// OPENER ("Song" > "Song") / CLOSER ("Song" > "Song") — segue chain variant
+	// OPENER/OPENED "Song" = SET1 OPENED (show opener)
+	// CLOSER/CLOSED "Song" = last song of the last set (show closer)
 	if p.curIs(token.OPENER) || p.curIs(token.CLOSER) || p.curIs(token.OPENED) || p.curIs(token.CLOSED) {
 		op := ast.PosOpened
+		set := ast.Set1 // OPENER = set 1 opener (the show opener)
 		if p.curIs(token.CLOSER) || p.curIs(token.CLOSED) {
 			op = ast.PosClosed
+			set = ast.SetAny // CLOSER = closer of any set (effectively the show closer)
 		}
 		p.advance()
 		if p.curIs(token.LPAREN) {
@@ -390,13 +392,13 @@ func (p *parser) parseCondition() (ast.Condition, error) {
 					return nil, &errors.ParseError{Pos: p.cur.Pos, Message: "expected ) after segue chain", Query: p.query}
 				}
 				p.advance()
-				return &ast.PositionCondition{Set: ast.SetAny, Operator: op, SegueChain: seg}, nil
+				return &ast.PositionCondition{Set: set, Operator: op, SegueChain: seg}, nil
 			}
 			// Just one song in parens: CLOSER("Song")
 			if p.curIs(token.RPAREN) {
 				p.advance()
 			}
-			return &ast.PositionCondition{Set: ast.SetAny, Operator: op, Song: ref}, nil
+			return &ast.PositionCondition{Set: set, Operator: op, Song: ref}, nil
 		}
 		ref, err := p.parseSongRef()
 		if err != nil {
@@ -408,9 +410,9 @@ func (p *parser) parseCondition() (ast.Condition, error) {
 			if err != nil {
 				return nil, err
 			}
-			return &ast.PositionCondition{Set: ast.SetAny, Operator: op, SegueChain: seg}, nil
+			return &ast.PositionCondition{Set: set, Operator: op, SegueChain: seg}, nil
 		}
-		return &ast.PositionCondition{Set: ast.SetAny, Operator: op, Song: ref}, nil
+		return &ast.PositionCondition{Set: set, Operator: op, Song: ref}, nil
 	}
 
 	// PLAYED "Song" [> "Song" ...] — optional segue after PLAYED

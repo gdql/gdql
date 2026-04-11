@@ -385,7 +385,7 @@ func TestParseShowQuery_Opener(t *testing.T) {
 	require.Len(t, sq.Where.Conditions, 1)
 	pc, ok := sq.Where.Conditions[0].(*ast.PositionCondition)
 	require.True(t, ok)
-	assert.Equal(t, ast.SetAny, pc.Set)
+	assert.Equal(t, ast.Set1, pc.Set)
 	assert.Equal(t, ast.PosOpened, pc.Operator)
 	assert.Equal(t, "Bertha", pc.Song.Name)
 }
@@ -645,7 +645,7 @@ func TestParseShowQuery_OpenerWithSegueChain(t *testing.T) {
 	require.Len(t, sq.Where.Conditions, 1)
 	pc, ok := sq.Where.Conditions[0].(*ast.PositionCondition)
 	require.True(t, ok, "expected PositionCondition")
-	assert.Equal(t, ast.SetAny, pc.Set)
+	assert.Equal(t, ast.Set1, pc.Set)
 	assert.Equal(t, ast.PosOpened, pc.Operator)
 	assert.Nil(t, pc.Song, "Song should be nil when SegueChain is set")
 	require.NotNil(t, pc.SegueChain)
