@@ -836,8 +836,10 @@ func (p *parser) parseSongQuery() (*ast.SongQuery, error) {
 	}
 	if p.curIs(token.PLAYED) {
 		p.advance()
-		// Optional IN keyword
+		// Skip optional FROM/IN keyword
 		if p.curIs(token.FROM) {
+			p.advance()
+		} else if strings.ToUpper(p.cur.Literal) == "IN" {
 			p.advance()
 		}
 		dr, err := p.parseDateRange()
