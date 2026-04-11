@@ -4,6 +4,7 @@ package deadlists
 
 import (
 	"fmt"
+	"html"
 	"io"
 	"net/http"
 	"regexp"
@@ -127,7 +128,7 @@ func (c *Client) get(url string) (string, error) {
 	if resp.StatusCode != http.StatusOK {
 		return "", fmt.Errorf("HTTP %d for %s", resp.StatusCode, url)
 	}
-	b, err := io.ReadAll(resp.Body)
+	b, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20)) // 1MB max
 	if err != nil {
 		return "", err
 	}
@@ -227,6 +228,7 @@ func parseSongs(body string) []canonical.SongInSet {
 	// Strip remaining HTML tags
 	tagRe := regexp.MustCompile(`<[^>]+>`)
 	body = tagRe.ReplaceAllString(body, "")
+	body = html.UnescapeString(body)
 
 	var songs []canonical.SongInSet
 	for _, line := range strings.Split(body, "\n") {

@@ -27,6 +27,7 @@ func EmbeddedDB() []byte { return embeddedDB }
 
 var (
 	embeddedDBPath string
+	embeddedDBDir  string
 	embeddedDBOnce sync.Once
 	embeddedDBErr  error
 )
@@ -39,6 +40,7 @@ func ensureEmbeddedDB() (string, error) {
 			embeddedDBErr = err
 			return
 		}
+		embeddedDBDir = dir
 		path := filepath.Join(dir, "gdql.db")
 		if err := os.WriteFile(path, embeddedDB, 0600); err != nil {
 			embeddedDBErr = err
@@ -47,6 +49,13 @@ func ensureEmbeddedDB() (string, error) {
 		embeddedDBPath = path
 	})
 	return embeddedDBPath, embeddedDBErr
+}
+
+// CleanupEmbeddedDB removes the temp directory. Call on process exit if desired.
+func CleanupEmbeddedDB() {
+	if embeddedDBDir != "" {
+		os.RemoveAll(embeddedDBDir)
+	}
 }
 
 // RunWithEmbeddedDB executes GDQL queries against the embedded default database.
