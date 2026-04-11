@@ -16,3 +16,7 @@
 .cursor/
 /data/lyrics.json
 cmd/gdql/embeddb/
+clean_with_durations.db
+shows_new.db
+shows_with_lengths.json
+scripts/merge_durations.py
