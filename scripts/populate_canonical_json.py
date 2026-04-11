@@ -31,7 +31,7 @@ ARTIST_SLUG = "grateful-dead"
 
 def parse_segue_titles(track_title):
     """Split 'Scarlet Begonias > Fire on the Mountain' into [('Scarlet Begonias', False), ('Fire on the Mountain', True)]."""
-    parts = re.split(r"\s*>\s*", track_title.strip())
+    parts = re.split(r"\s*-?>\s*", track_title.strip())
     out = []
     for i, name in enumerate(parts):
         name = name.strip()
@@ -97,8 +97,15 @@ def relisten_show_to_canonical(show):
                 title = (title or "").strip()
                 if not title:
                     continue
-                for name, segue_before in parse_segue_titles(title):
-                    songs.append({"name": name, "segue_before": segue_before})
+                duration = int(t.get("duration") or 0) if isinstance(t, dict) else 0
+                parsed = parse_segue_titles(title)
+                # Split duration evenly across segued songs in a combined track
+                per_song = duration // len(parsed) if duration > 0 and len(parsed) > 0 else 0
+                for name, segue_before in parsed:
+                    song = {"name": name, "segue_before": segue_before}
+                    if per_song > 0:
+                        song["length_seconds"] = per_song
+                    songs.append(song)
             if songs:
                 sets_out.append({"songs": songs})
 

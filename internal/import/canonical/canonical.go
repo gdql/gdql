@@ -33,8 +33,9 @@ type Set struct {
 
 // SongInSet is one song in a set. SegueBefore true means ">" from previous.
 type SongInSet struct {
-	Name        string `json:"name"`
-	SegueBefore bool   `json:"segue_before"`
+	Name          string `json:"name"`
+	SegueBefore   bool   `json:"segue_before"`
+	LengthSeconds int    `json:"length_seconds,omitempty"`
 }
 
 // WriteShows inserts shows into the DB. It creates venues and songs as needed,
@@ -127,8 +128,12 @@ func WriteShows(ctx context.Context, db *sql.DB, shows []Show) (showsAdded, song
 				if j == len(set.Songs)-1 {
 					isCloser = 1
 				}
-				_, execErr := db.ExecContext(ctx, "INSERT OR IGNORE INTO performances (id, show_id, song_id, set_number, position, segue_type, is_opener, is_closer) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-					nextPerfID, showID, songID, setNumber, position, shared.NullStr(segueType), isOpener, isCloser)
+				var lengthSec interface{}
+				if song.LengthSeconds > 0 {
+					lengthSec = song.LengthSeconds
+				}
+				_, execErr := db.ExecContext(ctx, "INSERT OR IGNORE INTO performances (id, show_id, song_id, set_number, position, segue_type, is_opener, is_closer, length_seconds) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+					nextPerfID, showID, songID, setNumber, position, shared.NullStr(segueType), isOpener, isCloser, lengthSec)
 				if execErr != nil {
 					return showsAdded, int(nextSongID - startSongID), execErr
 				}
