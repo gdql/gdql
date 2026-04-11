@@ -901,10 +901,9 @@ func (p *parser) parsePerformanceQuery() (*ast.PerformanceQuery, error) {
 func (p *parser) parseSetlistQuery() (*ast.SetlistQuery, error) {
 	q := &ast.SetlistQuery{}
 	p.advance()
-	if !p.curIs(token.FOR) {
-		return nil, &errors.ParseError{Pos: p.cur.Pos, Message: "expected FOR after SETLIST", Query: p.query}
+	if p.curIs(token.FOR) {
+		p.advance()
 	}
-	p.advance()
 	date, err := p.parseDateForSetlist()
 	if err != nil {
 		return nil, err
@@ -990,6 +989,26 @@ func (p *parser) parseDateForSetlist() (*ast.Date, error) {
 	if p.curIs(token.NUMBER) {
 		m, _ := strconv.Atoi(p.cur.Literal)
 		p.advance()
+		// YYYY-MM-DD format (e.g. 1974-10-19)
+		if p.curIs(token.MINUS) && m >= 1900 {
+			p.advance()
+			if !p.curIs(token.NUMBER) {
+				return nil, &errors.ParseError{Pos: p.cur.Pos, Message: "expected month in YYYY-MM-DD", Query: p.query}
+			}
+			month, _ := strconv.Atoi(p.cur.Literal)
+			p.advance()
+			if !p.curIs(token.MINUS) {
+				return nil, &errors.ParseError{Pos: p.cur.Pos, Message: "expected - and day in YYYY-MM-DD", Query: p.query}
+			}
+			p.advance()
+			if !p.curIs(token.NUMBER) {
+				return nil, &errors.ParseError{Pos: p.cur.Pos, Message: "expected day in YYYY-MM-DD", Query: p.query}
+			}
+			day, _ := strconv.Atoi(p.cur.Literal)
+			p.advance()
+			return &ast.Date{Year: m, Month: month, Day: day}, nil
+		}
+		// M/D/YY format
 		if p.curIs(token.SLASH) {
 			p.advance()
 			if !p.curIs(token.NUMBER) {
