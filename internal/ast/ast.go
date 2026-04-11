@@ -118,7 +118,8 @@ func (*PositionCondition) conditionNode()  {}
 func (*PlayedCondition) conditionNode()   {}
 func (*LengthCondition) conditionNode()   {}
 func (*GuestCondition) conditionNode()     {}
-func (*SegueIntoCondition) conditionNode() {}
+func (*SegueIntoCondition) conditionNode()    {}
+func (*NegatedSegueCondition) conditionNode() {}
 
 // SegueCondition represents: "Song A" > "Song B" > "Song C"
 type SegueCondition struct {
@@ -182,6 +183,13 @@ type LengthCondition struct {
 // GuestCondition represents: GUEST "Name"
 type GuestCondition struct {
 	Name string
+}
+
+// NegatedSegueCondition represents: "Song A" NOT > "Song B"
+// Matches shows where Song A was played and the next song was NOT Song B.
+type NegatedSegueCondition struct {
+	Song    *SongRef // the song that was played
+	NotSong *SongRef // the song that did NOT follow
 }
 
 // SegueIntoCondition represents a standalone segue operator before a song:

@@ -97,6 +97,10 @@ func BuildSegueShowsSQL(q *ir.QueryIR) (*SQLQuery, error) {
 			part, a := segueIntoCondition(x)
 			condParts = append(condParts, part)
 			args = append(args, a...)
+		case *ir.NegatedSegueConditionIR:
+			part, a := negatedSegueCondition(x)
+			condParts = append(condParts, part)
+			args = append(args, a...)
 		}
 	}
 	// Build combined WHERE

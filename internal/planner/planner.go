@@ -311,6 +311,16 @@ func (p *planner) conditionToIR(ctx context.Context, c ast.Condition) (ir.Condit
 			return nil, p.wrapSongNotFound(ctx, err)
 		}
 		return &ir.SegueIntoConditionIR{SongIDs: ids, Operator: astSegueOpToIR(x.Operator)}, nil
+	case *ast.NegatedSegueCondition:
+		songID, err := p.songResolver.Resolve(ctx, x.Song.Name)
+		if err != nil {
+			return nil, p.wrapSongNotFound(ctx, err)
+		}
+		notSongID, err := p.songResolver.Resolve(ctx, x.NotSong.Name)
+		if err != nil {
+			return nil, p.wrapSongNotFound(ctx, err)
+		}
+		return &ir.NegatedSegueConditionIR{SongID: songID, NotSongID: notSongID}, nil
 	default:
 		return nil, nil
 	}

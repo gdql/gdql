@@ -116,6 +116,10 @@ func (g *generator) whereShows(q *ir.QueryIR) (clause string, args []interface{}
 			part, a := segueIntoCondition(x)
 			condParts = append(condParts, part)
 			args = append(args, a...)
+		case *ir.NegatedSegueConditionIR:
+			part, a := negatedSegueCondition(x)
+			condParts = append(condParts, part)
+			args = append(args, a...)
 		}
 	}
 	// Build combined WHERE
@@ -480,6 +484,17 @@ func escapeLike(s string) string {
 	s = strings.ReplaceAll(s, "%", "\\%")
 	s = strings.ReplaceAll(s, "_", "\\_")
 	return s
+}
+
+// negatedSegueCondition: "Song A" NOT > "Song B"
+// Shows where Song A was played and the next song in the same set was NOT Song B.
+func negatedSegueCondition(c *ir.NegatedSegueConditionIR) (string, []interface{}) {
+	sql := `EXISTS (SELECT 1 FROM performances pa
+		WHERE pa.show_id = s.id AND pa.song_id = ?
+		AND NOT EXISTS (SELECT 1 FROM performances pb
+			WHERE pb.show_id = pa.show_id AND pb.set_number = pa.set_number
+			AND pb.position = pa.position + 1 AND pb.song_id = ?))`
+	return sql, []interface{}{c.SongID, c.NotSongID}
 }
 
 func compOpSQL(op ir.CompOp) string {

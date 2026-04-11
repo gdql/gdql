@@ -501,6 +501,16 @@ func (p *parser) parseSegueOrPlayed() (ast.Condition, error) {
 	if err != nil {
 		return nil, err
 	}
+	// "Song A" NOT > "Song B" — negated adjacency
+	if p.curIs(token.NOT) && (p.peekIs(token.GT) || p.peekIs(token.INTO) || p.peekIs(token.THEN) || p.peekIs(token.TILDE_GT) || p.peekIs(token.GTGT)) {
+		p.advance() // consume NOT
+		p.advance() // consume the segue operator
+		notRef, err := p.parseSongRef()
+		if err != nil {
+			return nil, err
+		}
+		return &ast.NegatedSegueCondition{Song: ref, NotSong: notRef}, nil
+	}
 	// If no segue operator follows, treat as PLAYED
 	if p.parseSegueOp() == nil {
 		return &ast.PlayedCondition{Song: ref}, nil

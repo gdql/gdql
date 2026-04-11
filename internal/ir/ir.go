@@ -63,7 +63,8 @@ func (*LyricsConditionIR) conditionIRNode()   {}
 func (*LengthConditionIR) conditionIRNode()   {}
 func (*PlayedConditionIR) conditionIRNode()   {}
 func (*GuestConditionIR) conditionIRNode()    {}
-func (*SegueIntoConditionIR) conditionIRNode() {}
+func (*SegueIntoConditionIR) conditionIRNode()    {}
+func (*NegatedSegueConditionIR) conditionIRNode() {}
 
 // PositionConditionIR: SET1 OPENED "Song", ENCORE = "Song"
 // When SegueChain is set, SongID is ignored and the condition uses a segue chain.
@@ -99,6 +100,13 @@ type PlayedConditionIR struct {
 // GuestConditionIR: GUEST "Name"
 type GuestConditionIR struct {
 	Name string
+}
+
+// NegatedSegueConditionIR: "Song A" NOT > "Song B"
+// Matches shows where Song A was played and the next adjacent song was NOT Song B.
+type NegatedSegueConditionIR struct {
+	SongID    int
+	NotSongID int
 }
 
 // SegueIntoConditionIR: >"Song", >>"Song", ~>"Song"
