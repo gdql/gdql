@@ -6,6 +6,8 @@
 
 A query language for searching through Grateful Dead shows, setlists, and songs.
 
+**[Documentation](https://docs.gdql.dev)** | **[Try it in the Sandbox](https://sandbox.gdql.dev)** | **[Releases](https://github.com/gdql/gdql/releases)**
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/gdql/.github/main/demo.gif" alt="GDQL demo" width="720">
 </p>
@@ -20,7 +22,7 @@ SHOWS WHERE "Help on the Way" > "Slipknot!" > "Franklin's Tower";
 PERFORMANCES OF "Dark Star" FROM 1972 WITH LENGTH > 20min;
 ```
 
-**Try in Sandbox:** [Scarlet→Fire](https://sandbox.gdql.dev?example=scarlet-fire&run=1) · [SONGS LYRICS](https://sandbox.gdql.dev?example=songs-lyrics&run=1) · [Help→Slip→Frank](https://sandbox.gdql.dev?example=help-slip-frank&run=1) · [Dark Star](https://sandbox.gdql.dev?example=dark-star&run=1)
+**Try:** [Scarlet→Fire](https://sandbox.gdql.dev?example=scarlet-fire&run=1) · [SONGS LYRICS](https://sandbox.gdql.dev?example=songs-lyrics&run=1) · [Help→Slip→Frank](https://sandbox.gdql.dev?example=help-slip-frank&run=1) · [Dark Star](https://sandbox.gdql.dev?example=dark-star&run=1)
 
 ## What is this?
 
