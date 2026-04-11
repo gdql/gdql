@@ -101,7 +101,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Trigger sandbox update
-        if: steps.prerelease.outputs.is_prerelease == 'false'
         run: |
           curl -s -X POST \
             -H "Authorization: token ${{ secrets.SANDBOX_DISPATCH_TOKEN }}" \
