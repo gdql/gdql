@@ -366,3 +366,9 @@ func TestCookbook_CompareEras(t *testing.T) {
 		})
 	}
 }
+
+// === Mid-chain negated adjacency ===
+
+func TestCookbook_MidChainNotGT(t *testing.T) {
+	runQueryExpectShows(t, `SHOWS WHERE "Help on the Way" > "Slipknot!" !> "Franklin's Tower" LIMIT 5;`)
+}

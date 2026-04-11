@@ -960,3 +960,18 @@ func TestParseMultiStatement_WithComments(t *testing.T) {
 	// (we test the individual parses above; the split is tested in acceptance)
 	_ = input
 }
+
+func TestParseShowQuery_MidChainNotGT(t *testing.T) {
+	p := NewFromString(`SHOWS WHERE "Help on the Way" > "Slipknot!" !> "Franklin's Tower";`)
+	q, err := p.Parse()
+	require.NoError(t, err)
+	sq := q.(*ast.ShowQuery)
+	require.NotNil(t, sq.Where)
+	require.Len(t, sq.Where.Conditions, 1)
+	swn, ok := sq.Where.Conditions[0].(*ast.SegueWithNegation)
+	require.True(t, ok, "expected SegueWithNegation")
+	require.Len(t, swn.Chain.Songs, 2)
+	assert.Equal(t, "Help on the Way", swn.Chain.Songs[0].Name)
+	assert.Equal(t, "Slipknot!", swn.Chain.Songs[1].Name)
+	assert.Equal(t, "Franklin's Tower", swn.NotSong.Name)
+}
