@@ -126,6 +126,13 @@ func SplitStatements(input string) []string {
 			current.WriteByte(c)
 			continue
 		}
+		// Strip line comments: -- to end of line
+		if c == '-' && i+1 < len(input) && input[i+1] == '-' {
+			for i < len(input) && input[i] != '\n' {
+				i++
+			}
+			continue
+		}
 		if c == ';' {
 			s := strings.TrimSpace(current.String())
 			if s != "" {
