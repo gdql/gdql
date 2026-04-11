@@ -165,6 +165,17 @@ The **acceptance** tests run the same kinds of queries as in the README and docs
 
 Fully functional. Parses, plans, and executes against SQLite. Supports SHOWS, SONGS, PERFORMANCES, SETLIST with date ranges, segue chains, position/played/guest conditions, and table/JSON/CSV output. The whole setlist database ships inside the binary — just run it.
 
+## Data sources
+
+The embedded database is built from these sources:
+
+- **[Deadlists (setlists.net)](http://www.setlists.net/)** — show dates, venues, setlists with proper set/encore structure
+- **[Relisten](https://relisten.net/)** — lyrics data via the Relisten API
+
+The `>` operator in queries means "next song in the setlist" — not necessarily a musical segue. Real segue data is hard to source at scale, so GDQL uses position as a proxy and marks a curated list of known segue pairs (Scarlet > Fire, China Cat > Rider, etc.).
+
+If you spot missing or incorrect data, [open an issue](https://github.com/gdql/gdql/issues).
+
 ## License
 
 MIT
