@@ -4,7 +4,7 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/gdql/gdql.svg)](https://pkg.go.dev/github.com/gdql/gdql)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A query language for searching through Grateful Dead shows, setlists, and songs.
+SQL for Deadheads. Query every show, setlist, and song from 30 years of the Grateful Dead. Because someone had to bring structure to the most beautifully unstructured band in history.
 
 **[Documentation](https://docs.gdql.dev)** | **[Try it in the Sandbox](https://sandbox.gdql.dev)** | **[Releases](https://github.com/gdql/gdql/releases)**
 
@@ -26,31 +26,30 @@ PERFORMANCES OF "Dark Star" FROM 1972 WITH LENGTH > 20min;
 
 ## What is this?
 
-GDQL is a SQL-inspired domain-specific language designed for querying the Grateful Dead's live performance history. It provides intuitive, music-centric syntax for exploring:
+You know that argument about whether the 5/8/77 or 2/13/70 Dark Star is better? GDQL won't settle it, but it'll tell you every show where Dark Star appeared, what it segued into, and how long the jam lasted. It's a query language for people who think setlist.fm doesn't have enough operators.
 
-- **Setlists** - What songs were played at which shows
-- **Segues** - Song transitions (the famous Scarlet > Fire, Help > Slip > Frank)
-- **Lyrics** - Search songs by lyrical content
-- **Jams** - Find extended improvisations
-- **Venues** - Search by location
-- **Eras** - Query by band periods (Pigpen era, Brent era, etc.)
+- **Segues** - The `>` operator finds song transitions. `"Scarlet Begonias" > "Fire on the Mountain"` does what you think it does.
+- **Lyrics** - Search the catalog by words. Find every song about trains, or roses, or whatever Garcia was thinking about.
+- **Eras** - `FROM EUROPE72` or `FROM BRENT_ERA`. Because the band in '69 and the band in '89 were basically different species.
+- **Venues** - Every Fillmore, Winterland, and college gymnasium they ever played.
+- **Setlists** - `SETLIST FOR 5/8/77` gives you Cornell. You already knew that date by heart.
 
 ## Quick Examples
 
 ```sql
--- Find shows with the Scarlet > Fire combo
+-- Every Scarlet > Fire from the golden era
 SHOWS FROM 77-79 WHERE "Scarlet Begonias" > "Fire on the Mountain";
 
--- Songs about trains
+-- Songs about trains (there are more than you'd think)
 SONGS WITH LYRICS("train", "railroad", "engineer");
 
--- The longest Dark Stars
+-- The longest Dark Stars — for the truly committed
 PERFORMANCES OF "Dark Star" ORDER BY LENGTH DESC LIMIT 10;
 
--- Shows at the Fillmore
+-- What happened at the Fillmore in '69?
 SHOWS AT "Fillmore West" FROM 1969;
 
--- What did they play at Cornell '77?
+-- The setlist everyone argues about
 SETLIST FOR 5/8/77;
 ```
 
@@ -58,7 +57,7 @@ SETLIST FOR 5/8/77;
 
 ## What gets built
 
-**`go build` produces a single binary that includes a default database.**
+**One binary. The entire Grateful Dead. No external database required.**
 
 - The **default DB** (schema + seed: Cornell ’77, Scarlet > Fire, a few songs) is **embedded** in the binary (`cmd/gdql/embeddb/default.db`). When the user runs `gdql` without `-db`, that file is unpacked to the config dir (e.g. `~/.config/gdql/shows.db`) and used. Use `-db <path>` to point at a different database.
 - **`gdql init [path]`** still creates a fresh DB from embedded schema+seed at the given path. To **regenerate** the embedded default DB after changing schema or seed, run from repo root: `go run ./cmd/build_embed_db`, then rebuild.
@@ -164,7 +163,7 @@ The **acceptance** tests run the same kinds of queries as in the README and docs
 
 ## Status
 
-✅ **Functional** — Parse, plan, execute against SQLite. Supports SHOWS, SONGS, PERFORMANCES, SETLIST with date ranges, segue chains (e.g. Scarlet > Fire), position/played/guest conditions, and table/JSON/CSV/setlist output. Run `gdql init` to create a sample DB; query with no `-db` for the embedded default or `-db <path>` to use another DB.
+Fully functional. Parses, plans, and executes against SQLite. Supports SHOWS, SONGS, PERFORMANCES, SETLIST with date ranges, segue chains, position/played/guest conditions, and table/JSON/CSV output. The whole setlist database ships inside the binary — just run it.
 
 ## License
 
@@ -172,4 +171,4 @@ MIT
 
 ---
 
-*"What a long, strange trip it's been."*
+*"Once in a while you get shown the light, in the strangest of places if you look at it right."*
