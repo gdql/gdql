@@ -826,6 +826,27 @@ func (p *parser) parseSongQuery() (*ast.SongQuery, error) {
 	q := &ast.SongQuery{}
 	p.advance()
 
+	// SONGS FROM 1977 / SONGS PLAYED IN 1977
+	if p.curIs(token.FROM) || p.curIs(token.AFTER) || p.curIs(token.BEFORE) {
+		dr, err := p.parseDateRangeWithDirection()
+		if err != nil {
+			return nil, err
+		}
+		q.From = dr
+	}
+	if p.curIs(token.PLAYED) {
+		p.advance()
+		// Optional IN keyword
+		if p.curIs(token.FROM) {
+			p.advance()
+		}
+		dr, err := p.parseDateRange()
+		if err != nil {
+			return nil, err
+		}
+		q.From = dr
+	}
+
 	if p.curIs(token.WITH) {
 		p.advance()
 		wc, err := p.parseWithClause()

@@ -280,6 +280,11 @@ func (g *generator) genShowsWithSegue(q *ir.QueryIR) (*SQLQuery, error) {
 }
 
 func (g *generator) genSongs(q *ir.QueryIR) (*SQLQuery, error) {
+	// SONGS FROM/PLAYED IN: count performances per song within a date range
+	if q.PlayedRange != nil {
+		return g.genSongsPlayedIn(q)
+	}
+
 	var b strings.Builder
 	var args []interface{}
 	isCount := q.OutputFmt == ir.OutputCount
@@ -325,6 +330,50 @@ func (g *generator) genSongs(q *ir.QueryIR) (*SQLQuery, error) {
 		b.WriteString(" LIMIT ?")
 		args = append(args, *q.Limit)
 	}
+	return &SQLQuery{SQL: b.String(), Args: args}, nil
+}
+
+// genSongsPlayedIn generates SQL for SONGS FROM/PLAYED IN — counts performances per song in a date range.
+func (g *generator) genSongsPlayedIn(q *ir.QueryIR) (*SQLQuery, error) {
+	var b strings.Builder
+	var args []interface{}
+
+	isCount := q.OutputFmt == ir.OutputCount
+	if isCount {
+		b.WriteString("SELECT count(DISTINCT songs.id) AS count, 'songs' AS name FROM songs")
+	} else {
+		b.WriteString("SELECT songs.id, songs.name, songs.short_name, songs.writers, songs.first_played, songs.last_played, count(*) AS times_played FROM songs")
+	}
+	b.WriteString(" JOIN performances p ON p.song_id = songs.id JOIN shows s ON p.show_id = s.id")
+	b.WriteString(" WHERE s.date >= ? AND s.date <= ?")
+	args = append(args, formatDate(q.PlayedRange.Start), formatDate(q.PlayedRange.End))
+
+	// Lyrics conditions
+	for _, c := range q.Conditions {
+		if x, ok := c.(*ir.LyricsConditionIR); ok && len(x.Words) > 0 {
+			likes := make([]string, len(x.Words))
+			for i, w := range x.Words {
+				likes[i] = "(' ' || REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(l.lyrics), ',', ' '), '.', ' '), '!', ' '), '?', ' '), '''', ' ') || ' ') LIKE ?"
+				args = append(args, "% "+strings.ToLower(w)+" %")
+			}
+			b.WriteString(" AND EXISTS (SELECT 1 FROM lyrics l WHERE l.song_id = songs.id AND (" + strings.Join(likes, " AND ") + "))")
+		}
+	}
+
+	if !isCount {
+		b.WriteString(" GROUP BY songs.id")
+		order := g.orderBy(q, "songs")
+		if order != "" {
+			// Replace songs.times_played with the computed count
+			order = strings.Replace(order, "songs.times_played", "count(*)", 1)
+			b.WriteString(" " + order)
+		}
+		if q.Limit != nil {
+			b.WriteString(" LIMIT ?")
+			args = append(args, *q.Limit)
+		}
+	}
+
 	return &SQLQuery{SQL: b.String(), Args: args}, nil
 }
 

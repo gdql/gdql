@@ -24,6 +24,7 @@ type QueryIR struct {
 	VenueName  string     // for SHOWS AT "venue"
 	TourName   string     // for SHOWS TOUR "name"
 	IsLast     bool       // for FIRST/LAST
+	PlayedRange    *ResolvedDateRange // for SONGS FROM/PLAYED IN (date songs were performed)
 	SegueChain     *SegueChainIR
 	Conditions     []ConditionIR
 	ConditionOps   []LogicOp // AND/OR between conditions (len = len(Conditions)-1)

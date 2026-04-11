@@ -99,6 +99,13 @@ func (p *planner) planSong(ctx context.Context, s *ast.SongQuery) (*ir.QueryIR, 
 			return nil, err
 		}
 	}
+	if s.From != nil {
+		dr, err := p.dateExpander.Expand(s.From)
+		if err != nil {
+			return nil, err
+		}
+		out.PlayedRange = dr
+	}
 	if s.With != nil {
 		for _, c := range s.With.Conditions {
 			cond, err := p.withConditionToIR(ctx, c)

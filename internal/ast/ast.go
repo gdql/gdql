@@ -28,6 +28,7 @@ type ShowQuery struct {
 type SongQuery struct {
 	With      *WithClause
 	Written   *DateRange
+	From      *DateRange // SONGS FROM 1977 / SONGS PLAYED IN 1977
 	OrderBy   *OrderClause
 	Limit     *int
 	OutputFmt OutputFormat
