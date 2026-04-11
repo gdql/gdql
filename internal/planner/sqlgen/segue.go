@@ -67,16 +67,9 @@ func BuildSegueShowsSQL(q *ir.QueryIR) (*SQLQuery, error) {
 				condParts = append(condParts, part)
 				args = append(args, a...)
 			} else {
-				setNum := setPositionToNumber(x.Set)
-				switch x.Operator {
-				case ir.PosOpened:
-					condParts = append(condParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.set_number = ? AND px.song_id = ? AND px.is_opener = 1)")
-				case ir.PosClosed:
-					condParts = append(condParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.set_number = ? AND px.song_id = ? AND px.is_closer = 1)")
-				case ir.PosEquals:
-					condParts = append(condParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.set_number = ? AND px.song_id = ?)")
-				}
-				args = append(args, setNum, x.SongID)
+				part, a := buildPositionCondition(x)
+				condParts = append(condParts, part)
+				args = append(args, a...)
 			}
 		case *ir.PlayedConditionIR:
 			placeholders := make([]string, len(x.SongIDs))

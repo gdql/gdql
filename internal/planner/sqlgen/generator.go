@@ -174,13 +174,18 @@ func (g *generator) positionCondition(c *ir.PositionConditionIR) (string, []inte
 	if c.SegueChain != nil {
 		return positionConditionWithSegue(c)
 	}
+	return buildPositionCondition(c)
+}
+
+func buildPositionCondition(c *ir.PositionConditionIR) (string, []interface{}) {
 	// Build set filter: Encore matches set >= 3 (covers both set 3 and set 4 encores)
 	var setFilter string
 	var setArgs []interface{}
 	isEncore := c.Set == ir.Encore
 	setNum := setPositionToNumber(c.Set)
 	if isEncore {
-		setFilter = " AND p.set_number >= 3"
+		// Match songs in the last set of the show (not just set >= 3)
+		setFilter = " AND p.set_number = (SELECT MAX(p2.set_number) FROM performances p2 WHERE p2.show_id = p.show_id)"
 	} else if setNum > 0 {
 		setFilter = " AND p.set_number = ?"
 		setArgs = append(setArgs, setNum)
