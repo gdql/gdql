@@ -42,6 +42,7 @@ type Result struct {
 	Songs        []*data.Song
 	Performances []*data.Performance
 	Setlist      *SetlistResult
+	Setlists     []*SetlistResult // AS SETLIST on SHOWS queries
 	Count        *CountResult
 	OutputFmt    ir.OutputFormat
 	SQL          string
@@ -112,6 +113,29 @@ func (e *executor) ExecuteAST(ctx context.Context, q ast.Query) (*Result, error)
 	case ir.QueryTypeShows:
 		out.Type = ResultShows
 		out.Shows, err = mapRowsToShows(rs)
+		// AS SETLIST: expand each show into its full setlist
+		if err == nil && irQ.OutputFmt == ir.OutputSetlist && len(out.Shows) > 0 {
+			var setlists []*SetlistResult
+			maxExpand := 20
+			if len(out.Shows) < maxExpand {
+				maxExpand = len(out.Shows)
+			}
+			for _, show := range out.Shows[:maxExpand] {
+				perfRS, perr := e.dataSource.ExecuteQuery(ctx,
+					"SELECT p.id, p.show_id, p.song_id, p.set_number, p.position, p.segue_type, p.length_seconds, songs.name FROM performances p JOIN songs ON p.song_id = songs.id WHERE p.show_id = ? ORDER BY p.set_number, p.position",
+					show.ID)
+				if perr != nil {
+					continue
+				}
+				perfs, _ := mapRowsToPerformances(perfRS)
+				setlists = append(setlists, &SetlistResult{
+					Date:         show.Date,
+					ShowID:       show.ID,
+					Performances: perfs,
+				})
+			}
+			out.Setlists = setlists
+		}
 	case ir.QueryTypeSongs:
 		if irQ.OutputFmt == ir.OutputCount {
 			out.Type = ResultCount

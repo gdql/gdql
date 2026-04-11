@@ -9,6 +9,10 @@ import (
 )
 
 func formatSetlist(result *executor.Result) (string, error) {
+	// Multi-show setlist (AS SETLIST on SHOWS query)
+	if len(result.Setlists) > 0 {
+		return formatMultiSetlist(result.Setlists)
+	}
 	if result.Type != executor.ResultSetlist || result.Setlist == nil {
 		return formatTable(result)
 	}
@@ -31,6 +35,34 @@ func formatSetlist(result *executor.Result) (string, error) {
 			name = "?"
 		}
 		fmt.Fprintf(&b, "  %d.%s%s%s\n", p.Position, seg, name, fmtPerformance(p))
+	}
+	return strings.TrimRight(b.String(), "\n"), nil
+}
+
+func formatMultiSetlist(setlists []*executor.SetlistResult) (string, error) {
+	var b strings.Builder
+	for i, sl := range setlists {
+		if i > 0 {
+			b.WriteString("\n---\n\n")
+		}
+		fmt.Fprintf(&b, "Setlist — %s (show_id=%d)\n\n", sl.Date.Format("Monday, January 2, 2006"), sl.ShowID)
+		set := -1
+		for _, p := range sl.Performances {
+			if p.SetNumber != set {
+				set = p.SetNumber
+				b.WriteString(fmtSetName(set))
+				b.WriteString("\n")
+			}
+			name := p.SongName
+			if name == "" {
+				name = "?"
+			}
+			seg := ""
+			if p.SegueType != "" {
+				seg = " " + p.SegueType + " "
+			}
+			fmt.Fprintf(&b, "  %d.%s%s%s\n", p.Position, seg, name, fmtPerformance(p))
+		}
 	}
 	return strings.TrimRight(b.String(), "\n"), nil
 }
