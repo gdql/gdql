@@ -69,6 +69,25 @@ func (p *planner) planShow(ctx context.Context, s *ast.ShowQuery) (*ir.QueryIR, 
 				out.SegueChain = chain
 				continue
 			}
+			if swn, ok := c.(*ast.SegueWithNegation); ok {
+				// Segue chain part
+				chain, err := p.segueToIR(ctx, swn.Chain)
+				if err != nil {
+					return nil, p.wrapSongNotFound(ctx, err)
+				}
+				out.SegueChain = chain
+				// Negated adjacency part
+				fromID, err := p.songResolver.Resolve(ctx, swn.FromSong.Name)
+				if err != nil {
+					return nil, p.wrapSongNotFound(ctx, err)
+				}
+				notID, err := p.songResolver.Resolve(ctx, swn.NotSong.Name)
+				if err != nil {
+					return nil, p.wrapSongNotFound(ctx, err)
+				}
+				out.Conditions = append(out.Conditions, &ir.NegatedSegueConditionIR{SongID: fromID, NotSongID: notID})
+				continue
+			}
 			cond, err := p.conditionToIR(ctx, c)
 			if err != nil {
 				return nil, p.wrapSongNotFound(ctx, err)
@@ -318,6 +337,11 @@ func (p *planner) conditionToIR(ctx context.Context, c ast.Condition) (ir.Condit
 			return nil, p.wrapSongNotFound(ctx, err)
 		}
 		return &ir.SegueIntoConditionIR{SongIDs: ids, Operator: astSegueOpToIR(x.Operator)}, nil
+	case *ast.SegueWithNegation:
+		// This produces TWO effects: the segue chain is lifted to SegueChain,
+		// and the negated adjacency becomes a condition. We handle this specially
+		// in planShow by returning nil here and handling it at the caller level.
+		return nil, nil
 	case *ast.NegatedSegueCondition:
 		songID, err := p.songResolver.Resolve(ctx, x.Song.Name)
 		if err != nil {

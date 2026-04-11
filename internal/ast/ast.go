@@ -120,7 +120,8 @@ func (*PlayedCondition) conditionNode()   {}
 func (*LengthCondition) conditionNode()   {}
 func (*GuestCondition) conditionNode()     {}
 func (*SegueIntoCondition) conditionNode()    {}
-func (*NegatedSegueCondition) conditionNode() {}
+func (*NegatedSegueCondition) conditionNode()  {}
+func (*SegueWithNegation) conditionNode()      {}
 
 // SegueCondition represents: "Song A" > "Song B" > "Song C"
 type SegueCondition struct {
@@ -191,6 +192,15 @@ type GuestCondition struct {
 type NegatedSegueCondition struct {
 	Song    *SongRef // the song that was played
 	NotSong *SongRef // the song that did NOT follow
+}
+
+// SegueWithNegation represents a segue chain ending with a negated adjacency:
+// "Help on the Way" > "Slipknot!" !> "Franklin's Tower"
+// Means: Help > Slip happened, but Franklin's did NOT follow Slip.
+type SegueWithNegation struct {
+	Chain    *SegueCondition // the positive segue chain
+	FromSong *SongRef        // the last song in the chain (same as Chain.Songs[last])
+	NotSong  *SongRef        // the song that must NOT follow
 }
 
 // SegueIntoCondition represents a standalone segue operator before a song:

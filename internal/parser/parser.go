@@ -542,6 +542,21 @@ func (p *parser) parseSegueOrPlayed() (ast.Condition, error) {
 		sc.Songs = append(sc.Songs, nextRef)
 		sc.Operators = append(sc.Operators, *op)
 	}
+	// Check for trailing !> or !>> — negated adjacency on the last song in the chain
+	if p.curIs(token.NOT_GT) || p.curIs(token.NOT_GTGT) {
+		p.advance()
+		notRef, err := p.parseSongRef()
+		if err != nil {
+			return nil, err
+		}
+		// Return both: the segue chain AND a negated condition on the last song
+		lastSong := sc.Songs[len(sc.Songs)-1]
+		return &ast.SegueWithNegation{
+			Chain:   sc,
+			NotSong: notRef,
+			FromSong: lastSong,
+		}, nil
+	}
 	return sc, nil
 }
 
