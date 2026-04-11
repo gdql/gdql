@@ -58,15 +58,11 @@ jobs:
         run: |
           go build -ldflags "-s -w -X main.version=${{ github.ref_name }}" \
             -o gdql${{ matrix.suffix }} ./cmd/gdql
-          go build -ldflags "-s -w" \
-            -o gdql-import${{ matrix.suffix }} ./cmd/gdql-import
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: gdql-${{ matrix.goos }}-${{ matrix.goarch }}
-          path: |
-            gdql${{ matrix.suffix }}
-            gdql-import${{ matrix.suffix }}
+          path: gdql${{ matrix.suffix }}
 
   release:
     needs: build
@@ -83,10 +79,6 @@ jobs:
           cp artifacts/gdql-darwin-amd64/gdql release/gdql-darwin-amd64
           cp artifacts/gdql-darwin-arm64/gdql release/gdql-darwin-arm64
           cp artifacts/gdql-windows-amd64/gdql.exe release/gdql-windows-amd64.exe
-          cp artifacts/gdql-linux-amd64/gdql-import release/gdql-import-linux-amd64
-          cp artifacts/gdql-darwin-amd64/gdql-import release/gdql-import-darwin-amd64
-          cp artifacts/gdql-darwin-arm64/gdql-import release/gdql-import-darwin-arm64
-          cp artifacts/gdql-windows-amd64/gdql-import.exe release/gdql-import-windows-amd64.exe
           ls -la release/
       - name: Determine if prerelease
         id: prerelease
