@@ -46,6 +46,7 @@ const (
 	AT
 	BEFORE
 	AFTER
+	IN
 	TOUR
 	RANDOM
 	FOR
@@ -58,9 +59,11 @@ const (
 	DURATION
 
 	// Operators
-	GT   // >
-	GTGT // >>
+	GT      // >
+	GTGT    // >>
 	TILDE_GT
+	NOT_GT   // !>
+	NOT_GTGT // !>>
 	EQ
 	LT   // <
 	GTEQ
@@ -118,6 +121,7 @@ var tokens = [...]string{
 	AT:           "AT",
 	BEFORE:       "BEFORE",
 	AFTER:        "AFTER",
+	IN:           "IN",
 	TOUR:         "TOUR",
 	RANDOM:       "RANDOM",
 	FOR:          "FOR",
@@ -131,6 +135,8 @@ var tokens = [...]string{
 	GT:       ">",
 	GTGT:     ">>",
 	TILDE_GT: "~>",
+	NOT_GT:   "!>",
+	NOT_GTGT: "!>>",
 	EQ:       "=",
 	LT:       "<",
 	GTEQ:     ">=",

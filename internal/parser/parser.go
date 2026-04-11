@@ -132,7 +132,7 @@ func (p *parser) parseShowQuery() (*ast.ShowQuery, error) {
 		p.advance()
 	}
 
-	if p.curIs(token.FROM) || p.curIs(token.AFTER) || p.curIs(token.BEFORE) {
+	if p.curIs(token.FROM) || p.curIs(token.IN) || p.curIs(token.AFTER) || p.curIs(token.BEFORE) {
 		dr, err := p.parseDateRangeWithDirection()
 		if err != nil {
 			return nil, err
@@ -501,6 +501,15 @@ func (p *parser) parseSegueOrPlayed() (ast.Condition, error) {
 	if err != nil {
 		return nil, err
 	}
+	// "Song A" !> "Song B" or "Song A" !>> "Song B" — negated adjacency (shorthand)
+	if p.curIs(token.NOT_GT) || p.curIs(token.NOT_GTGT) {
+		p.advance()
+		notRef, err := p.parseSongRef()
+		if err != nil {
+			return nil, err
+		}
+		return &ast.NegatedSegueCondition{Song: ref, NotSong: notRef}, nil
+	}
 	// "Song A" NOT > "Song B" — negated adjacency
 	if p.curIs(token.NOT) && (p.peekIs(token.GT) || p.peekIs(token.INTO) || p.peekIs(token.THEN) || p.peekIs(token.TILDE_GT) || p.peekIs(token.GTGT)) {
 		p.advance() // consume NOT
@@ -827,7 +836,7 @@ func (p *parser) parseSongQuery() (*ast.SongQuery, error) {
 	p.advance()
 
 	// SONGS FROM 1977 / SONGS PLAYED IN 1977
-	if p.curIs(token.FROM) || p.curIs(token.AFTER) || p.curIs(token.BEFORE) {
+	if p.curIs(token.FROM) || p.curIs(token.IN) || p.curIs(token.AFTER) || p.curIs(token.BEFORE) {
 		dr, err := p.parseDateRangeWithDirection()
 		if err != nil {
 			return nil, err
@@ -837,9 +846,7 @@ func (p *parser) parseSongQuery() (*ast.SongQuery, error) {
 	if p.curIs(token.PLAYED) {
 		p.advance()
 		// Skip optional FROM/IN keyword
-		if p.curIs(token.FROM) {
-			p.advance()
-		} else if strings.ToUpper(p.cur.Literal) == "IN" {
+		if p.curIs(token.FROM) || p.curIs(token.IN) {
 			p.advance()
 		}
 		dr, err := p.parseDateRange()
@@ -953,7 +960,7 @@ func (p *parser) parsePerformanceQuery() (*ast.PerformanceQuery, error) {
 	}
 	q.Song = ref
 
-	if p.curIs(token.FROM) || p.curIs(token.AFTER) || p.curIs(token.BEFORE) {
+	if p.curIs(token.FROM) || p.curIs(token.IN) || p.curIs(token.AFTER) || p.curIs(token.BEFORE) {
 		dr, err := p.parseDateRangeWithDirection()
 		if err != nil {
 			return nil, err
@@ -1013,7 +1020,7 @@ func (p *parser) parseCountQuery() (*ast.CountQuery, error) {
 			Hint:    "Try: COUNT \"Dark Star\" or COUNT SHOWS FROM 1977;",
 		}
 	}
-	if p.curIs(token.FROM) || p.curIs(token.AFTER) || p.curIs(token.BEFORE) {
+	if p.curIs(token.FROM) || p.curIs(token.IN) || p.curIs(token.AFTER) || p.curIs(token.BEFORE) {
 		dr, err := p.parseDateRangeWithDirection()
 		if err != nil {
 			return nil, err
@@ -1037,7 +1044,7 @@ func (p *parser) parseRandomShowQuery() (*ast.RandomShowQuery, error) {
 	if p.curIs(token.SHOWS) {
 		p.advance() // consume SHOW/SHOWS
 	}
-	if p.curIs(token.FROM) || p.curIs(token.AFTER) || p.curIs(token.BEFORE) {
+	if p.curIs(token.FROM) || p.curIs(token.IN) || p.curIs(token.AFTER) || p.curIs(token.BEFORE) {
 		dr, err := p.parseDateRangeWithDirection()
 		if err != nil {
 			return nil, err

@@ -168,6 +168,16 @@ func (l *lexer) nextToken() token.Token {
 				l.readChar()
 				return token.Token{Type: token.NEQ, Literal: "!=", Pos: pos}
 			}
+			if l.peekChar() == '>' {
+				l.readChar()
+				if l.peekChar() == '>' {
+					l.readChar()
+					l.readChar()
+					return token.Token{Type: token.NOT_GTGT, Literal: "!>>", Pos: pos}
+				}
+				l.readChar()
+				return token.Token{Type: token.NOT_GT, Literal: "!>", Pos: pos}
+			}
 			l.readChar()
 			return token.Token{Type: token.ILLEGAL, Literal: string(l.ch), Pos: pos}
 		case '<':
@@ -416,6 +426,8 @@ func lookupIdent(ident string) token.TokenType {
 		return token.NOT
 	case "OF":
 		return token.OF
+	case "IN":
+		return token.IN
 	case "INTO":
 		return token.INTO
 	case "THEN":
