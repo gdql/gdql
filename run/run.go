@@ -40,7 +40,7 @@ func ensureEmbeddedDB() (string, error) {
 			return
 		}
 		path := filepath.Join(dir, "gdql.db")
-		if err := os.WriteFile(path, embeddedDB, 0644); err != nil {
+		if err := os.WriteFile(path, embeddedDB, 0600); err != nil {
 			embeddedDBErr = err
 			return
 		}

@@ -50,8 +50,8 @@ func BuildSegueShowsSQL(q *ir.QueryIR) (*SQLQuery, error) {
 	// Fixed parts (venue, date) always ANDed
 	var fixedParts []string
 	if q.VenueName != "" {
-		fixedParts = append(fixedParts, "(v.name LIKE ? OR v.city LIKE ?)")
-		args = append(args, "%"+q.VenueName+"%", "%"+q.VenueName+"%")
+		fixedParts = append(fixedParts, "(v.name LIKE ? ESCAPE '\\' OR v.city LIKE ? ESCAPE '\\')")
+		args = append(args, "%"+escapeLike(q.VenueName)+"%", "%"+escapeLike(q.VenueName)+"%")
 	}
 	if q.DateRange != nil {
 		fixedParts = append(fixedParts, "s.date >= ? AND s.date <= ?")
@@ -91,8 +91,8 @@ func BuildSegueShowsSQL(q *ir.QueryIR) (*SQLQuery, error) {
 				condParts = append(condParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND "+inClause+")")
 			}
 		case *ir.GuestConditionIR:
-			condParts = append(condParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.guest IS NOT NULL AND (px.guest = ? OR px.guest LIKE ?))")
-			args = append(args, x.Name, "%"+x.Name+"%")
+			condParts = append(condParts, "EXISTS (SELECT 1 FROM performances px WHERE px.show_id = s.id AND px.guest IS NOT NULL AND (px.guest = ? OR px.guest LIKE ? ESCAPE '\\'))")
+			args = append(args, x.Name, "%"+escapeLike(x.Name)+"%")
 		case *ir.SegueIntoConditionIR:
 			part, a := segueIntoCondition(x)
 			condParts = append(condParts, part)

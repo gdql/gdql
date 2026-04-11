@@ -78,12 +78,12 @@ func (g *generator) whereShows(q *ir.QueryIR) (clause string, args []interface{}
 	// Fixed parts (venue, tour, date) — always ANDed
 	var fixedParts []string
 	if q.VenueName != "" {
-		fixedParts = append(fixedParts, "(v.name LIKE ? OR v.city LIKE ?)")
-		args = append(args, "%"+q.VenueName+"%", "%"+q.VenueName+"%")
+		fixedParts = append(fixedParts, "(v.name LIKE ? ESCAPE '\\' OR v.city LIKE ? ESCAPE '\\')")
+		args = append(args, "%"+escapeLike(q.VenueName)+"%", "%"+escapeLike(q.VenueName)+"%")
 	}
 	if q.TourName != "" {
-		fixedParts = append(fixedParts, "s.tour LIKE ?")
-		args = append(args, "%"+q.TourName+"%")
+		fixedParts = append(fixedParts, "s.tour LIKE ? ESCAPE '\\'")
+		args = append(args, "%"+escapeLike(q.TourName)+"%")
 	}
 	if q.DateRange != nil {
 		fixedParts = append(fixedParts, "s.date >= ? AND s.date <= ?")
@@ -110,8 +110,8 @@ func (g *generator) whereShows(q *ir.QueryIR) (clause string, args []interface{}
 				condParts = append(condParts, "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND "+inClause+")")
 			}
 		case *ir.GuestConditionIR:
-			condParts = append(condParts, "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.guest IS NOT NULL AND p.guest != '' AND (p.guest = ? OR p.guest LIKE ?))")
-			args = append(args, x.Name, "%"+x.Name+"%")
+			condParts = append(condParts, "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.guest IS NOT NULL AND p.guest != '' AND (p.guest = ? OR p.guest LIKE ? ESCAPE '\\'))")
+			args = append(args, x.Name, "%"+escapeLike(x.Name)+"%")
 		case *ir.SegueIntoConditionIR:
 			part, a := segueIntoCondition(x)
 			condParts = append(condParts, part)
@@ -468,6 +468,14 @@ func (g *generator) limit(q *ir.QueryIR) string {
 
 func formatDate(t time.Time) string {
 	return t.Format("2006-01-02")
+}
+
+// escapeLike escapes LIKE pattern metacharacters (% and _) in user input.
+func escapeLike(s string) string {
+	s = strings.ReplaceAll(s, "\\", "\\\\")
+	s = strings.ReplaceAll(s, "%", "\\%")
+	s = strings.ReplaceAll(s, "_", "\\_")
+	return s
 }
 
 func compOpSQL(op ir.CompOp) string {
