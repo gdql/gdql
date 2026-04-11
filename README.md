@@ -1,10 +1,10 @@
 # GDQL - Grateful Dead Query Language
 
-A novelty query language for searching through Grateful Dead shows, setlists, and songs.
+A query language for searching through Grateful Dead shows, setlists, and songs.
 
-> **Development Philosophy: Test-First Driven Design (TDD)**  
-> Every feature in GDQL is built test-first. We write failing tests before implementation.  
-> See [TESTING_STRATEGY.md](TESTING_STRATEGY.md) for our comprehensive testing approach.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/gdql/.github/main/demo.gif" alt="GDQL demo" width="720">
+</p>
 
 ```sql
 SHOWS FROM 77-80 WHERE "Scarlet Begonias" > "Fire on the Mountain";
