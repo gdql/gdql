@@ -143,6 +143,7 @@ type PositionCondition struct {
 	Operator   PositionOp
 	Song       *SongRef
 	SegueChain *SegueCondition
+	Negated    bool
 }
 
 // SetPosition is SET1, SET2, SET3, or ENCORE.

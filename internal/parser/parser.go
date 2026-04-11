@@ -296,9 +296,39 @@ func (p *parser) parseWhereClause() (*ast.WhereClause, error) {
 }
 
 func (p *parser) parseCondition() (ast.Condition, error) {
-	// NOT PLAYED "Song" / NOT "Song" — negated played condition
+	// NOT PLAYED "Song" / NOT "Song" / NOT CLOSED "Song" / NOT OPENER "Song" etc.
 	if p.curIs(token.NOT) {
 		p.advance()
+		// NOT CLOSED/CLOSER "Song" — show didn't close with this song
+		if p.curIs(token.CLOSED) || p.curIs(token.CLOSER) {
+			p.advance()
+			ref, err := p.parseSongRef()
+			if err != nil {
+				return nil, err
+			}
+			return &ast.PositionCondition{Set: ast.SetAny, Operator: ast.PosClosed, Song: ref, Negated: true}, nil
+		}
+		// NOT OPENED/OPENER "Song" — show didn't open with this song
+		if p.curIs(token.OPENED) || p.curIs(token.OPENER) {
+			p.advance()
+			ref, err := p.parseSongRef()
+			if err != nil {
+				return nil, err
+			}
+			return &ast.PositionCondition{Set: ast.SetAny, Operator: ast.PosOpened, Song: ref, Negated: true}, nil
+		}
+		// NOT ENCORE "Song"
+		if p.curIs(token.ENCORE) {
+			p.advance()
+			if p.curIs(token.EQ) {
+				p.advance()
+			}
+			ref, err := p.parseSongRef()
+			if err != nil {
+				return nil, err
+			}
+			return &ast.PositionCondition{Set: ast.Encore, Operator: ast.PosEquals, Song: ref, Negated: true}, nil
+		}
 		// Optional PLAYED keyword: NOT PLAYED "X" === NOT "X"
 		if p.curIs(token.PLAYED) {
 			p.advance()
@@ -323,6 +353,9 @@ func (p *parser) parseCondition() (ast.Condition, error) {
 		} else if p.curIs(token.EQ) {
 			op = ast.PosEquals
 			p.advance()
+		} else if p.curIs(token.STRING) {
+			// ENCORE "Song" is shorthand for ENCORE = "Song"
+			op = ast.PosEquals
 		} else {
 			return nil, &errors.ParseError{Pos: p.cur.Pos, Message: "expected OPENED, CLOSED, or =", Query: p.query}
 		}
@@ -343,15 +376,27 @@ func (p *parser) parseCondition() (ast.Condition, error) {
 		p.advance()
 		if p.curIs(token.LPAREN) {
 			p.advance()
-			seg, err := p.parseSegueCondition()
+			ref, err := p.parseSongRef()
 			if err != nil {
 				return nil, err
 			}
-			if !p.curIs(token.RPAREN) {
-				return nil, &errors.ParseError{Pos: p.cur.Pos, Message: "expected ) after segue chain", Query: p.query}
+			// If segue operator follows, it's a chain: CLOSER("A" > "B")
+			if p.parseSegueOp() != nil {
+				seg, err := p.parseSegueRest(ref)
+				if err != nil {
+					return nil, err
+				}
+				if !p.curIs(token.RPAREN) {
+					return nil, &errors.ParseError{Pos: p.cur.Pos, Message: "expected ) after segue chain", Query: p.query}
+				}
+				p.advance()
+				return &ast.PositionCondition{Set: ast.SetAny, Operator: op, SegueChain: seg}, nil
 			}
-			p.advance()
-			return &ast.PositionCondition{Set: ast.SetAny, Operator: op, SegueChain: seg}, nil
+			// Just one song in parens: CLOSER("Song")
+			if p.curIs(token.RPAREN) {
+				p.advance()
+			}
+			return &ast.PositionCondition{Set: ast.SetAny, Operator: op, Song: ref}, nil
 		}
 		ref, err := p.parseSongRef()
 		if err != nil {

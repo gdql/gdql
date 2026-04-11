@@ -72,6 +72,7 @@ type PositionConditionIR struct {
 	Operator   PositionOp
 	SongID     int
 	SegueChain *SegueChainIR
+	Negated    bool
 }
 
 // LyricsConditionIR: LYRICS("word1", "word2")

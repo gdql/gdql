@@ -181,27 +181,31 @@ func (g *generator) positionCondition(c *ir.PositionConditionIR) (string, []inte
 		setFilter = " AND p.set_number = ?"
 		setArgs = append(setArgs, setNum)
 	}
-	// SetAny (setNum == 0 and not encore): no set filter
+
+	exists := "EXISTS"
+	if c.Negated {
+		exists = "NOT EXISTS"
+	}
 
 	switch c.Operator {
 	case ir.PosOpened:
 		args := append(setArgs, c.SongID)
 		if setFilter == "" {
-			return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.song_id = ? AND p.is_opener = 1)", []interface{}{c.SongID}
+			return exists + " (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.song_id = ? AND p.is_opener = 1)", []interface{}{c.SongID}
 		}
-		return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id" + setFilter + " AND p.song_id = ? AND p.is_opener = 1)", args
+		return exists + " (SELECT 1 FROM performances p WHERE p.show_id = s.id" + setFilter + " AND p.song_id = ? AND p.is_opener = 1)", args
 	case ir.PosClosed:
 		args := append(setArgs, c.SongID)
 		if setFilter == "" {
-			return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.song_id = ? AND p.is_closer = 1)", []interface{}{c.SongID}
+			return exists + " (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.song_id = ? AND p.is_closer = 1)", []interface{}{c.SongID}
 		}
-		return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id" + setFilter + " AND p.song_id = ? AND p.is_closer = 1)", args
+		return exists + " (SELECT 1 FROM performances p WHERE p.show_id = s.id" + setFilter + " AND p.song_id = ? AND p.is_closer = 1)", args
 	case ir.PosEquals:
 		args := append(setArgs, c.SongID)
 		if setFilter == "" {
-			return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.song_id = ?)", []interface{}{c.SongID}
+			return exists + " (SELECT 1 FROM performances p WHERE p.show_id = s.id AND p.song_id = ?)", []interface{}{c.SongID}
 		}
-		return "EXISTS (SELECT 1 FROM performances p WHERE p.show_id = s.id" + setFilter + " AND p.song_id = ?)", args
+		return exists + " (SELECT 1 FROM performances p WHERE p.show_id = s.id" + setFilter + " AND p.song_id = ?)", args
 	}
 	return "", nil
 }

@@ -273,6 +273,7 @@ func (p *planner) conditionToIR(ctx context.Context, c ast.Condition) (ir.Condit
 				Set:        astSetPosToIR(x.Set),
 				Operator:   astPosOpToIR(x.Operator),
 				SegueChain: chain,
+				Negated:    x.Negated,
 			}, nil
 		}
 		id, err := p.songResolver.Resolve(ctx, x.Song.Name)
@@ -283,6 +284,7 @@ func (p *planner) conditionToIR(ctx context.Context, c ast.Condition) (ir.Condit
 			Set:      astSetPosToIR(x.Set),
 			Operator: astPosOpToIR(x.Operator),
 			SongID:   id,
+			Negated:  x.Negated,
 		}, nil
 	case *ast.PlayedCondition:
 		ids, err := p.songResolver.ResolveVariants(ctx, x.Song.Name)
