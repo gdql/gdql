@@ -1,5 +1,9 @@
 # GDQL - Grateful Dead Query Language
 
+[![CI](https://github.com/gdql/gdql/actions/workflows/ci.yml/badge.svg)](https://github.com/gdql/gdql/actions/workflows/ci.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/gdql/gdql.svg)](https://pkg.go.dev/github.com/gdql/gdql)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 A query language for searching through Grateful Dead shows, setlists, and songs.
 
 <p align="center">
