@@ -357,6 +357,14 @@ func (p *parser) parseCondition() (ast.Condition, error) {
 		if err != nil {
 			return nil, err
 		}
+		// If followed by a segue operator, build a segue chain without parens
+		if p.parseSegueOp() != nil {
+			seg, err := p.parseSegueRest(ref)
+			if err != nil {
+				return nil, err
+			}
+			return &ast.PositionCondition{Set: ast.SetAny, Operator: op, SegueChain: seg}, nil
+		}
 		return &ast.PositionCondition{Set: ast.SetAny, Operator: op, Song: ref}, nil
 	}
 
