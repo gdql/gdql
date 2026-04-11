@@ -125,7 +125,8 @@ Fully functional. Parses, plans, and executes against SQLite. Supports SHOWS, SO
 The embedded database is built from these sources:
 
 - **[Deadlists (setlists.net)](http://www.setlists.net/)** — show dates, venues, setlists with proper set/encore structure
-- **[Relisten](https://relisten.net/)** — lyrics data via the Relisten API
+- **[Relisten](https://relisten.net/) / [archive.org](https://archive.org/details/GratefulDead)** — track durations from the Live Music Archive recordings
+- **[Relisten](https://relisten.net/)** — lyrics data
 
 The `>` operator in queries means "next song in the setlist" — not necessarily a musical segue. Real segue data is hard to source at scale, so GDQL uses position as a proxy and marks a curated list of known segue pairs (Scarlet > Fire, China Cat > Rider, etc.).
 
