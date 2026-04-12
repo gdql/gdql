@@ -17,7 +17,6 @@ import (
 	"github.com/gdql/gdql/internal/data/sqlite"
 	"github.com/gdql/gdql/internal/executor"
 	"github.com/gdql/gdql/internal/formatter"
-	"github.com/gdql/gdql/internal/ir"
 )
 
 //go:embed embeddb/default.db
@@ -111,29 +110,6 @@ func runOne(ctx context.Context, db *sqlite.DB, query string) (string, error) {
 		return "", err
 	}
 	fmtr := formatter.New()
-
-	// When the user explicitly asks for CSV or ASCII-table output (AS CSV /
-	// AS TABLE), wrap the rendered text in a JSON envelope so the API contract
-	// stays JSON. The sandbox UI looks for {format, content} and renders the
-	// text in a code block. Default output (no AS clause) still falls through
-	// to the structured JSON formatter for backwards compatibility.
-	switch result.OutputFmt {
-	case ir.OutputCSV, ir.OutputTable:
-		text, err := fmtr.Format(result, formatter.FromIR(result.OutputFmt))
-		if err != nil {
-			return "", err
-		}
-		name := "table"
-		if result.OutputFmt == ir.OutputCSV {
-			name = "csv"
-		}
-		env, err := json.Marshal(map[string]string{"format": name, "content": text})
-		if err != nil {
-			return "", err
-		}
-		return string(env), nil
-	}
-
 	return fmtr.Format(result, formatter.FormatJSON)
 }
 
