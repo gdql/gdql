@@ -156,6 +156,18 @@ func (e *executor) ExecuteAST(ctx context.Context, q ast.Query) (*Result, error)
 	case ir.QueryTypeSetlist:
 		out.Type = ResultSetlist
 		out.Setlist, err = mapRowsToSetlist(rs, irQ.SingleDate)
+		// Populate venue context so the sandbox setlist header can show
+		// "5/8/77 · Barton Hall, Ithaca NY" instead of bare date.
+		if err == nil && out.Setlist != nil && out.Setlist.ShowID > 0 && e.dataSource != nil {
+			if vrs, verr := e.dataSource.ExecuteQuery(ctx,
+				"SELECT v.name, v.city, v.state FROM shows s LEFT JOIN venues v ON s.venue_id = v.id WHERE s.id = ?",
+				out.Setlist.ShowID); verr == nil && len(vrs.Rows) > 0 {
+				row := vrs.Rows[0]
+				out.Setlist.Venue = strVal(row[0])
+				out.Setlist.City = strVal(row[1])
+				out.Setlist.State = strVal(row[2])
+			}
+		}
 	case ir.QueryTypeCount:
 		out.Type = ResultCount
 		out.Count = mapRowsToCount(rs)

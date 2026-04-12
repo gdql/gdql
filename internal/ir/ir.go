@@ -170,6 +170,7 @@ const (
 	OutputDefault OutputFormat = iota
 	OutputJSON
 	OutputCSV
+	OutputTSV
 	OutputSetlist
 	OutputCalendar
 	OutputTable

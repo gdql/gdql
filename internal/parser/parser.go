@@ -789,6 +789,8 @@ func (p *parser) parseOutputFormat() ast.OutputFormat {
 		return ast.OutputJSON
 	case "CSV":
 		return ast.OutputCSV
+	case "TSV":
+		return ast.OutputTSV
 	case "SETLIST":
 		return ast.OutputSetlist
 	case "TABLE":

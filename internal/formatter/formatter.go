@@ -14,6 +14,7 @@ const (
 	FormatTable OutputFormat = iota
 	FormatJSON
 	FormatCSV
+	FormatTSV
 	FormatSetlist
 	FormatCalendar
 )
@@ -37,6 +38,8 @@ func (f *formatter) Format(result *executor.Result, format OutputFormat) (string
 		return formatJSON(result)
 	case FormatCSV:
 		return formatCSV(result)
+	case FormatTSV:
+		return formatTSV(result)
 	case FormatSetlist:
 		return formatSetlist(result)
 	case FormatCalendar:
@@ -53,6 +56,8 @@ func FromIR(o ir.OutputFormat) OutputFormat {
 		return FormatJSON
 	case ir.OutputCSV:
 		return FormatCSV
+	case ir.OutputTSV:
+		return FormatTSV
 	case ir.OutputSetlist:
 		return FormatSetlist
 	case ir.OutputTable:

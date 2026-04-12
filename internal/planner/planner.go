@@ -440,6 +440,8 @@ func astOutputToIR(o ast.OutputFormat) ir.OutputFormat {
 		return ir.OutputJSON
 	case ast.OutputCSV:
 		return ir.OutputCSV
+	case ast.OutputTSV:
+		return ir.OutputTSV
 	case ast.OutputSetlist:
 		return ir.OutputSetlist
 	case ast.OutputCalendar:

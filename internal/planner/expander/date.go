@@ -55,11 +55,14 @@ func (d *dateExpander) ExpandEra(era ast.EraAlias) (*ir.ResolvedDateRange, error
 		start = time.Date(1975, 1, 1, 0, 0, 0, 0, time.UTC)
 		end = time.Date(1975, 12, 31, 23, 59, 59, 0, time.UTC)
 	case ast.EraBrent:
-		start = time.Date(1979, 1, 1, 0, 0, 0, 0, time.UTC)
-		end = time.Date(1990, 12, 31, 23, 59, 59, 0, time.UTC)
+		// Brent Mydland's first show was Apr 22, 1979; he died July 26, 1990.
+		start = time.Date(1979, 4, 22, 0, 0, 0, 0, time.UTC)
+		end = time.Date(1990, 7, 26, 23, 59, 59, 0, time.UTC)
 	case ast.EraVince:
-		start = time.Date(1990, 1, 1, 0, 0, 0, 0, time.UTC)
-		end = time.Date(1995, 12, 31, 23, 59, 59, 0, time.UTC)
+		// Vince Welnick's first show with the Dead was Sept 7, 1990; the
+		// final show was Soldier Field, July 9, 1995.
+		start = time.Date(1990, 9, 7, 0, 0, 0, 0, time.UTC)
+		end = time.Date(1995, 7, 9, 23, 59, 59, 0, time.UTC)
 	default:
 		return nil, nil
 	}
