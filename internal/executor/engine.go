@@ -53,6 +53,9 @@ type Result struct {
 type SetlistResult struct {
 	Date         time.Time
 	ShowID       int
+	Venue        string `json:",omitempty"`
+	City         string `json:",omitempty"`
+	State        string `json:",omitempty"`
 	Performances []*data.Performance
 }
 
@@ -131,6 +134,9 @@ func (e *executor) ExecuteAST(ctx context.Context, q ast.Query) (*Result, error)
 				setlists = append(setlists, &SetlistResult{
 					Date:         show.Date,
 					ShowID:       show.ID,
+					Venue:        show.Venue,
+					City:         show.City,
+					State:        show.State,
 					Performances: perfs,
 				})
 			}
@@ -257,6 +263,16 @@ func mapRowsToPerformances(rs *data.ResultSet) ([]*data.Performance, error) {
 		}
 		if len(row) >= 8 {
 			perf.SongName = strVal(row[7])
+		}
+		if len(row) >= 9 {
+			d := strVal(row[8])
+			if len(d) >= 10 {
+				d = d[:10]
+			}
+			perf.Date = d
+		}
+		if len(row) >= 10 {
+			perf.Venue = strVal(row[9])
 		}
 		out = append(out, perf)
 	}

@@ -791,8 +791,6 @@ func (p *parser) parseOutputFormat() ast.OutputFormat {
 		return ast.OutputCSV
 	case "SETLIST":
 		return ast.OutputSetlist
-	case "CALENDAR":
-		return ast.OutputCalendar
 	case "TABLE":
 		return ast.OutputTable
 	case "COUNT":

@@ -385,7 +385,7 @@ func (g *generator) genSongsPlayedIn(q *ir.QueryIR) (*SQLQuery, error) {
 func (g *generator) genPerformances(q *ir.QueryIR) (*SQLQuery, error) {
 	var b strings.Builder
 	var args []interface{}
-	b.WriteString("SELECT p.id, p.show_id, p.song_id, p.set_number, p.position, p.segue_type, p.length_seconds FROM performances p JOIN shows s ON p.show_id = s.id WHERE p.song_id = ?")
+	b.WriteString("SELECT p.id, p.show_id, p.song_id, p.set_number, p.position, p.segue_type, p.length_seconds, songs.name, s.date, v.name FROM performances p JOIN shows s ON p.show_id = s.id JOIN songs ON p.song_id = songs.id LEFT JOIN venues v ON s.venue_id = v.id WHERE p.song_id = ?")
 	args = append(args, *q.SongID)
 	if q.DateRange != nil {
 		b.WriteString(" AND s.date >= ? AND s.date <= ?")
@@ -401,6 +401,8 @@ func (g *generator) genPerformances(q *ir.QueryIR) (*SQLQuery, error) {
 	if order != "" {
 		b.WriteString(" ")
 		b.WriteString(order)
+	} else {
+		b.WriteString(" ORDER BY s.date, p.set_number, p.position")
 	}
 	if q.Limit != nil {
 		b.WriteString(" LIMIT ?")

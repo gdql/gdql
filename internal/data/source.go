@@ -109,4 +109,6 @@ type Performance struct {
 	SegueType     string `json:"segue,omitempty"`
 	LengthSeconds int    `json:"length_seconds,omitempty"`
 	SongName      string `json:"song,omitempty"`
+	Date          string `json:"date,omitempty"`
+	Venue         string `json:"venue,omitempty"`
 }
