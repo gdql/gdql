@@ -232,6 +232,17 @@ func (db *DB) getSongFuzzy(ctx context.Context, name string) (*data.Song, error)
 	// Results are ordered by play_count DESC so the first match has the most performances.
 	var prefixMatch *candidate
 
+	// Track best token-overlap match as last-resort fallback.
+	// Score = sum of lengths of query tokens that appear as words in the song name,
+	// divided by sum of all query token lengths. Length-weighting discounts stopwords.
+	queryTokens := strings.Fields(target)
+	queryLen := 0
+	for _, t := range queryTokens {
+		queryLen += len(t)
+	}
+	var tokenMatch *candidate
+	var tokenScore float64
+
 	for rows.Next() {
 		var c candidate
 		var playCount int
@@ -254,11 +265,39 @@ func (db *DB) getSongFuzzy(ctx context.Context, name string) (*data.Song, error)
 				prefixMatch = &c
 			}
 		}
+
+		// Token-overlap match. Requires the query to have at least 2 tokens so
+		// single-word queries don't accidentally match anything containing them.
+		if len(queryTokens) >= 2 && queryLen > 0 {
+			songWords := make(map[string]bool)
+			for _, w := range strings.Fields(norm) {
+				songWords[w] = true
+			}
+			matched := 0
+			for _, t := range queryTokens {
+				if songWords[t] {
+					matched += len(t)
+				}
+			}
+			score := float64(matched) / float64(queryLen)
+			// Threshold: 70% of query length must match. Iterate in play-count
+			// order so on ties the more-played variant wins.
+			if score >= 0.70 && score > tokenScore {
+				tokenScore = score
+				cc := c
+				tokenMatch = &cc
+			}
+		}
 	}
 
 	// Auto-resolve prefix match (first found = most performances).
 	if prefixMatch != nil {
 		return db.buildSong(prefixMatch.id, prefixMatch.sname, prefixMatch.short, prefixMatch.writers, prefixMatch.first, prefixMatch.last, prefixMatch.times), nil
+	}
+
+	// Last resort: token-overlap match.
+	if tokenMatch != nil {
+		return db.buildSong(tokenMatch.id, tokenMatch.sname, tokenMatch.short, tokenMatch.writers, tokenMatch.first, tokenMatch.last, tokenMatch.times), nil
 	}
 
 	return nil, nil

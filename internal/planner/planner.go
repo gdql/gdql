@@ -279,7 +279,7 @@ func (p *planner) wrapSongNotFound(ctx context.Context, err error) error {
 		Suggestions: suggestions,
 	}
 	if len(suggestions) == 0 {
-		qe.Hint = "The database may be empty or this song wasn't imported. If you use setlist.fm import, the daily API limit may have been reached—run again tomorrow to resume. You can also use a pre-built shows.db from GitHub Releases."
+		qe.Hint = "Check the spelling, or try `SONGS WITH LYRICS(\"keyword\")` to search by a word in the lyrics."
 	}
 	return qe
 }
