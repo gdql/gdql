@@ -126,6 +126,8 @@ func TestNormalizeName_StripsAllPunctuation(t *testing.T) {
 		{"  extra   spaces  ", "extra spaces"},
 		{"Hyphen-Word", "hyphenword"},
 		{"(Parens) Around", "parens around"},
+		{"Saint Stephen", "st stephen"},
+		{"saint stephen", "st stephen"},
 	}
 	for _, tc := range cases {
 		t.Run(tc.input, func(t *testing.T) {

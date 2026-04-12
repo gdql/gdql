@@ -14,6 +14,8 @@ import (
 
 // normalizeName strips punctuation, extra whitespace, and lowercases for fuzzy matching.
 // "Franklin's Tower" → "franklins tower", "Truckin'" → "truckin"
+// Also canonicalizes a small set of abbreviations so spelled-out forms match
+// the band's setlist convention (e.g. "Saint Stephen" → "St. Stephen").
 func normalizeName(s string) string {
 	var b strings.Builder
 	lastSpace := false
@@ -29,7 +31,28 @@ func normalizeName(s string) string {
 		}
 		// Apostrophes, periods, commas, etc. are silently dropped
 	}
-	return strings.TrimSpace(b.String())
+	out := strings.TrimSpace(b.String())
+
+	// Whole-word abbreviation canonicalization. Both the query and the stored
+	// song name flow through here, so the substitution is symmetric — querying
+	// "Saint Stephen" or "St. Stephen" both reach "st stephen".
+	if out != "" {
+		words := strings.Fields(out)
+		for i, w := range words {
+			if canon, ok := nameAbbreviations[w]; ok {
+				words[i] = canon
+			}
+		}
+		out = strings.Join(words, " ")
+	}
+	return out
+}
+
+// nameAbbreviations maps spelled-out forms to the abbreviated form the
+// band's setlists use. Keep this list minimal — only add entries when there
+// is a real mismatch causing failed lookups.
+var nameAbbreviations = map[string]string{
+	"saint": "st",
 }
 
 // DB implements data.DataSource using SQLite.
