@@ -120,6 +120,14 @@ func (g *generator) whereShows(q *ir.QueryIR) (clause string, args []interface{}
 			part, a := negatedSegueCondition(x)
 			condParts = append(condParts, part)
 			args = append(args, a...)
+		case *ir.SegueChainConditionIR:
+			// Secondary segue chain in an AND/OR — render as EXISTS subquery.
+			// Per-condition alias prefix avoids any chance of collision with the
+			// outer query's perf-row alias `p`.
+			prefix := fmt.Sprintf("c%d_", len(condParts)+1)
+			part, a := segueChainSubquery(x.Chain, "s", prefix)
+			condParts = append(condParts, part)
+			args = append(args, a...)
 		}
 	}
 	// Build combined WHERE

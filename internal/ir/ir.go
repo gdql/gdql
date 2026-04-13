@@ -66,6 +66,15 @@ func (*PlayedConditionIR) conditionIRNode()   {}
 func (*GuestConditionIR) conditionIRNode()    {}
 func (*SegueIntoConditionIR) conditionIRNode()    {}
 func (*NegatedSegueConditionIR) conditionIRNode() {}
+func (*SegueChainConditionIR) conditionIRNode() {}
+
+// SegueChainConditionIR wraps a SegueChainIR for use as a regular WHERE condition.
+// The first segue chain in a WHERE is lifted to QueryIR.SegueChain (so the SQL
+// generator can render it as a JOIN-based primary chain). Subsequent chains in
+// the same WHERE land here and render as EXISTS subqueries.
+type SegueChainConditionIR struct {
+	Chain *SegueChainIR
+}
 
 // PositionConditionIR: SET1 OPENED "Song", ENCORE = "Song"
 // When SegueChain is set, SongID is ignored and the condition uses a segue chain.

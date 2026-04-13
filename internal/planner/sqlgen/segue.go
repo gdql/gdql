@@ -94,6 +94,13 @@ func BuildSegueShowsSQL(q *ir.QueryIR) (*SQLQuery, error) {
 			part, a := negatedSegueCondition(x)
 			condParts = append(condParts, part)
 			args = append(args, a...)
+		case *ir.SegueChainConditionIR:
+			// Secondary chain when the primary chain is already in the FROM JOINs.
+			// Use a unique alias prefix so it can't collide with p1/p2/...
+			prefix := fmt.Sprintf("c%d_", len(condParts)+1)
+			part, a := segueChainSubquery(x.Chain, "s", prefix)
+			condParts = append(condParts, part)
+			args = append(args, a...)
 		}
 	}
 	// Build combined WHERE
@@ -134,6 +141,40 @@ func BuildSegueShowsSQL(q *ir.QueryIR) (*SQLQuery, error) {
 		args = append(args, *q.Limit)
 	}
 	return &SQLQuery{SQL: b.String(), Args: args}, nil
+}
+
+// segueChainSubquery renders a SegueChainIR as an EXISTS subquery filtered to
+// the parent show (`<showAlias>.id`). aliasPrefix gives the inner perf-row
+// aliases unique names (e.g. "c2_") so they don't collide with the parent
+// query's aliases when both the primary chain and a secondary chain are present.
+//
+// Two segue chains in the same WHERE land here as an EXISTS clause for the
+// non-primary chains; the first chain still gets lifted to the FROM-side JOIN.
+func segueChainSubquery(chain *ir.SegueChainIR, showAlias, aliasPrefix string) (string, []interface{}) {
+	if chain == nil || len(chain.SongIDs) < 2 {
+		return "1=0", nil
+	}
+	n := len(chain.SongIDs)
+	ops := chain.Operators
+	for len(ops) < n-1 {
+		ops = append(ops, ir.SegueOpSegue)
+	}
+	var b strings.Builder
+	var args []interface{}
+	b.WriteString("EXISTS (SELECT 1 FROM performances ")
+	b.WriteString(aliasPrefix + "1")
+	for i := 1; i < n; i++ {
+		prev := fmt.Sprintf("%s%d", aliasPrefix, i)
+		curr := fmt.Sprintf("%s%d", aliasPrefix, i+1)
+		b.WriteString(" JOIN performances " + curr + " ON " + joinForOp(prev, curr, ops[i-1]))
+	}
+	b.WriteString(" WHERE " + aliasPrefix + "1.show_id = " + showAlias + ".id")
+	for i := 0; i < n; i++ {
+		fmt.Fprintf(&b, " AND %s%d.song_id = ?", aliasPrefix, i+1)
+		args = append(args, chain.SongIDs[i])
+	}
+	b.WriteString(")")
+	return b.String(), args
 }
 
 // joinForOp returns the JOIN ON clause linking two adjacent performance aliases

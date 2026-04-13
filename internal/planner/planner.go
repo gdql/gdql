@@ -60,13 +60,32 @@ func (p *planner) planShow(ctx context.Context, s *ast.ShowQuery) (*ir.QueryIR, 
 		}
 	}
 	if s.Where != nil {
+		// If the WHERE contains any OR, the JOIN-based primary chain optimization
+		// is unsafe (the JOIN is a mandatory filter, which silently turns OR into
+		// AND). In that case, all chains must be EXISTS subqueries — never lift.
+		canLiftPrimary := true
+		for _, op := range s.Where.Operators {
+			if op == ast.OpOr {
+				canLiftPrimary = false
+				break
+			}
+		}
 		for i, c := range s.Where.Conditions {
 			if seg, ok := c.(*ast.SegueCondition); ok {
 				chain, err := p.segueToIR(ctx, seg)
 				if err != nil {
 					return nil, p.wrapSongNotFound(ctx, err)
 				}
-				out.SegueChain = chain
+				// First chain becomes the primary (lifted to JOINs);
+				// subsequent chains are EXISTS subqueries in Conditions.
+				if canLiftPrimary && out.SegueChain == nil {
+					out.SegueChain = chain
+				} else {
+					if len(out.Conditions) > 0 && i > 0 && i-1 < len(s.Where.Operators) {
+						out.ConditionOps = append(out.ConditionOps, astLogicOpToIR(s.Where.Operators[i-1]))
+					}
+					out.Conditions = append(out.Conditions, &ir.SegueChainConditionIR{Chain: chain})
+				}
 				continue
 			}
 			if swn, ok := c.(*ast.SegueWithNegation); ok {
@@ -75,7 +94,14 @@ func (p *planner) planShow(ctx context.Context, s *ast.ShowQuery) (*ir.QueryIR, 
 				if err != nil {
 					return nil, p.wrapSongNotFound(ctx, err)
 				}
-				out.SegueChain = chain
+				if canLiftPrimary && out.SegueChain == nil {
+					out.SegueChain = chain
+				} else {
+					if len(out.Conditions) > 0 && i > 0 && i-1 < len(s.Where.Operators) {
+						out.ConditionOps = append(out.ConditionOps, astLogicOpToIR(s.Where.Operators[i-1]))
+					}
+					out.Conditions = append(out.Conditions, &ir.SegueChainConditionIR{Chain: chain})
+				}
 				// Negated adjacency part
 				fromID, err := p.songResolver.Resolve(ctx, swn.FromSong.Name)
 				if err != nil {
@@ -84,6 +110,9 @@ func (p *planner) planShow(ctx context.Context, s *ast.ShowQuery) (*ir.QueryIR, 
 				notID, err := p.songResolver.Resolve(ctx, swn.NotSong.Name)
 				if err != nil {
 					return nil, p.wrapSongNotFound(ctx, err)
+				}
+				if len(out.Conditions) > 0 && i > 0 && i-1 < len(s.Where.Operators) {
+					out.ConditionOps = append(out.ConditionOps, astLogicOpToIR(s.Where.Operators[i-1]))
 				}
 				out.Conditions = append(out.Conditions, &ir.NegatedSegueConditionIR{SongID: fromID, NotSongID: notID})
 				continue
