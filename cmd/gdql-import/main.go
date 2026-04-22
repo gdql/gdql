@@ -124,6 +124,22 @@ func main() {
 		}
 		fmt.Fprintf(os.Stderr, "Aliases: %d loaded, %d skipped\n", loaded, skipped)
 
+	case "relations":
+		if len(args) < 2 {
+			fmt.Fprintln(os.Stderr, "Usage: gdql-import [-db path] relations <file.json>")
+			os.Exit(1)
+		}
+		db, err := sqlite.Open(dbPath)
+		if err != nil {
+			fatal(err)
+		}
+		defer db.Close()
+		loaded, skipped, err := sqlite.LoadRelationsFromFile(context.Background(), db.DB(), args[1])
+		if err != nil {
+			fatal(err)
+		}
+		fmt.Fprintf(os.Stderr, "Relations: %d loaded, %d skipped\n", loaded, skipped)
+
 	case "deadlists":
 		firstYear, lastYear := 1965, 1995
 		if len(args) >= 2 {
@@ -347,6 +363,7 @@ func printUsage() {
 	fmt.Fprintln(w, "  json <file>                Import from canonical JSON")
 	fmt.Fprintln(w, "  lyrics <file>              Import lyrics from JSON")
 	fmt.Fprintln(w, "  aliases <file>             Import song alias mappings")
+	fmt.Fprintln(w, "  relations <file>           Import song-to-song relations (variant_of, merge_into, pairs_with)")
 	fmt.Fprintln(w, "  fix-sets                   Re-infer set numbers for shows with flat set data")
 	fmt.Fprintln(w)
 	fmt.Fprintln(w, "Options:")

@@ -149,6 +149,11 @@ func (e *executor) ExecuteAST(ctx context.Context, q ast.Query) (*Result, error)
 		} else {
 			out.Type = ResultSongs
 			out.Songs, err = mapRowsToSongs(rs)
+			if err == nil && len(out.Songs) > 0 && e.dataSource != nil {
+				// Enrichment: attach song_relations. Non-fatal if the table
+				// is missing or empty — relations are metadata, not core data.
+				_ = attachSongRelations(ctx, e.dataSource, out.Songs)
+			}
 		}
 	case ir.QueryTypePerformances:
 		out.Type = ResultPerformances
@@ -236,6 +241,53 @@ func splitCityState(s string) (city, state string) {
 		return city, ""
 	}
 	return city, state
+}
+
+// attachSongRelations enriches songs with entries from the song_relations
+// table in a single batch query. Each relation is attached to both endpoints:
+// the from-side gets direction="to", the to-side gets direction="from". If
+// song_relations does not exist (older DBs) the error is swallowed — callers
+// treat this as optional metadata.
+func attachSongRelations(ctx context.Context, ds data.DataSource, songs []*data.Song) error {
+	if len(songs) == 0 {
+		return nil
+	}
+	byID := make(map[int]*data.Song, len(songs))
+	placeholders := make([]string, 0, len(songs))
+	args := make([]interface{}, 0, len(songs))
+	for _, s := range songs {
+		byID[s.ID] = s
+		placeholders = append(placeholders, "?")
+		args = append(args, s.ID)
+	}
+	in := strings.Join(placeholders, ",")
+	sql := "SELECT r.from_song_id, r.to_song_id, r.kind, fs.name, ts.name " +
+		"FROM song_relations r " +
+		"JOIN songs fs ON fs.id = r.from_song_id " +
+		"JOIN songs ts ON ts.id = r.to_song_id " +
+		"WHERE r.from_song_id IN (" + in + ") OR r.to_song_id IN (" + in + ")"
+	allArgs := append(args, args...)
+	rs, err := ds.ExecuteQuery(ctx, sql, allArgs...)
+	if err != nil {
+		return err
+	}
+	for _, row := range rs.Rows {
+		if len(row) < 5 {
+			continue
+		}
+		fromID := intVal(row[0])
+		toID := intVal(row[1])
+		kind := strVal(row[2])
+		fromName := strVal(row[3])
+		toName := strVal(row[4])
+		if s, ok := byID[fromID]; ok {
+			s.Related = append(s.Related, data.SongRelation{Kind: kind, Name: toName, Direction: "to"})
+		}
+		if s, ok := byID[toID]; ok {
+			s.Related = append(s.Related, data.SongRelation{Kind: kind, Name: fromName, Direction: "from"})
+		}
+	}
+	return nil
 }
 
 func mapRowsToSongs(rs *data.ResultSet) ([]*data.Song, error) {

@@ -63,6 +63,23 @@ CREATE TABLE IF NOT EXISTS song_aliases (
     song_id INTEGER NOT NULL REFERENCES songs(id)
 );
 
+-- Directed relations between two canonical songs. Distinct from song_aliases,
+-- which normalizes raw setlist text into one canonical name. A relation
+-- expresses that two already-canonical songs are connected:
+--   merge_into  — same underlying song, prefer the target (data-cleanup cases)
+--   variant_of  — distinct arrangement of the same tune (e.g. Minglewood Blues
+--                 and New Minglewood Blues); keep both rows, cross-reference
+--   pairs_with  — songs that commonly segue as a suite (Scarlet > Fire, etc.)
+CREATE TABLE IF NOT EXISTS song_relations (
+    from_song_id INTEGER NOT NULL REFERENCES songs(id),
+    to_song_id INTEGER NOT NULL REFERENCES songs(id),
+    kind TEXT NOT NULL CHECK (kind IN ('merge_into', 'variant_of', 'pairs_with')),
+    PRIMARY KEY (from_song_id, to_song_id, kind),
+    CHECK (from_song_id != to_song_id)
+);
+CREATE INDEX IF NOT EXISTS idx_song_relations_from ON song_relations(from_song_id);
+CREATE INDEX IF NOT EXISTS idx_song_relations_to ON song_relations(to_song_id);
+
 CREATE INDEX IF NOT EXISTS idx_songs_name ON songs(name);
 CREATE INDEX IF NOT EXISTS idx_perf_song ON performances(song_id);
 CREATE INDEX IF NOT EXISTS idx_perf_show ON performances(show_id);

@@ -62,32 +62,44 @@ func (s Show) MarshalJSON() ([]byte, error) {
 	return jsonMarshal(out)
 }
 
+// SongRelation describes a directed link between two canonical songs from the
+// perspective of the owning song. Direction is "to" when the owner is the
+// from-side of the relation (e.g. "this song is a variant_of X"), and "from"
+// when the owner is the to-side (e.g. "X is a variant_of this song").
+type SongRelation struct {
+	Kind      string `json:"kind"`
+	Name      string `json:"name"`
+	Direction string `json:"direction"`
+}
+
 // Song is a song in the catalog.
 type Song struct {
-	ID          int       `json:"id"`
-	Name        string    `json:"name"`
-	ShortName   string    `json:"short_name,omitempty"`
-	Writers     string    `json:"writers,omitempty"`
-	FirstPlayed time.Time `json:"first_played,omitempty"`
-	LastPlayed  time.Time `json:"last_played,omitempty"`
-	TimesPlayed int       `json:"times_played,omitempty"`
+	ID          int            `json:"id"`
+	Name        string         `json:"name"`
+	ShortName   string         `json:"short_name,omitempty"`
+	Writers     string         `json:"writers,omitempty"`
+	FirstPlayed time.Time      `json:"first_played,omitempty"`
+	LastPlayed  time.Time      `json:"last_played,omitempty"`
+	TimesPlayed int            `json:"times_played,omitempty"`
+	Related     []SongRelation `json:"related,omitempty"`
 }
 
 // MarshalJSON omits zero-time fields entirely (Go's encoding/json renders zero
 // time as "0001-01-01T00:00:00Z" with omitempty, which isn't what we want).
 func (s Song) MarshalJSON() ([]byte, error) {
 	type songOut struct {
-		ID          int    `json:"id"`
-		Name        string `json:"name"`
-		ShortName   string `json:"short_name,omitempty"`
-		Writers     string `json:"writers,omitempty"`
-		FirstPlayed string `json:"first_played,omitempty"`
-		LastPlayed  string `json:"last_played,omitempty"`
-		TimesPlayed int    `json:"times_played,omitempty"`
+		ID          int            `json:"id"`
+		Name        string         `json:"name"`
+		ShortName   string         `json:"short_name,omitempty"`
+		Writers     string         `json:"writers,omitempty"`
+		FirstPlayed string         `json:"first_played,omitempty"`
+		LastPlayed  string         `json:"last_played,omitempty"`
+		TimesPlayed int            `json:"times_played,omitempty"`
+		Related     []SongRelation `json:"related,omitempty"`
 	}
 	out := songOut{
 		ID: s.ID, Name: s.Name, ShortName: s.ShortName, Writers: s.Writers,
-		TimesPlayed: s.TimesPlayed,
+		TimesPlayed: s.TimesPlayed, Related: s.Related,
 	}
 	if !s.FirstPlayed.IsZero() {
 		out.FirstPlayed = s.FirstPlayed.Format("2006-01-02")
