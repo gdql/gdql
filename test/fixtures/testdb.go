@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	_ "modernc.org/sqlite"
+	_ "github.com/ncruces/go-sqlite3/driver"
 )
 
 //go:embed schema.sql
@@ -22,7 +22,7 @@ func CreateTestDB(t *testing.T) (path string, cleanup func()) {
 	t.Helper()
 	dir := t.TempDir()
 	path = filepath.Join(dir, "test.db")
-	db, err := sql.Open("sqlite", path)
+	db, err := sql.Open("sqlite3", path)
 	if err != nil {
 		t.Fatalf("open test db: %v", err)
 	}
@@ -46,7 +46,7 @@ func OpenTestDB(t *testing.T) *sql.DB {
 	t.Helper()
 	path, cleanup := CreateTestDB(t)
 	t.Cleanup(cleanup)
-	db, err := sql.Open("sqlite", path)
+	db, err := sql.Open("sqlite3", path)
 	if err != nil {
 		t.Fatalf("reopen test db: %v", err)
 	}

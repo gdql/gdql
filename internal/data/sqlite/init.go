@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	_ "modernc.org/sqlite"
+	_ "github.com/ncruces/go-sqlite3/driver"
 )
 
 //go:embed schema.sql
@@ -17,7 +17,7 @@ var seedSQL string
 // Init creates a new database at path with the schema and optional seed data.
 // If path exists and has tables, Init is a no-op (safe to call multiple times).
 func Init(path string) error {
-	db, err := sql.Open("sqlite", path)
+	db, err := sql.Open("sqlite3", path)
 	if err != nil {
 		return fmt.Errorf("open: %w", err)
 	}
@@ -34,7 +34,7 @@ func Init(path string) error {
 
 // InitSchema creates the database with schema only (no seed). Use for import-from-API flows.
 func InitSchema(path string) error {
-	db, err := sql.Open("sqlite", path)
+	db, err := sql.Open("sqlite3", path)
 	if err != nil {
 		return fmt.Errorf("open: %w", err)
 	}

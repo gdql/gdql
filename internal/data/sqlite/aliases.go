@@ -34,7 +34,7 @@ func LoadAliasesFromFile(ctx context.Context, db *sql.DB, path string) (loaded, 
 		var songID int64
 		err := db.QueryRowContext(ctx, "SELECT id FROM songs WHERE name = ? OR LOWER(name) = LOWER(?) LIMIT 1", e.Canonical, e.Canonical).Scan(&songID)
 		if err == sql.ErrNoRows {
-			err = db.QueryRowContext(ctx, "SELECT id FROM songs WHERE LOWER(TRIM(name, '- ')) = LOWER(TRIM(?, '- ')) LIMIT 1", e.Canonical, e.Canonical).Scan(&songID)
+			err = db.QueryRowContext(ctx, "SELECT id FROM songs WHERE LOWER(TRIM(name, '- ')) = LOWER(TRIM(?, '- ')) LIMIT 1", e.Canonical).Scan(&songID)
 		}
 		if err == sql.ErrNoRows {
 			skipped++

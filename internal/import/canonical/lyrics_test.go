@@ -15,7 +15,7 @@ func TestImportLyrics(t *testing.T) {
 	path, cleanup := fixtures.CreateTestDB(t)
 	defer cleanup()
 
-	conn, err := sql.Open("sqlite", path)
+	conn, err := sql.Open("sqlite3", path)
 	require.NoError(t, err)
 	defer conn.Close()
 
@@ -52,7 +52,7 @@ func TestImportLyrics_CaseInsensitiveMatch(t *testing.T) {
 	path, cleanup := fixtures.CreateTestDB(t)
 	defer cleanup()
 
-	conn, err := sql.Open("sqlite", path)
+	conn, err := sql.Open("sqlite3", path)
 	require.NoError(t, err)
 	defer conn.Close()
 

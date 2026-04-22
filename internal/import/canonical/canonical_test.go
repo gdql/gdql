@@ -13,7 +13,7 @@ func TestWriteShows_ResolvesVariantAndAddsAlias(t *testing.T) {
 	path, cleanup := fixtures.CreateTestDB(t)
 	defer cleanup()
 
-	conn, err := sql.Open("sqlite", path)
+	conn, err := sql.Open("sqlite3", path)
 	require.NoError(t, err)
 	defer conn.Close()
 
@@ -50,7 +50,7 @@ func TestWriteShows_PreservesSetBoundaries(t *testing.T) {
 	path, cleanup := fixtures.CreateTestDB(t)
 	defer cleanup()
 
-	conn, err := sql.Open("sqlite", path)
+	conn, err := sql.Open("sqlite3", path)
 	require.NoError(t, err)
 	defer conn.Close()
 
@@ -116,7 +116,7 @@ func TestWriteShows_DeduplicatesCaseVariants(t *testing.T) {
 	path, cleanup := fixtures.CreateTestDB(t)
 	defer cleanup()
 
-	conn, err := sql.Open("sqlite", path)
+	conn, err := sql.Open("sqlite3", path)
 	require.NoError(t, err)
 	defer conn.Close()
 
@@ -163,7 +163,7 @@ func TestWriteShows_NewSongStoredWithRawName(t *testing.T) {
 	path, cleanup := fixtures.CreateTestDB(t)
 	defer cleanup()
 
-	conn, err := sql.Open("sqlite", path)
+	conn, err := sql.Open("sqlite3", path)
 	require.NoError(t, err)
 	defer conn.Close()
 

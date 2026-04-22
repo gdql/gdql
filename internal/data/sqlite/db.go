@@ -9,7 +9,7 @@ import (
 
 	"github.com/gdql/gdql/internal/data"
 
-	_ "modernc.org/sqlite"
+	_ "github.com/ncruces/go-sqlite3/driver"
 )
 
 // normalizeName strips punctuation, extra whitespace, and lowercases for fuzzy matching.
@@ -63,7 +63,7 @@ type DB struct {
 // Open opens a SQLite database at the given path (file path or ":memory:").
 // Ensures song_aliases exists on existing DBs (migration).
 func Open(path string) (*DB, error) {
-	conn, err := sql.Open("sqlite", path)
+	conn, err := sql.Open("sqlite3", path)
 	if err != nil {
 		return nil, err
 	}
@@ -134,14 +134,19 @@ func (db *DB) ExecuteQuery(ctx context.Context, query string, args ...interface{
 // trim trailing dash, then fuzzy (punctuation-stripped). Always prefers the variant with
 // the most performances to handle duplicates like "Franklins Tower" vs "Franklin's Tower".
 func (db *DB) GetSong(ctx context.Context, name string) (*data.Song, error) {
-	// Try exact/case-insensitive, alias, and trim-dash lookups
-	queries := []string{
-		"SELECT s.id, s.name, s.short_name, s.writers, s.first_played, s.last_played, s.times_played FROM songs s WHERE s.name = ? OR LOWER(s.name) = LOWER(?) ORDER BY (SELECT count(*) FROM performances p WHERE p.song_id = s.id) DESC LIMIT 1",
-		"SELECT s.id, s.name, s.short_name, s.writers, s.first_played, s.last_played, s.times_played FROM songs s JOIN song_aliases a ON s.id = a.song_id WHERE a.alias = ? OR LOWER(a.alias) = LOWER(?) LIMIT 1",
-		"SELECT s.id, s.name, s.short_name, s.writers, s.first_played, s.last_played, s.times_played FROM songs s WHERE LOWER(TRIM(s.name, '- ')) = LOWER(TRIM(?, '- ')) ORDER BY (SELECT count(*) FROM performances p WHERE p.song_id = s.id) DESC LIMIT 1",
+	// Try exact/case-insensitive, alias, and trim-dash lookups.
+	// Each query lists its own placeholder count so we can pass the right
+	// number of args — ncruces/go-sqlite3 strictly enforces the match.
+	queries := []struct {
+		sql  string
+		args []any
+	}{
+		{"SELECT s.id, s.name, s.short_name, s.writers, s.first_played, s.last_played, s.times_played FROM songs s WHERE s.name = ? OR LOWER(s.name) = LOWER(?) ORDER BY (SELECT count(*) FROM performances p WHERE p.song_id = s.id) DESC LIMIT 1", []any{name, name}},
+		{"SELECT s.id, s.name, s.short_name, s.writers, s.first_played, s.last_played, s.times_played FROM songs s JOIN song_aliases a ON s.id = a.song_id WHERE a.alias = ? OR LOWER(a.alias) = LOWER(?) LIMIT 1", []any{name, name}},
+		{"SELECT s.id, s.name, s.short_name, s.writers, s.first_played, s.last_played, s.times_played FROM songs s WHERE LOWER(TRIM(s.name, '- ')) = LOWER(TRIM(?, '- ')) ORDER BY (SELECT count(*) FROM performances p WHERE p.song_id = s.id) DESC LIMIT 1", []any{name}},
 	}
 	for _, q := range queries {
-		song, err := db.scanSong(ctx, q, name, name)
+		song, err := db.scanSong(ctx, q.sql, q.args...)
 		if err != nil {
 			return nil, err
 		}

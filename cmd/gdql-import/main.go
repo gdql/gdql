@@ -22,7 +22,7 @@ import (
 	"github.com/gdql/gdql/internal/import/deadlists"
 	"github.com/gdql/gdql/internal/import/setlistfm"
 
-	_ "modernc.org/sqlite"
+	_ "github.com/ncruces/go-sqlite3/driver"
 )
 
 func main() {
@@ -195,7 +195,7 @@ func importDeadlists(dbPath string, firstYear, lastYear int) error {
 
 // fixSets re-infers set numbers for all shows that have everything in set 1.
 func fixSets(dbPath string) error {
-	db, err := sql.Open("sqlite", dbPath)
+	db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
 		return err
 	}

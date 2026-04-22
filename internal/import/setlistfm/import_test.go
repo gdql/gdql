@@ -8,14 +8,14 @@ import (
 	"github.com/gdql/gdql/internal/data/sqlite"
 	"github.com/stretchr/testify/require"
 
-	_ "modernc.org/sqlite"
+	_ "github.com/ncruces/go-sqlite3/driver"
 )
 
 func TestUpsertShow_PreservesSetBoundaries(t *testing.T) {
 	dir := t.TempDir()
 	dbPath := dir + "/test.db"
 	require.NoError(t, sqlite.InitSchema(dbPath))
-	db, err := sql.Open("sqlite", dbPath)
+	db, err := sql.Open("sqlite3", dbPath)
 	require.NoError(t, err)
 	defer db.Close()
 
@@ -95,7 +95,7 @@ func TestUpsertShow_DeduplicatesCaseVariants(t *testing.T) {
 	dir := t.TempDir()
 	dbPath := dir + "/test.db"
 	require.NoError(t, sqlite.InitSchema(dbPath))
-	db, err := sql.Open("sqlite", dbPath)
+	db, err := sql.Open("sqlite3", dbPath)
 	require.NoError(t, err)
 	defer db.Close()
 
@@ -282,7 +282,7 @@ func TestUpsertShow_InfersSetBreaks(t *testing.T) {
 	dir := t.TempDir()
 	dbPath := dir + "/test.db"
 	require.NoError(t, sqlite.InitSchema(dbPath))
-	db, err := sql.Open("sqlite", dbPath)
+	db, err := sql.Open("sqlite3", dbPath)
 	require.NoError(t, err)
 	defer db.Close()
 
@@ -334,7 +334,7 @@ func TestUpsertShow_SingleSetAllInSet1(t *testing.T) {
 	dir := t.TempDir()
 	dbPath := dir + "/test.db"
 	require.NoError(t, sqlite.InitSchema(dbPath))
-	db, err := sql.Open("sqlite", dbPath)
+	db, err := sql.Open("sqlite3", dbPath)
 	require.NoError(t, err)
 	defer db.Close()
 

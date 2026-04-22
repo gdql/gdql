@@ -17,7 +17,7 @@ import (
 	"strings"
 	"time"
 
-	_ "modernc.org/sqlite"
+	_ "github.com/ncruces/go-sqlite3/driver"
 )
 
 type SongLyrics struct {
@@ -32,7 +32,7 @@ func main() {
 	limit := flag.Int("limit", 0, "max songs to scrape (0 = all)")
 	flag.Parse()
 
-	db, err := sql.Open("sqlite", *dbPath)
+	db, err := sql.Open("sqlite3", *dbPath)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error opening DB: %v\n", err)
 		os.Exit(1)

@@ -8,7 +8,7 @@ import (
 	"github.com/gdql/gdql/internal/data/sqlite"
 	"github.com/gdql/gdql/internal/import/shared"
 
-	_ "modernc.org/sqlite"
+	_ "github.com/ncruces/go-sqlite3/driver"
 )
 
 // Import fetches Grateful Dead setlists from the API and writes them to the SQLite DB at path.
@@ -17,7 +17,7 @@ func Import(ctx context.Context, dbPath string, client *Client) (showsAdded, son
 	if err := sqlite.InitSchema(dbPath); err != nil {
 		return 0, 0, err
 	}
-	db, err := sql.Open("sqlite", dbPath)
+	db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
 		return 0, 0, err
 	}
