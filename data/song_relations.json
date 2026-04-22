@@ -1,0 +1,79 @@
+[
+  {
+    "from": "Minglewood Blues",
+    "to": "New Minglewood Blues",
+    "kind": "variant_of"
+  },
+
+  {
+    "from": "Frozen Logger",
+    "to": "The Frozen Logger",
+    "kind": "merge_into"
+  },
+  {
+    "from": "The Promised Land",
+    "to": "Promised Land",
+    "kind": "merge_into"
+  },
+  {
+    "from": "In The Midnight Hour",
+    "to": "Midnight Hour",
+    "kind": "merge_into"
+  },
+  {
+    "from": "Me & My Uncle",
+    "to": "Me And My Uncle",
+    "kind": "merge_into"
+  },
+  {
+    "from": "Hurts Me Too",
+    "to": "It Hurts Me Too",
+    "kind": "merge_into"
+  },
+
+  {
+    "from": "China Cat Sunflower",
+    "to": "I Know You Rider",
+    "kind": "pairs_with"
+  },
+  {
+    "from": "Scarlet Begonias",
+    "to": "Fire On The Mountain",
+    "kind": "pairs_with"
+  },
+  {
+    "from": "Help On The Way",
+    "to": "Slipknot!",
+    "kind": "pairs_with"
+  },
+  {
+    "from": "Slipknot!",
+    "to": "Franklin's Tower",
+    "kind": "pairs_with"
+  },
+  {
+    "from": "Lazy Lightnin'",
+    "to": "Supplication",
+    "kind": "pairs_with"
+  },
+  {
+    "from": "Lost Sailor",
+    "to": "Saint Of Circumstance",
+    "kind": "pairs_with"
+  },
+  {
+    "from": "Drums",
+    "to": "Space",
+    "kind": "pairs_with"
+  },
+  {
+    "from": "St. Stephen",
+    "to": "The Eleven",
+    "kind": "pairs_with"
+  },
+  {
+    "from": "Not Fade Away",
+    "to": "Goin' Down The Road Feeling Bad",
+    "kind": "pairs_with"
+  }
+]
