@@ -75,5 +75,20 @@
     "from": "Not Fade Away",
     "to": "Goin' Down The Road Feeling Bad",
     "kind": "pairs_with"
+  },
+  {
+    "from": "Estimated Prophet",
+    "to": "Eyes Of The World",
+    "kind": "pairs_with"
+  },
+  {
+    "from": "Throwin' Stones",
+    "to": "Not Fade Away",
+    "kind": "pairs_with"
+  },
+  {
+    "from": "Dark Star",
+    "to": "St. Stephen",
+    "kind": "pairs_with"
   }
 ]
