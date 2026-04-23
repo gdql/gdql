@@ -106,17 +106,25 @@ jobs:
         # bake gdql artifacts into their static bundles. Each consumer's
         # gdql-sync workflow listens for this dispatch.
         #
-        # The token must be able to POST /dispatches against all three
-        # repos. Simplest: a classic PAT with repo scope. A fine-grained
-        # PAT works too but has to cover both the gdql/ and samburba/
-        # owners, so either split into two tokens or grant broadly.
+        # Uses two fine-grained tokens so each PAT is scoped to exactly
+        # one owner's repos:
+        #   GDQL_DISPATCH_TOKEN       -> gdql/sandbox
+        #   DOWNSTREAM_DISPATCH_TOKEN -> samburba/deaddaily-timeline + -listen
+        env:
+          GDQL_TOKEN: ${{ secrets.GDQL_DISPATCH_TOKEN }}
+          DOWNSTREAM_TOKEN: ${{ secrets.DOWNSTREAM_DISPATCH_TOKEN }}
         run: |
-          for repo in gdql/sandbox samburba/deaddaily-timeline samburba/deaddaily-listen; do
+          set -u
+          dispatch() {
+            local repo="$1" token="$2"
             echo "→ dispatching to $repo"
             curl -s -X POST \
-              -H "Authorization: token ${{ secrets.DOWNSTREAM_DISPATCH_TOKEN }}" \
+              -H "Authorization: token ${token}" \
               -H "Accept: application/vnd.github.v3+json" \
               "https://api.github.com/repos/${repo}/dispatches" \
-              -d '{"event_type":"gdql-release","client_payload":{"tag":"${{ github.ref_name }}"}}'
-          done
+              -d "{\"event_type\":\"gdql-release\",\"client_payload\":{\"tag\":\"${GITHUB_REF_NAME}\"}}"
+          }
+          dispatch gdql/sandbox                  "$GDQL_TOKEN"
+          dispatch samburba/deaddaily-timeline   "$DOWNSTREAM_TOKEN"
+          dispatch samburba/deaddaily-listen     "$DOWNSTREAM_TOKEN"
         continue-on-error: true
