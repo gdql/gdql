@@ -148,6 +148,15 @@ func applyOneMerge(ctx context.Context, db *sql.DB, fromName, toName string, mer
 		fromID, fromID); err != nil {
 		return MergeRecord{}, false, err
 	}
+	// Preserve lyrics: if the "from" row has lyrics and the "to" row does
+	// not, hand them off before deleting the "from" entry. INSERT OR IGNORE
+	// so we never overwrite an existing canonical lyric with a duplicate.
+	if _, err := tx.ExecContext(ctx, `
+		INSERT OR IGNORE INTO lyrics (song_id, lyrics, lyrics_fts)
+		SELECT ?, lyrics, lyrics_fts FROM lyrics WHERE song_id = ?
+	`, toID, fromID); err != nil {
+		return MergeRecord{}, false, err
+	}
 	if _, err := tx.ExecContext(ctx,
 		"DELETE FROM lyrics WHERE song_id = ?", fromID); err != nil {
 		return MergeRecord{}, false, err
