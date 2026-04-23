@@ -140,6 +140,57 @@ func main() {
 		}
 		fmt.Fprintf(os.Stderr, "Relations: %d loaded, %d skipped\n", loaded, skipped)
 
+	case "merge-songs":
+		if len(args) < 2 {
+			fmt.Fprintln(os.Stderr, "Usage: gdql-import [-db path] merge-songs <relations.json> [--record <out.json>]")
+			os.Exit(1)
+		}
+		var recordPath string
+		for i := 2; i < len(args); i++ {
+			if args[i] == "--record" && i+1 < len(args) {
+				recordPath = args[i+1]
+				i++
+			}
+		}
+		db, err := sqlite.Open(dbPath)
+		if err != nil {
+			fatal(err)
+		}
+		defer db.Close()
+		records, skipped, err := sqlite.MergeSongsFromFile(context.Background(), db.DB(), args[1])
+		if err != nil {
+			fatal(err)
+		}
+		fmt.Fprintf(os.Stderr, "Merges: %d applied, %d skipped\n", len(records), skipped)
+		for _, r := range records {
+			fmt.Fprintf(os.Stderr, "  %q -> %q (absorbed %d plays)\n", r.FromName, r.ToName, r.FromTimesPlayed)
+		}
+		if recordPath != "" && len(records) > 0 {
+			// Merge with any prior records file so re-runs accumulate history
+			// instead of overwriting it.
+			var existing []sqlite.MergeRecord
+			if data, err := os.ReadFile(recordPath); err == nil {
+				_ = json.Unmarshal(data, &existing)
+			}
+			seen := map[string]bool{}
+			for _, r := range existing {
+				seen[r.FromName] = true
+			}
+			for _, r := range records {
+				if !seen[r.FromName] {
+					existing = append(existing, r)
+				}
+			}
+			out, err := json.MarshalIndent(existing, "", "  ")
+			if err != nil {
+				fatal(err)
+			}
+			if err := os.WriteFile(recordPath, out, 0644); err != nil {
+				fatal(err)
+			}
+			fmt.Fprintf(os.Stderr, "Wrote merge records to %s\n", recordPath)
+		}
+
 	case "deadlists":
 		firstYear, lastYear := 1965, 1995
 		if len(args) >= 2 {
@@ -364,6 +415,7 @@ func printUsage() {
 	fmt.Fprintln(w, "  lyrics <file>              Import lyrics from JSON")
 	fmt.Fprintln(w, "  aliases <file>             Import song alias mappings")
 	fmt.Fprintln(w, "  relations <file>           Import song-to-song relations (variant_of, merge_into, pairs_with)")
+	fmt.Fprintln(w, "  merge-songs <file>         Apply kind=merge_into rows destructively (see --record to log)")
 	fmt.Fprintln(w, "  fix-sets                   Re-infer set numbers for shows with flat set data")
 	fmt.Fprintln(w)
 	fmt.Fprintln(w, "Options:")
