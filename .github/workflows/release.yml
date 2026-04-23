@@ -100,21 +100,18 @@ jobs:
           files: release/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Trigger sandbox update
-        run: |
-          curl -s -X POST \
-            -H "Authorization: token ${{ secrets.SANDBOX_DISPATCH_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/gdql/sandbox/dispatches \
-            -d '{"event_type":"gdql-release","client_payload":{"tag":"${{ github.ref_name }}"}}'
-        continue-on-error: true
-
       - name: Trigger downstream consumer syncs
-        # Fans out to the deaddaily properties that consume gdql by snapshotting
-        # data or building the WASM. Each repo's gdql-sync workflow listens for
-        # this dispatch and opens a PR with regenerated artifacts.
+        # Fans out to every repo that tracks gdql releases: the sandbox
+        # (WASM-backed playground) and the two deaddaily properties that
+        # bake gdql artifacts into their static bundles. Each consumer's
+        # gdql-sync workflow listens for this dispatch.
+        #
+        # The token must be able to POST /dispatches against all three
+        # repos. Simplest: a classic PAT with repo scope. A fine-grained
+        # PAT works too but has to cover both the gdql/ and samburba/
+        # owners, so either split into two tokens or grant broadly.
         run: |
-          for repo in samburba/deaddaily-timeline samburba/deaddaily-listen; do
+          for repo in gdql/sandbox samburba/deaddaily-timeline samburba/deaddaily-listen; do
             echo "→ dispatching to $repo"
             curl -s -X POST \
               -H "Authorization: token ${{ secrets.DOWNSTREAM_DISPATCH_TOKEN }}" \
