@@ -108,10 +108,10 @@ jobs:
         #
         # Uses two fine-grained tokens so each PAT is scoped to exactly
         # one owner's repos:
-        #   GDQL_DISPATCH_TOKEN       -> gdql/sandbox
+        #   SANDBOX_DISPATCH_TOKEN       -> gdql/sandbox
         #   DOWNSTREAM_DISPATCH_TOKEN -> samburba/deaddaily-timeline + -listen
         env:
-          GDQL_TOKEN: ${{ secrets.GDQL_DISPATCH_TOKEN }}
+          GDQL_TOKEN: ${{ secrets.SANDBOX_DISPATCH_TOKEN }}
           DOWNSTREAM_TOKEN: ${{ secrets.DOWNSTREAM_DISPATCH_TOKEN }}
         run: |
           set -u
