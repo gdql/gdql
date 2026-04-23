@@ -108,3 +108,18 @@ jobs:
             https://api.github.com/repos/gdql/sandbox/dispatches \
             -d '{"event_type":"gdql-release","client_payload":{"tag":"${{ github.ref_name }}"}}'
         continue-on-error: true
+
+      - name: Trigger downstream consumer syncs
+        # Fans out to the deaddaily properties that consume gdql by snapshotting
+        # data or building the WASM. Each repo's gdql-sync workflow listens for
+        # this dispatch and opens a PR with regenerated artifacts.
+        run: |
+          for repo in samburba/deaddaily-timeline samburba/deaddaily-listen; do
+            echo "→ dispatching to $repo"
+            curl -s -X POST \
+              -H "Authorization: token ${{ secrets.DOWNSTREAM_DISPATCH_TOKEN }}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/${repo}/dispatches" \
+              -d '{"event_type":"gdql-release","client_payload":{"tag":"${{ github.ref_name }}"}}'
+          done
+        continue-on-error: true
