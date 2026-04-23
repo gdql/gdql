@@ -1,0 +1,4060 @@
+{
+  "46th-street-rock-palace": {
+    "city": "Brooklyn",
+    "lat": 40.6526006,
+    "lon": -73.9497211,
+    "name": "46th Street Rock Palace",
+    "show_count": 1,
+    "state": "NY"
+  },
+  "aarhus-university": {
+    "city": "Aarhus",
+    "lat": 56.1670905,
+    "lon": 10.2026177,
+    "name": "Aarhus University",
+    "show_count": 1,
+    "state": "Denmark"
+  },
+  "academy-of-music": {
+    "city": "New York City",
+    "lat": 40.6861111,
+    "lon": -73.9769444,
+    "name": "Academy Of Music",
+    "show_count": 5,
+    "state": "NY"
+  },
+  "action-house": {
+    "city": "Island Park",
+    "lat": 40.6042705,
+    "lon": -73.6554078,
+    "name": "Action House",
+    "show_count": 1,
+    "state": "NY"
+  },
+  "adams-field-house-university-of-montana": {
+    "city": "Missoula",
+    "lat": 46.8701049,
+    "lon": -113.995267,
+    "name": "Adams Field House (University Of Montana)",
+    "show_count": 1,
+    "state": "MT"
+  },
+  "aladdin-theater": {
+    "city": "Las Vegas",
+    "lat": 36.1674263,
+    "lon": -115.1484131,
+    "name": "Aladdin Theater",
+    "show_count": 3,
+    "state": "NV"
+  },
+  "albuquerque-civic-auditorium": {
+    "city": "Albuquerque",
+    "lat": 35.0841034,
+    "lon": -106.650985,
+    "name": "Albuquerque Civic Auditorium",
+    "show_count": 1,
+    "state": "NM"
+  },
+  "alembic-studios": {
+    "city": "San Francisco",
+    "lat": 37.7879363,
+    "lon": -122.4075201,
+    "name": "Alembic Studios",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "alexandra-palace": {
+    "city": "London",
+    "lat": 51.5943495,
+    "lon": -0.1306402,
+    "name": "Alexandra Palace",
+    "show_count": 3,
+    "state": "England"
+  },
+  "alfond-arena-university-of-maine": {
+    "city": "Orono",
+    "lat": 44.883607,
+    "lon": -68.672791,
+    "name": "Alfond Arena (University Of Maine)",
+    "show_count": 1,
+    "state": "ME"
+  },
+  "alfred-college": {
+    "city": "Alfred",
+    "lat": 42.2561256,
+    "lon": -77.7979136,
+    "name": "Alfred College",
+    "show_count": 1,
+    "state": "NY"
+  },
+  "allan-kirby-field-house-lafayette-college": {
+    "city": "Easton",
+    "lat": 40.6916081,
+    "lon": -75.2099866,
+    "name": "Allan Kirby Field House (Lafayette College)",
+    "show_count": 1,
+    "state": "PA"
+  },
+  "allegheny-state-college": {
+    "city": "Meadvllle",
+    "name": "Allegheny State College",
+    "show_count": 1,
+    "state": "PA"
+  },
+  "allen-theater": {
+    "city": "Cleveland",
+    "lat": 41.5014856,
+    "lon": -81.6815074,
+    "name": "Allen Theater",
+    "show_count": 1,
+    "state": "OH"
+  },
+  "alligator-alley-gym-university-of-florida": {
+    "city": "Gainesville",
+    "lat": 29.6519684,
+    "lon": -82.3249846,
+    "name": "Alligator Alley Gym (University Of Florida)",
+    "show_count": 1,
+    "state": "FL"
+  },
+  "alliope-warehouse": {
+    "city": "San Francisco",
+    "lat": 37.7879363,
+    "lon": -122.4075201,
+    "name": "Alliope Warehouse",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "alpine-valley-music-theater": {
+    "city": "East Troy",
+    "lat": 42.7851871,
+    "lon": -88.4054374,
+    "name": "Alpine Valley Music Theater",
+    "show_count": 20,
+    "state": "WI"
+  },
+  "alumni-stadium-university-of-massachusetts": {
+    "city": "Amherst",
+    "lat": 42.3731948,
+    "lon": -72.5198761,
+    "name": "Alumni Stadium  (University Of Massachusetts)",
+    "show_count": 1,
+    "state": "MA"
+  },
+  "american-studios": {
+    "city": "Hollywood",
+    "lat": 34.0898117,
+    "lon": -118.3350093,
+    "name": "American Studios",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "american-university": {
+    "city": "Washington DC",
+    "lat": 38.9377662,
+    "lon": -77.0894641,
+    "name": "American University",
+    "show_count": 1,
+    "state": "DC"
+  },
+  "anaheim-stadium": {
+    "city": "Anaheim",
+    "lat": 33.8002599,
+    "lon": -117.8817426,
+    "name": "Anaheim Stadium",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "anderson-theater": {
+    "city": "New York City",
+    "lat": 40.7127281,
+    "lon": -74.0060152,
+    "name": "Anderson Theater",
+    "show_count": 1,
+    "state": "NY"
+  },
+  "aquatheatre": {
+    "city": "Seattle",
+    "lat": 47.6038321,
+    "lon": -122.330062,
+    "name": "Aquatheatre",
+    "show_count": 1,
+    "state": "WA"
+  },
+  "arena-university-of-southern-illinois": {
+    "city": "Carbondale",
+    "lat": 37.7274692,
+    "lon": -89.216655,
+    "name": "Arena (University Of Southern Illinois)",
+    "show_count": 1,
+    "state": "IL"
+  },
+  "arizona-state-university": {
+    "city": "Tempe",
+    "lat": 33.4213174,
+    "lon": -111.9331631,
+    "name": "Arizona State University",
+    "show_count": 1,
+    "state": "AZ"
+  },
+  "arlington-theater": {
+    "city": "Santa Barbara",
+    "lat": 34.4221319,
+    "lon": -119.702667,
+    "name": "Arlington Theater",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "arrowhead-stadium": {
+    "city": "Kansas City",
+    "lat": 39.0489357,
+    "lon": -94.4839993,
+    "name": "Arrowhead Stadium",
+    "show_count": 1,
+    "state": "MO"
+  },
+  "assembly-center-lousiana-state-university": {
+    "city": "Baton Rouge",
+    "lat": 30.4494155,
+    "lon": -91.1869659,
+    "name": "Assembly Center (Lousiana State University)",
+    "show_count": 1,
+    "state": "LA"
+  },
+  "assembly-hall-indiana-university": {
+    "city": "Bloomington",
+    "lat": 39.1670396,
+    "lon": -86.5342881,
+    "name": "Assembly Hall (Indiana University)",
+    "show_count": 1,
+    "state": "IN"
+  },
+  "assembly-hall-university-of-illinois": {
+    "city": "Champaign-Urbana",
+    "lat": 40.1157948,
+    "lon": -88.241194,
+    "name": "Assembly Hall (University Of Illinois)",
+    "show_count": 2,
+    "state": "IL"
+  },
+  "athletic-center-rutgers-university": {
+    "city": "New Brunswick",
+    "lat": 40.4951365,
+    "lon": -74.4439254,
+    "name": "Athletic Center (Rutgers University)",
+    "show_count": 1,
+    "state": "NJ"
+  },
+  "atlanta-municipal-auditorium": {
+    "city": "Atlanta",
+    "lat": 33.7544657,
+    "lon": -84.3898151,
+    "name": "Atlanta Municipal Auditorium",
+    "show_count": 1,
+    "state": "GA"
+  },
+  "auditorium-coliseum": {
+    "city": "Jacksonville",
+    "lat": 30.3262247,
+    "lon": -81.6579179,
+    "name": "Auditorium Coliseum",
+    "show_count": 1,
+    "state": "FL"
+  },
+  "auditorium-theater": {
+    "city": "Chicago",
+    "lat": 41.8760769,
+    "lon": -87.6252708,
+    "name": "Auditorium Theater",
+    "show_count": 10,
+    "state": "IL"
+  },
+  "augusta-civic-center": {
+    "city": "Augusta",
+    "lat": 44.3425924,
+    "lon": -69.7988986,
+    "name": "Augusta Civic Center",
+    "show_count": 3,
+    "state": "ME"
+  },
+  "austin-municipal-auditorium": {
+    "city": "Austin",
+    "lat": 30.2711286,
+    "lon": -97.7436995,
+    "name": "Austin Municipal Auditorium",
+    "show_count": 2,
+    "state": "TX"
+  },
+  "autzen-stadium-university-of-oregon": {
+    "city": "Eugene",
+    "lat": 44.0505054,
+    "lon": -123.0950506,
+    "name": "Autzen Stadium (University Of Oregon)",
+    "show_count": 10,
+    "state": "OR"
+  },
+  "avalon-ballroom": {
+    "city": "San Francisco",
+    "lat": 37.7879363,
+    "lon": -122.4075201,
+    "name": "Avalon Ballroom",
+    "show_count": 11,
+    "state": "CA"
+  },
+  "awalt-high-school": {
+    "city": "Mountain View",
+    "lat": 37.3893889,
+    "lon": -122.0832101,
+    "name": "Awalt High School",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "bakersfield-civic-auditorium": {
+    "city": "Bakersfield",
+    "lat": 35.3724587,
+    "lon": -119.0128789,
+    "name": "Bakersfield Civic Auditorium",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "ballroom-u-of-co": {
+    "city": "Boulder",
+    "lat": 40.0149856,
+    "lon": -105.270545,
+    "name": "Ballroom, U. Of Co.",
+    "show_count": 1,
+    "state": "CO"
+  },
+  "baltimore-civic-center": {
+    "city": "Baltimore",
+    "lat": 39.2908816,
+    "lon": -76.610759,
+    "name": "Baltimore Civic Center",
+    "show_count": 6,
+    "state": "MD"
+  },
+  "band-configuration": {
+    "city": "",
+    "name": "Band Configuration",
+    "show_count": 2,
+    "state": ""
+  },
+  "bangor-municipal-auditorium": {
+    "city": "Bangor",
+    "lat": 44.8016255,
+    "lon": -68.7713289,
+    "name": "Bangor Municipal Auditorium",
+    "show_count": 1,
+    "state": "ME"
+  },
+  "barton-hall-cornell-university": {
+    "city": "Ithaca",
+    "lat": 42.4374175,
+    "lon": -76.5483724,
+    "name": "Barton Hall (Cornell University)",
+    "show_count": 3,
+    "state": "NY"
+  },
+  "baton-rouge-int-speedway": {
+    "city": "Prairieville",
+    "lat": 30.3122527,
+    "lon": -90.9497329,
+    "name": "Baton Rouge Int. Speedway",
+    "show_count": 1,
+    "state": "LA"
+  },
+  "bayfront-center": {
+    "city": "St. Petersburg",
+    "lat": 27.7635581,
+    "lon": -82.6429823,
+    "name": "Bayfront Center",
+    "show_count": 2,
+    "state": "FL"
+  },
+  "beacon-theater": {
+    "city": "New York City",
+    "lat": 40.7804903,
+    "lon": -73.9811314,
+    "name": "Beacon Theater",
+    "show_count": 2,
+    "state": "NY"
+  },
+  "beat-club": {
+    "city": "Bremen",
+    "lat": 53.0735197,
+    "lon": 8.809967,
+    "name": "Beat Club",
+    "show_count": 1,
+    "state": "West Germany"
+  },
+  "bellarmine-college": {
+    "city": "Louisville",
+    "lat": 38.2187504,
+    "lon": -85.7058411,
+    "name": "Bellarmine College",
+    "show_count": 1,
+    "state": "KY"
+  },
+  "berkeley-community-theater": {
+    "city": "Berkeley",
+    "lat": 37.8684853,
+    "lon": -122.2715586,
+    "name": "Berkeley Community Theater",
+    "show_count": 23,
+    "state": "CA"
+  },
+  "betty-nelson-s-organic-raspberry-farm": {
+    "city": "Sultan",
+    "lat": 47.862282,
+    "lon": -121.814731,
+    "name": "Betty Nelson's Organic Raspberry Farm",
+    "show_count": 1,
+    "state": "WA"
+  },
+  "bickershaw-festival": {
+    "city": "Wigan",
+    "lat": 53.5457188,
+    "lon": -2.6264624,
+    "name": "Bickershaw Festival",
+    "show_count": 1,
+    "state": "England"
+  },
+  "billerica-forum": {
+    "city": "Billerica",
+    "lat": 42.5584264,
+    "lon": -71.268947,
+    "name": "Billerica Forum",
+    "show_count": 1,
+    "state": "MA"
+  },
+  "birmingham-jefferson-civic-center-coliseum": {
+    "city": "Birmingham",
+    "lat": 33.5206824,
+    "lon": -86.8024326,
+    "name": "Birmingham-Jefferson Civic Center Coliseum",
+    "show_count": 2,
+    "state": "AL"
+  },
+  "blockbuster-desert-sky-pavillion": {
+    "city": "Phoenix",
+    "lat": 33.4484367,
+    "lon": -112.074141,
+    "name": "Blockbuster Desert Sky Pavillion",
+    "show_count": 3,
+    "state": "AZ"
+  },
+  "blossom-music-center": {
+    "city": "Cuyahoga Falls",
+    "lat": 41.1912205,
+    "lon": -81.5606779,
+    "name": "Blossom Music Center",
+    "show_count": 2,
+    "state": "OH"
+  },
+  "bob-marley-performing-arts-center": {
+    "city": "Montego Bay",
+    "lat": 18.4724603,
+    "lon": -77.9217357,
+    "name": "Bob Marley Performing Arts Center",
+    "show_count": 1,
+    "state": "Jamaica"
+  },
+  "boise-pavillion": {
+    "city": "Boise",
+    "lat": 43.6166163,
+    "lon": -116.200886,
+    "name": "Boise Pavillion",
+    "show_count": 1,
+    "state": "ID"
+  },
+  "boreal-ridge-ski-resort": {
+    "city": "Donner's Summit",
+    "name": "Boreal Ridge Ski Resort",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "boston-garden": {
+    "city": "Boston",
+    "lat": 42.3540901,
+    "lon": -71.0700402,
+    "name": "Boston Garden",
+    "show_count": 24,
+    "state": "MA"
+  },
+  "boston-music-hall": {
+    "city": "Boston",
+    "lat": 42.3588336,
+    "lon": -71.0578303,
+    "name": "Boston Music Hall",
+    "show_count": 15,
+    "state": "MA"
+  },
+  "boston-tea-party": {
+    "city": "Boston",
+    "lat": 42.3521988,
+    "lon": -71.0513039,
+    "name": "Boston Tea Party",
+    "show_count": 3,
+    "state": "MA"
+  },
+  "boutwell-auditorium": {
+    "city": "Birmingham",
+    "lat": 33.5217981,
+    "lon": -86.811186,
+    "name": "Boutwell Auditorium",
+    "show_count": 2,
+    "state": "AL"
+  },
+  "brendan-byrne-arena": {
+    "city": "East Rutherford",
+    "lat": 40.833989,
+    "lon": -74.0970865,
+    "name": "Brendan Byrne Arena",
+    "show_count": 11,
+    "state": "NJ"
+  },
+  "broome-county-arena": {
+    "city": "Binghamton",
+    "lat": 42.098698,
+    "lon": -75.9125187,
+    "name": "Broome County Arena",
+    "show_count": 3,
+    "state": "NY"
+  },
+  "buckeye-lake-music-center": {
+    "city": "Hebron",
+    "lat": 39.9617305,
+    "lon": -82.4912676,
+    "name": "Buckeye Lake Music Center",
+    "show_count": 5,
+    "state": "OH"
+  },
+  "bucknell-university": {
+    "city": "Lewisburg",
+    "lat": 40.9515356,
+    "lon": -76.8879603,
+    "name": "Bucknell University",
+    "show_count": 1,
+    "state": "PA"
+  },
+  "cafe-au-go-go": {
+    "city": "New York City",
+    "lat": 40.7127281,
+    "lon": -74.0060152,
+    "name": "Cafe au Go-Go",
+    "show_count": 4,
+    "state": "NY"
+  },
+  "cal-expo-amphitheater": {
+    "city": "Sacramento",
+    "lat": 38.5810606,
+    "lon": -121.493895,
+    "name": "Cal Expo Amphitheater",
+    "show_count": 25,
+    "state": "CA"
+  },
+  "cal-expo-building-a": {
+    "city": "Sacramento",
+    "lat": 38.5810606,
+    "lon": -121.493895,
+    "name": "Cal Expo, Building A",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "cal-state-university-dominguez-hills-soccer-field": {
+    "city": "Carson",
+    "lat": 33.8322043,
+    "lon": -118.2517547,
+    "name": "Cal. State University Dominguez Hills Soccer Field",
+    "show_count": 2,
+    "state": "CA"
+  },
+  "calavaras-county-fairgrounds": {
+    "city": "Angel's Camp",
+    "lat": 18.638627,
+    "lon": -91.7755246,
+    "name": "Calavaras County Fairgrounds",
+    "show_count": 2,
+    "state": "CA"
+  },
+  "california-hall": {
+    "city": "San Francisco",
+    "lat": 37.7879363,
+    "lon": -122.4075201,
+    "name": "California Hall",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "cameron-indoor-stadium-duke-university": {
+    "city": "Durham",
+    "lat": 35.996653,
+    "lon": -78.9018053,
+    "name": "Cameron Indoor Stadium (Duke University)",
+    "show_count": 4,
+    "state": "NC"
+  },
+  "camp-randall-field-house-u-of-wi": {
+    "city": "Madison",
+    "lat": 43.07469,
+    "lon": -89.3841663,
+    "name": "Camp Randall Field House, U. Of Wi.",
+    "show_count": 1,
+    "state": "WI"
+  },
+  "campolindo-high-school": {
+    "city": "Moraga",
+    "lat": 37.866422,
+    "lon": -122.1272527,
+    "name": "Campolindo High School",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "campus-stadium-uc-santa-barbara": {
+    "city": "Goleta",
+    "lat": 34.4358295,
+    "lon": -119.8276389,
+    "name": "Campus Stadium (UC Santa Barbara)",
+    "show_count": 2,
+    "state": "CA"
+  },
+  "cape-cod-coliseum": {
+    "city": "South Yarmouth",
+    "lat": 41.6669123,
+    "lon": -70.1852228,
+    "name": "Cape Cod Coliseum",
+    "show_count": 2,
+    "state": "MA"
+  },
+  "capital-centre": {
+    "city": "Landover",
+    "lat": 38.925313,
+    "lon": -76.8815433,
+    "name": "Capital Centre",
+    "show_count": 26,
+    "state": "MD"
+  },
+  "capitol-theater": {
+    "city": "Port Chester",
+    "lat": 41.0016815,
+    "lon": -73.6650454,
+    "name": "Capitol Theater",
+    "show_count": 13,
+    "state": "NY"
+  },
+  "cardinal-stadium": {
+    "city": "Louisville",
+    "lat": 38.2060162,
+    "lon": -85.7587734,
+    "name": "Cardinal Stadium",
+    "show_count": 1,
+    "state": "KY"
+  },
+  "carolina-coliseum-university-of-south-carolina": {
+    "city": "Columbia",
+    "lat": 34.000754,
+    "lon": -81.0352313,
+    "name": "Carolina Coliseum (University Of South Carolina)",
+    "show_count": 1,
+    "state": "SC"
+  },
+  "carousel-ballroom": {
+    "city": "San Francisco",
+    "lat": 37.7879363,
+    "lon": -122.4075201,
+    "name": "Carousel Ballroom",
+    "show_count": 8,
+    "state": "CA"
+  },
+  "carrier-dome-syracuse-university": {
+    "city": "Syracuse",
+    "lat": 43.0362837,
+    "lon": -76.1363603,
+    "name": "Carrier Dome (Syracuse University)",
+    "show_count": 3,
+    "state": "NY"
+  },
+  "carter-findley-stadium": {
+    "city": "Raleigh",
+    "lat": 35.7803977,
+    "lon": -78.6390989,
+    "name": "Carter Findley Stadium",
+    "show_count": 1,
+    "state": "NC"
+  },
+  "catholic-youth-center": {
+    "city": "Scranton",
+    "lat": 41.4086874,
+    "lon": -75.6621294,
+    "name": "Catholic Youth Center",
+    "show_count": 1,
+    "state": "PA"
+  },
+  "central-park": {
+    "city": "New York City",
+    "lat": 40.7827725,
+    "lon": -73.9653627,
+    "name": "Central Park",
+    "show_count": 1,
+    "state": "NY"
+  },
+  "century-ii-convention-hall": {
+    "city": "Wichita",
+    "lat": 37.6922361,
+    "lon": -97.3375448,
+    "name": "Century II Convention Hall",
+    "show_count": 1,
+    "state": "KS"
+  },
+  "charlotte-coliseum": {
+    "city": "Charlotte",
+    "lat": 35.2136271,
+    "lon": -80.8043592,
+    "name": "Charlotte Coliseum",
+    "show_count": 12,
+    "state": "NC"
+  },
+  "chateau-d-herouvilie": {
+    "city": "Herouville",
+    "lat": 49.0998904,
+    "lon": 2.1280641,
+    "name": "Chateau d'HerouvilIe",
+    "show_count": 1,
+    "state": "France"
+  },
+  "cincinnati-gardens": {
+    "city": "Cincinnati",
+    "lat": 39.1810764,
+    "lon": -84.4551412,
+    "name": "Cincinnati Gardens",
+    "show_count": 1,
+    "state": "OH"
+  },
+  "city-hall": {
+    "city": "Newcastle",
+    "lat": 54.977377,
+    "lon": -1.6102258,
+    "name": "City Hall",
+    "show_count": 1,
+    "state": "England"
+  },
+  "city-island": {
+    "city": "Harrisburg",
+    "lat": 40.2554833,
+    "lon": -76.8894165,
+    "name": "City Island",
+    "show_count": 2,
+    "state": "PA"
+  },
+  "civic-arena": {
+    "city": "Pittsburgh",
+    "lat": 40.4406968,
+    "lon": -80.0025666,
+    "name": "Civic Arena",
+    "show_count": 1,
+    "state": "PA"
+  },
+  "civic-auditorium": {
+    "city": "San Jose",
+    "lat": 37.3307938,
+    "lon": -121.8897013,
+    "name": "Civic Auditorium",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "civic-center": {
+    "city": "Roanoke",
+    "lat": 37.2833949,
+    "lon": -79.9316966,
+    "name": "Civic Center",
+    "show_count": 3,
+    "state": "VA"
+  },
+  "civic-hall": {
+    "city": "Rotterdam",
+    "lat": 51.9244424,
+    "lon": 4.47775,
+    "name": "Civic Hall",
+    "show_count": 1,
+    "state": "Netherlands"
+  },
+  "clark-university": {
+    "city": "Worcester",
+    "lat": 42.2514681,
+    "lon": -71.8229509,
+    "name": "Clark University",
+    "show_count": 1,
+    "state": "MA"
+  },
+  "cleveland-music-hall": {
+    "city": "Cleveland",
+    "lat": 41.4996574,
+    "lon": -81.6936772,
+    "name": "Cleveland Music Hall",
+    "show_count": 3,
+    "state": "OH"
+  },
+  "cleveland-public-hall": {
+    "city": "Cleveland",
+    "lat": 41.5035164,
+    "lon": -81.6928913,
+    "name": "Cleveland Public Hall",
+    "show_count": 3,
+    "state": "OH"
+  },
+  "club-agora": {
+    "city": "Columbus",
+    "lat": 39.9622601,
+    "lon": -83.0007065,
+    "name": "Club Agora",
+    "show_count": 1,
+    "state": "OH"
+  },
+  "club-melk-weg": {
+    "city": "Amsterdam",
+    "lat": 52.3730796,
+    "lon": 4.8924534,
+    "name": "Club Melk Weg",
+    "show_count": 3,
+    "state": "Netherlands"
+  },
+  "cobo-arena": {
+    "city": "Detroit",
+    "lat": 42.3315509,
+    "lon": -83.0466403,
+    "name": "COBO Arena",
+    "show_count": 2,
+    "state": "MI"
+  },
+  "colden-auditorium-queens-college": {
+    "city": "Queens",
+    "lat": 40.7135078,
+    "lon": -73.8283132,
+    "name": "Colden Auditorium, Queens College",
+    "show_count": 1,
+    "state": "NY"
+  },
+  "cole-field-house-university-of-maryland": {
+    "city": "College Park",
+    "lat": 38.980666,
+    "lon": -76.9369189,
+    "name": "Cole Field House (University Of Maryland)",
+    "show_count": 1,
+    "state": "MD"
+  },
+  "colt-park": {
+    "city": "Hartford",
+    "lat": 41.7525001,
+    "lon": -72.6688532,
+    "name": "Colt Park",
+    "show_count": 1,
+    "state": "CT"
+  },
+  "columbus-veterans-hall": {
+    "city": "Columbus",
+    "lat": 39.9622601,
+    "lon": -83.0007065,
+    "name": "Columbus Veterans Hall",
+    "show_count": 1,
+    "state": "OH"
+  },
+  "compton-terrace-amphitheater": {
+    "city": "Tempe",
+    "lat": 33.4255117,
+    "lon": -111.940016,
+    "name": "Compton Terrace Amphitheater",
+    "show_count": 9,
+    "state": "AZ"
+  },
+  "concertgebouw": {
+    "city": "Amsterdam",
+    "lat": 52.3561982,
+    "lon": 4.8790448,
+    "name": "Concertgebouw",
+    "show_count": 1,
+    "state": "Netherlands"
+  },
+  "continental-ballroom": {
+    "city": "Santa Clara",
+    "lat": 37.2333253,
+    "lon": -121.6846349,
+    "name": "Continental Ballroom",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "convention-center": {
+    "city": "Cleveland",
+    "lat": 41.5032195,
+    "lon": -81.6942895,
+    "name": "Convention Center",
+    "show_count": 1,
+    "state": "OH"
+  },
+  "copps-coliseum": {
+    "city": "Hamilton - Ontario",
+    "lat": 43.2590945,
+    "lon": -79.8721959,
+    "name": "Copps Coliseum",
+    "show_count": 4,
+    "state": "Canada"
+  },
+  "cotterrell-gym-colgate-university": {
+    "city": "Hamilton",
+    "lat": 43.6307863,
+    "lon": -74.4659275,
+    "name": "Cotterrell Gym (Colgate University)",
+    "show_count": 1,
+    "state": "NY"
+  },
+  "county-coliseum": {
+    "city": "El Paso",
+    "lat": 31.7665258,
+    "lon": -106.4431429,
+    "name": "County Coliseum",
+    "show_count": 1,
+    "state": "TX"
+  },
+  "cow-palace": {
+    "city": "Daly City",
+    "lat": 37.7067615,
+    "lon": -122.4186942,
+    "name": "Cow Palace",
+    "show_count": 2,
+    "state": "CA"
+  },
+  "crisler-arena-university-of-michigan": {
+    "city": "Ann Arbor",
+    "lat": 42.2813722,
+    "lon": -83.7484616,
+    "name": "Crisler Arena (University Of Michigan)",
+    "show_count": 3,
+    "state": "MI"
+  },
+  "crystal-ballroom": {
+    "city": "Portland",
+    "lat": 45.5226821,
+    "lon": -122.6847689,
+    "name": "Crystal Ballroom",
+    "show_count": 2,
+    "state": "OR"
+  },
+  "cumberland-county-civic-center": {
+    "city": "Portland",
+    "lat": 43.6555281,
+    "lon": -70.2593331,
+    "name": "Cumberland County Civic Center",
+    "show_count": 8,
+    "state": "ME"
+  },
+  "curtis-hixon-convention-hall": {
+    "city": "Tampa",
+    "lat": 27.9449854,
+    "lon": -82.4583107,
+    "name": "Curtis Hixon Convention Hall",
+    "show_count": 4,
+    "state": "FL"
+  },
+  "dallas-convention-center": {
+    "city": "Dallas",
+    "lat": 32.7762719,
+    "lon": -96.7968559,
+    "name": "Dallas Convention Center",
+    "show_count": 1,
+    "state": "TX"
+  },
+  "dance-hall": {
+    "city": "Rio Nido",
+    "lat": 38.5210237,
+    "lon": -122.9769427,
+    "name": "Dance Hall",
+    "show_count": 2,
+    "state": "CA"
+  },
+  "dane-county-coliseum": {
+    "city": "Madison",
+    "lat": 43.07469,
+    "lon": -89.3841663,
+    "name": "Dane County Coliseum",
+    "show_count": 6,
+    "state": "WI"
+  },
+  "danish-center": {
+    "city": "Los Angeles",
+    "lat": 34.0536909,
+    "lon": -118.242766,
+    "name": "Danish Center",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "deer-creek-amphitheater": {
+    "city": "Noblesville",
+    "lat": 40.0460881,
+    "lon": -86.0139854,
+    "name": "Deer Creek Amphitheater",
+    "show_count": 14,
+    "state": "IN"
+  },
+  "delta-center": {
+    "city": "Salt Lake City",
+    "lat": 40.7683274,
+    "lon": -111.9010551,
+    "name": "Delta Center",
+    "show_count": 3,
+    "state": "UT"
+  },
+  "denver-coliseum": {
+    "city": "Denver",
+    "lat": 39.7791138,
+    "lon": -104.9705743,
+    "name": "Denver Coliseum",
+    "show_count": 2,
+    "state": "CO"
+  },
+  "des-moines-civic-center": {
+    "city": "Des Moines",
+    "lat": 41.5868654,
+    "lon": -93.6249494,
+    "name": "Des Moines Civic Center",
+    "show_count": 2,
+    "state": "IA"
+  },
+  "deutsches-museum-halle": {
+    "city": "Munich",
+    "lat": 48.1719513,
+    "lon": 11.5783159,
+    "name": "Deutsches Museum Halle",
+    "show_count": 1,
+    "state": "West Germany"
+  },
+  "devore-field-southwestern-university": {
+    "city": "Chula Vista",
+    "lat": 32.6400541,
+    "lon": -117.084195,
+    "name": "Devore Field (Southwestern University)",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "dillon-gym-princeton-university": {
+    "city": "Princeton",
+    "lat": 40.3496953,
+    "lon": -74.6597376,
+    "name": "Dillon Gym, Princeton University",
+    "show_count": 1,
+    "state": "NJ"
+  },
+  "dillon-stadium": {
+    "city": "Hartford",
+    "lat": 41.7539073,
+    "lon": -72.661055,
+    "name": "Dillon Stadium",
+    "show_count": 2,
+    "state": "CT"
+  },
+  "dream-bowl": {
+    "city": "Vallejo",
+    "lat": 38.1040864,
+    "lon": -122.2566367,
+    "name": "Dream Bowl",
+    "show_count": 2,
+    "state": "CA"
+  },
+  "dupont-gymnasium-m-i-t": {
+    "city": "Cambridge",
+    "lat": 42.3656347,
+    "lon": -71.1040018,
+    "name": "Dupont Gymnasium M.I.T.",
+    "show_count": 1,
+    "state": "MA"
+  },
+  "eagle-s-auditorium": {
+    "city": "Seattle",
+    "lat": 47.6038321,
+    "lon": -122.330062,
+    "name": "Eagle's Auditorium",
+    "show_count": 3,
+    "state": "WA"
+  },
+  "east-hall-franklin-and-marshall-col": {
+    "city": "Lancaster",
+    "lat": 40.0379958,
+    "lon": -76.3056707,
+    "name": "East Hall Franklin And Marshall Col.",
+    "show_count": 1,
+    "state": "PA"
+  },
+  "easttown-theatre": {
+    "city": "Detroit",
+    "lat": 42.3315509,
+    "lon": -83.0466403,
+    "name": "Easttown Theatre",
+    "show_count": 2,
+    "state": "MI"
+  },
+  "edmundson-pavilion": {
+    "city": "Seattle",
+    "lat": 47.6521785,
+    "lon": -122.3021248,
+    "name": "Edmundson Pavilion",
+    "show_count": 1,
+    "state": "WA"
+  },
+  "el-camino-park": {
+    "city": "Palo Alto",
+    "lat": 37.4453159,
+    "lon": -122.168564,
+    "name": "El Camino Park",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "electric-circus": {
+    "city": "New York City",
+    "lat": 40.7127281,
+    "lon": -74.0060152,
+    "name": "Electric Circus",
+    "show_count": 2,
+    "state": "NY"
+  },
+  "electric-factory": {
+    "city": "Philadelphia",
+    "lat": 39.9591981,
+    "lon": -75.1496846,
+    "name": "Electric Factory",
+    "show_count": 2,
+    "state": "PA"
+  },
+  "electric-theater": {
+    "city": "Chicago",
+    "lat": 41.8755616,
+    "lon": -87.6244212,
+    "name": "Electric Theater",
+    "show_count": 4,
+    "state": "IL"
+  },
+  "empire-pool": {
+    "city": "Wembley",
+    "lat": 51.5579996,
+    "lon": -0.2827922,
+    "name": "Empire Pool",
+    "show_count": 2,
+    "state": "England"
+  },
+  "euphoria-ballroom": {
+    "city": "San Rafael",
+    "lat": 37.9747795,
+    "lon": -122.5316686,
+    "name": "Euphoria Ballroom",
+    "show_count": 2,
+    "state": "CA"
+  },
+  "eureka-municipal-auditorium": {
+    "city": "Eureka",
+    "lat": 40.7965157,
+    "lon": -124.1653394,
+    "name": "Eureka Municipal Auditorium",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "events-center-university-of-colorado": {
+    "city": "Boulder",
+    "lat": 40.0149856,
+    "lon": -105.270545,
+    "name": "Events Center (University Of Colorado)",
+    "show_count": 1,
+    "state": "CO"
+  },
+  "fairgrounds": {
+    "city": "Lille",
+    "lat": 50.6365654,
+    "lon": 3.0635282,
+    "name": "Fairgrounds",
+    "show_count": 1,
+    "state": "France"
+  },
+  "fairgrounds-arena": {
+    "city": "Oklahoma City",
+    "lat": 35.4729886,
+    "lon": -97.5170536,
+    "name": "Fairgrounds Arena",
+    "show_count": 1,
+    "state": "OK"
+  },
+  "family-dog-at-the-great-highway": {
+    "city": "San Francisco",
+    "lat": 37.7879363,
+    "lon": -122.4075201,
+    "name": "Family Dog at The Great Highway",
+    "show_count": 15,
+    "state": "CA"
+  },
+  "farrell-hall-s-u-c-n-y": {
+    "city": "Delhi",
+    "lat": 42.2781401,
+    "lon": -74.9159946,
+    "name": "Farrell Hall, S.U.C.N.Y.",
+    "show_count": 1,
+    "state": "NY"
+  },
+  "felt-forum": {
+    "city": "New York City",
+    "lat": 40.7127281,
+    "lon": -74.0060152,
+    "name": "Felt Forum",
+    "show_count": 4,
+    "state": "NY"
+  },
+  "fest-halle": {
+    "city": "Frankfurt",
+    "lat": 50.1106444,
+    "lon": 8.6820917,
+    "name": "Fest Halle",
+    "show_count": 1,
+    "state": "Germany"
+  },
+  "feyline-field": {
+    "city": "Tempe",
+    "lat": 33.4255117,
+    "lon": -111.940016,
+    "name": "Feyline Field",
+    "show_count": 1,
+    "state": "AZ"
+  },
+  "field-house-northern-illinois-university": {
+    "city": "De Kalb",
+    "lat": 42.0047639,
+    "lon": -89.1098991,
+    "name": "Field House (Northern Illinois University)",
+    "show_count": 1,
+    "state": "IL"
+  },
+  "field-house-rensselaer-polytechnic-institute": {
+    "city": "Troy",
+    "lat": 42.7284117,
+    "lon": -73.6917878,
+    "name": "Field House (Rensselaer Polytechnic Institute)",
+    "show_count": 1,
+    "state": "NY"
+  },
+  "field-house-seneca-college": {
+    "city": "Toronto",
+    "lat": 43.6534817,
+    "lon": -79.3839347,
+    "name": "Field House (Seneca College)",
+    "show_count": 1,
+    "state": "Canada"
+  },
+  "field-house-u-of-cincinnati": {
+    "city": "Cincinnati",
+    "lat": 39.1014537,
+    "lon": -84.5124602,
+    "name": "Field House, U. Of Cincinnati",
+    "show_count": 1,
+    "state": "OH"
+  },
+  "field-house-wesleyan-university": {
+    "city": "Middletown",
+    "lat": 41.5623178,
+    "lon": -72.6509061,
+    "name": "Field House, Wesleyan University",
+    "show_count": 1,
+    "state": "CT"
+  },
+  "fiesta-hall-county-fairgrounds": {
+    "city": "San Mateo",
+    "lat": 37.496904,
+    "lon": -122.3330573,
+    "name": "Fiesta Hall (County Fairgrounds)",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "fillmore-auditorium": {
+    "city": "San Francisco",
+    "lat": 37.7879363,
+    "lon": -122.4075201,
+    "name": "Fillmore Auditorium",
+    "show_count": 14,
+    "state": "CA"
+  },
+  "fillmore-east": {
+    "city": "New York City",
+    "lat": 40.6117445,
+    "lon": -73.9327651,
+    "name": "Fillmore East",
+    "show_count": 27,
+    "state": "NY"
+  },
+  "fillmore-west": {
+    "city": "San Francisco",
+    "lat": 37.7879363,
+    "lon": -122.4075201,
+    "name": "Fillmore West",
+    "show_count": 32,
+    "state": "CA"
+  },
+  "five-seasons-center": {
+    "city": "Cedar Rapids",
+    "lat": 41.9758872,
+    "lon": -91.6704053,
+    "name": "Five Seasons Center",
+    "show_count": 1,
+    "state": "IA"
+  },
+  "folsom-field-university-of-colorado": {
+    "city": "Boulder",
+    "lat": 40.0149856,
+    "lon": -105.270545,
+    "name": "Folsom Field (University Of Colorado)",
+    "show_count": 3,
+    "state": "CO"
+  },
+  "ford-auditorium": {
+    "city": "Detroit",
+    "lat": 42.3315509,
+    "lon": -83.0466403,
+    "name": "Ford Auditorium",
+    "show_count": 1,
+    "state": "MI"
+  },
+  "forum-theater": {
+    "city": "Copenhagen",
+    "lat": 55.6867243,
+    "lon": 12.5700724,
+    "name": "Forum Theater",
+    "show_count": 1,
+    "state": "Denmark"
+  },
+  "fox-theater": {
+    "city": "Atlanta",
+    "lat": 33.7726429,
+    "lon": -84.3855618,
+    "name": "Fox Theater",
+    "show_count": 9,
+    "state": "GA"
+  },
+  "fox-theatre": {
+    "city": "St. Louis",
+    "lat": 38.6391224,
+    "lon": -90.2323843,
+    "name": "Fox Theatre",
+    "show_count": 5,
+    "state": "MO"
+  },
+  "foxboro-stadium": {
+    "city": "Foxboro",
+    "lat": 42.0953545,
+    "lon": -71.2616265,
+    "name": "Foxboro Stadium",
+    "show_count": 1,
+    "state": "MA"
+  },
+  "franklin-county-airport": {
+    "city": "Highgate",
+    "lat": 44.9397463,
+    "lon": -73.096665,
+    "name": "Franklin County Airport",
+    "show_count": 1,
+    "state": "VT"
+  },
+  "franklin-field": {
+    "city": "Highgate",
+    "lat": 44.9387324,
+    "lon": -73.0447397,
+    "name": "Franklin Field",
+    "show_count": 1,
+    "state": "VT"
+  },
+  "freeborn-hall-u-of-california": {
+    "city": "Davis",
+    "lat": 38.5435526,
+    "lon": -121.739005,
+    "name": "Freeborn Hall, U. Of California",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "freedom-hall": {
+    "city": "Louisville",
+    "lat": 38.2001655,
+    "lon": -85.7418363,
+    "name": "Freedom Hall",
+    "show_count": 4,
+    "state": "KY"
+  },
+  "fresno-convention-center": {
+    "city": "Fresno",
+    "lat": 36.7350822,
+    "lon": -119.7850192,
+    "name": "Fresno Convention Center",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "frost-amphitheater-stanford-university": {
+    "city": "Palo Alto",
+    "lat": 37.4443293,
+    "lon": -122.1598465,
+    "name": "Frost Amphitheater, Stanford University",
+    "show_count": 14,
+    "state": "CA"
+  },
+  "gaelic-park": {
+    "city": "Bronx",
+    "lat": 40.8876782,
+    "lon": -73.9014564,
+    "name": "Gaelic Park",
+    "show_count": 1,
+    "state": "NY"
+  },
+  "giants-stadium": {
+    "city": "East Rutherford",
+    "lat": 40.833989,
+    "lon": -74.0970865,
+    "name": "Giants Stadium",
+    "show_count": 14,
+    "state": "NJ"
+  },
+  "glen-helen-regional-park": {
+    "city": "Devore",
+    "lat": 34.2082221,
+    "lon": -117.4052421,
+    "name": "Glen Helen Regional Park",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "glenns-falls-civic-center": {
+    "city": "Glens Falls",
+    "lat": 43.309941,
+    "lon": -73.644447,
+    "name": "Glenns Falls Civic Center",
+    "show_count": 4,
+    "state": "NY"
+  },
+  "golden-gate-studios": {
+    "city": "San Francisco",
+    "lat": 37.7879363,
+    "lon": -122.4075201,
+    "name": "Golden Gate Studios",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "golden-hall": {
+    "city": "San Diego",
+    "lat": 32.7174202,
+    "lon": -117.162772,
+    "name": "Golden Hall",
+    "show_count": 8,
+    "state": "CA"
+  },
+  "golden-hall-community-concourse": {
+    "city": "San Diego",
+    "lat": 32.7174202,
+    "lon": -117.162772,
+    "name": "Golden Hall Community Concourse",
+    "show_count": 2,
+    "state": "CA"
+  },
+  "grand-center": {
+    "city": "Grand Rapids",
+    "lat": 42.9838764,
+    "lon": -85.6037516,
+    "name": "Grand Center",
+    "show_count": 1,
+    "state": "MI"
+  },
+  "grand-prix-racecourse": {
+    "city": "Watkins Glen",
+    "lat": 42.3810555,
+    "lon": -76.8705777,
+    "name": "Grand Prix Racecourse",
+    "show_count": 2,
+    "state": "NY"
+  },
+  "grande-ballroom": {
+    "city": "Detroit",
+    "lat": 42.3648471,
+    "lon": -83.1284436,
+    "name": "Grande Ballroom",
+    "show_count": 1,
+    "state": "MI"
+  },
+  "great-american-music-hall": {
+    "city": "San Francisco",
+    "lat": 37.7847659,
+    "lon": -122.4188356,
+    "name": "Great American Music Hall",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "great-western-forum": {
+    "city": "Inglewood",
+    "lat": 33.9582157,
+    "lon": -118.341972,
+    "name": "Great Western Forum",
+    "show_count": 6,
+    "state": "CA"
+  },
+  "greek-theater-university-of-california": {
+    "city": "Berkeley",
+    "lat": 37.8708393,
+    "lon": -122.272863,
+    "name": "Greek Theater, University Of California",
+    "show_count": 28,
+    "state": "CA"
+  },
+  "greensboro-coliseum": {
+    "city": "Greensboro",
+    "lat": 36.0434343,
+    "lon": -79.8455352,
+    "name": "Greensboro Coliseum",
+    "show_count": 7,
+    "state": "NC"
+  },
+  "gruga-halle": {
+    "city": "Essen",
+    "lat": 51.4582235,
+    "lon": 7.0158171,
+    "name": "Gruga Halle",
+    "show_count": 2,
+    "state": "Germany"
+  },
+  "gulfstream-park-racetrack": {
+    "city": "Hallandale",
+    "lat": 25.9812025,
+    "lon": -80.148379,
+    "name": "Gulfstream Park Racetrack",
+    "show_count": 1,
+    "state": "FL"
+  },
+  "gym-s-u-n-y": {
+    "city": "Stony Brook",
+    "lat": 40.908482,
+    "lon": -73.1325471,
+    "name": "Gym, S.U.N.Y.",
+    "show_count": 2,
+    "state": "NY"
+  },
+  "haight-street": {
+    "city": "San Francisco",
+    "lat": 37.7718014,
+    "lon": -122.4329306,
+    "name": "Haight Street",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "hall-of-flowers-county-fairgrounds": {
+    "city": "San Mateo",
+    "lat": 37.496904,
+    "lon": -122.3330573,
+    "name": "Hall Of Flowers, County Fairgrounds",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "hampton-coliseum": {
+    "city": "Hampton",
+    "lat": 37.0347001,
+    "lon": -76.3813675,
+    "name": "Hampton Coliseum",
+    "show_count": 21,
+    "state": "VA"
+  },
+  "hara-arena": {
+    "city": "Dayton",
+    "lat": 39.7589478,
+    "lon": -84.1916069,
+    "name": "Hara Arena",
+    "show_count": 1,
+    "state": "OH"
+  },
+  "harding-theater": {
+    "city": "San Francisco",
+    "lat": 37.7753573,
+    "lon": -122.4375032,
+    "name": "Harding Theater",
+    "show_count": 2,
+    "state": "CA"
+  },
+  "harpur-college": {
+    "city": "Binghamton",
+    "lat": 42.0877998,
+    "lon": -75.9706607,
+    "name": "Harpur College",
+    "show_count": 1,
+    "state": "NY"
+  },
+  "hartford-civic-center": {
+    "city": "Hartford",
+    "lat": 41.76848,
+    "lon": -72.6770215,
+    "name": "Hartford Civic Center",
+    "show_count": 18,
+    "state": "CT"
+  },
+  "henry-j-kaiser-auditorium": {
+    "city": "Oakland",
+    "lat": 37.7975777,
+    "lon": -122.2615697,
+    "name": "Henry J. Kaiser Auditorium",
+    "show_count": 7,
+    "state": "CA"
+  },
+  "henry-j-kaiser-convention-center": {
+    "city": "Oakland",
+    "lat": 37.7975777,
+    "lon": -122.2615697,
+    "name": "Henry J. Kaiser Convention Center",
+    "show_count": 27,
+    "state": "CA"
+  },
+  "hershey-park-stadium": {
+    "city": "Hershey",
+    "lat": 40.2850285,
+    "lon": -76.6534662,
+    "name": "Hershey Park Stadium",
+    "show_count": 1,
+    "state": "PA"
+  },
+  "hill-auditorium": {
+    "city": "Ann Arbor",
+    "lat": 42.279178,
+    "lon": -83.7390789,
+    "name": "Hill Auditorium",
+    "show_count": 2,
+    "state": "MI"
+  },
+  "hilton-hotel": {
+    "city": "San Francisco",
+    "lat": 37.795144,
+    "lon": -122.404306,
+    "name": "Hilton Hotel",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "hofheinz-pavilion": {
+    "city": "Houston",
+    "lat": 29.7589382,
+    "lon": -95.3676974,
+    "name": "Hofheinz Pavilion",
+    "show_count": 3,
+    "state": "TX"
+  },
+  "holleder-stadium": {
+    "city": "Rochester",
+    "lat": 43.157285,
+    "lon": -77.615214,
+    "name": "Holleder Stadium",
+    "show_count": 1,
+    "state": "NY"
+  },
+  "hollywood-bowl": {
+    "city": "Hollywood",
+    "lat": 34.1116758,
+    "lon": -118.3370711,
+    "name": "Hollywood Bowl",
+    "show_count": 3,
+    "state": "CA"
+  },
+  "hollywood-palladium": {
+    "city": "Hollywood",
+    "lat": 34.0984937,
+    "lon": -118.3242932,
+    "name": "Hollywood Palladium",
+    "show_count": 4,
+    "state": "CA"
+  },
+  "honolulu-civic-auditorium": {
+    "city": "Honolulu",
+    "lat": 21.304547,
+    "lon": -157.855676,
+    "name": "Honolulu Civic Auditorium",
+    "show_count": 2,
+    "state": "HI"
+  },
+  "horton-field-house-illinois-state-university": {
+    "city": "Normal",
+    "lat": 40.5092961,
+    "lon": -88.9843937,
+    "name": "Horton Field House (Illinois State University)",
+    "show_count": 1,
+    "state": "IL"
+  },
+  "hubert-h-humphrey-metrodome": {
+    "city": "Minniapolis",
+    "lat": 16.7560403,
+    "lon": -93.1442545,
+    "name": "Hubert H. Humphrey Metrodome",
+    "show_count": 1,
+    "state": "MN"
+  },
+  "huntington-civic-center": {
+    "city": "Huntington",
+    "lat": 38.4192496,
+    "lon": -82.445154,
+    "name": "Huntington Civic Center",
+    "show_count": 1,
+    "state": "WV"
+  },
+  "ice-palace": {
+    "city": "Las Vegas",
+    "lat": 36.1674263,
+    "lon": -115.1484131,
+    "name": "Ice Palace",
+    "show_count": 1,
+    "state": "NV"
+  },
+  "indianapolis-convention-center": {
+    "city": "Indianapolis",
+    "lat": 39.7683331,
+    "lon": -86.1583502,
+    "name": "Indianapolis Convention Center",
+    "show_count": 1,
+    "state": "IN"
+  },
+  "international-amphitheater": {
+    "city": "Chicago",
+    "lat": 41.8755616,
+    "lon": -87.6244212,
+    "name": "International Amphitheater",
+    "show_count": 2,
+    "state": "IL"
+  },
+  "international-speedway": {
+    "city": "Hollywood",
+    "lat": 26.0112014,
+    "lon": -80.1494901,
+    "name": "International Speedway",
+    "show_count": 1,
+    "state": "FL"
+  },
+  "irvine-auditorium": {
+    "city": "Philadelphia",
+    "lat": 39.9509138,
+    "lon": -75.1929938,
+    "name": "Irvine Auditorium",
+    "show_count": 1,
+    "state": "PA"
+  },
+  "irvine-meadows-ampitheatre": {
+    "city": "Irvine",
+    "lat": 33.6856969,
+    "lon": -117.825981,
+    "name": "Irvine Meadows Ampitheatre",
+    "show_count": 15,
+    "state": "CA"
+  },
+  "istadium": {
+    "city": "Stockholm",
+    "lat": 59.3251172,
+    "lon": 18.0710935,
+    "name": "Istadium",
+    "show_count": 1,
+    "state": "Sweden"
+  },
+  "ivar-theater": {
+    "city": "Los Angeles",
+    "lat": 34.1000762,
+    "lon": -118.3285167,
+    "name": "Ivar Theater",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "jahrhundert-halle": {
+    "city": "Frankfurt",
+    "lat": 50.1027438,
+    "lon": 8.5420871,
+    "name": "Jahrhundert Halle",
+    "show_count": 1,
+    "state": "West Germany"
+  },
+  "jai-alai-fronton": {
+    "city": "Miami",
+    "lat": 25.8073186,
+    "lon": -80.2572639,
+    "name": "Jai-Alai Fronton",
+    "show_count": 3,
+    "state": "FL"
+  },
+  "jenison-field-house-mi-state-u": {
+    "city": "Lansing",
+    "lat": 42.7338254,
+    "lon": -84.5546295,
+    "name": "Jenison Field House, Mi. State U.",
+    "show_count": 1,
+    "state": "MI"
+  },
+  "joe-louis-arena": {
+    "city": "Detroit",
+    "lat": 42.3252704,
+    "lon": -83.0526881,
+    "name": "Joe Louis Arena",
+    "show_count": 1,
+    "state": "MI"
+  },
+  "john-f-kennedy-stadium": {
+    "city": "Philadelphia",
+    "lat": 39.9527237,
+    "lon": -75.1635262,
+    "name": "John F. Kennedy Stadium",
+    "show_count": 2,
+    "state": "PA"
+  },
+  "kansas-city-municipal-auditorium": {
+    "city": "Kansas City",
+    "lat": 39.100105,
+    "lon": -94.5781416,
+    "name": "Kansas City Municipal Auditorium",
+    "show_count": 2,
+    "state": "MO"
+  },
+  "kezar-stadium": {
+    "city": "San Francisco",
+    "lat": 37.766867,
+    "lon": -122.4560097,
+    "name": "Kezar Stadium",
+    "show_count": 2,
+    "state": "CA"
+  },
+  "kiel-auditorium": {
+    "city": "St. Louis",
+    "lat": 38.6254063,
+    "lon": -90.190009,
+    "name": "Kiel Auditorium",
+    "show_count": 7,
+    "state": "MO"
+  },
+  "kiel-opera-house": {
+    "city": "St. Louis",
+    "lat": 38.6275198,
+    "lon": -90.202049,
+    "name": "Kiel Opera House",
+    "show_count": 1,
+    "state": "MO"
+  },
+  "king-s-beach-bowl": {
+    "city": "Lake Tahoe",
+    "lat": 39.0885405,
+    "lon": -120.0503528,
+    "name": "King's Beach Bowl",
+    "show_count": 2,
+    "state": "CA"
+  },
+  "kingswood-music-theater": {
+    "city": "Toronto",
+    "lat": 43.8393973,
+    "lon": -79.5393025,
+    "name": "Kingswood Music Theater",
+    "show_count": 2,
+    "state": "Canada"
+  },
+  "kleinhans-music-hall": {
+    "city": "Buffalo",
+    "lat": 42.9017139,
+    "lon": -78.883479,
+    "name": "Kleinhans Music Hall",
+    "show_count": 1,
+    "state": "NY"
+  },
+  "knickerbocker-arena": {
+    "city": "Albany",
+    "lat": 42.6486276,
+    "lon": -73.754719,
+    "name": "Knickerbocker Arena",
+    "show_count": 13,
+    "state": "NY"
+  },
+  "kppc-studios": {
+    "city": "Pasadena",
+    "lat": 34.1476507,
+    "lon": -118.144155,
+    "name": "KPPC Studios",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "kqed-studios": {
+    "city": "San Francisco",
+    "lat": 37.7879363,
+    "lon": -122.4075201,
+    "name": "KQED Studios",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "kresge-plaza-m-i-t": {
+    "city": "Cambridge",
+    "lat": 42.3656347,
+    "lon": -71.1040018,
+    "name": "Kresge Plaza, M.I.T.",
+    "show_count": 1,
+    "state": "MA"
+  },
+  "l-a-memorial-coliseum": {
+    "city": "Los Angeles",
+    "lat": 34.0536909,
+    "lon": -118.242766,
+    "name": "L.A. Memorial Coliseum",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "labor-temple": {
+    "city": "Minneapolis",
+    "lat": 44.9772995,
+    "lon": -93.2654692,
+    "name": "Labor Temple",
+    "show_count": 2,
+    "state": "MN"
+  },
+  "laguna-seca-raceway": {
+    "city": "Monterey",
+    "lat": 36.5844132,
+    "lon": -121.7533871,
+    "name": "Laguna Seca Raceway",
+    "show_count": 5,
+    "state": "CA"
+  },
+  "lakefront-arena-university-of-new-orleans": {
+    "city": "New Orleans",
+    "lat": 29.9561422,
+    "lon": -90.0733934,
+    "name": "Lakefront Arena University Of New Orleans",
+    "show_count": 1,
+    "state": "LA"
+  },
+  "lakeland-civic-center": {
+    "city": "Lakeland",
+    "lat": 28.0394654,
+    "lon": -81.9498042,
+    "name": "Lakeland Civic Center",
+    "show_count": 3,
+    "state": "FL"
+  },
+  "lanai-theater": {
+    "city": "Crockett",
+    "lat": 38.0510875,
+    "lon": -122.2199126,
+    "name": "Lanai Theater",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "legion-stadium": {
+    "city": "El Monte",
+    "lat": 34.0751571,
+    "lon": -118.036849,
+    "name": "Legion Stadium",
+    "show_count": 3,
+    "state": "CA"
+  },
+  "lindley-meadows-golden-gate-park": {
+    "city": "San Francisco",
+    "lat": 37.7879363,
+    "lon": -122.4075201,
+    "name": "Lindley Meadows, Golden Gate Park",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "lloyd-noble-center-university-of-oklahoma": {
+    "city": "Norman",
+    "lat": 35.2225717,
+    "lon": -97.4394816,
+    "name": "Lloyd Noble Center (University Of Oklahoma)",
+    "show_count": 1,
+    "state": "OK"
+  },
+  "long-beach-arena": {
+    "city": "Long Beach",
+    "lat": 33.7641077,
+    "lon": -118.188365,
+    "name": "Long Beach Arena",
+    "show_count": 13,
+    "state": "CA"
+  },
+  "los-angeles-sports-arena": {
+    "city": "Los Angeles",
+    "lat": 34.0536909,
+    "lon": -118.242766,
+    "name": "Los Angeles Sports Arena",
+    "show_count": 7,
+    "state": "CA"
+  },
+  "low-library-plaza-columbia-u": {
+    "city": "New York City",
+    "lat": 40.7127281,
+    "lon": -74.0060152,
+    "name": "Low Library Plaza, Columbia U.",
+    "show_count": 1,
+    "state": "NY"
+  },
+  "loyola-college": {
+    "city": "Chicago",
+    "lat": 41.8971495,
+    "lon": -87.6271627,
+    "name": "Loyola College",
+    "show_count": 1,
+    "state": "IL"
+  },
+  "lusk-field-house-s-u-c-n-y": {
+    "city": "Cortland",
+    "lat": 42.5842136,
+    "lon": -76.0704906,
+    "name": "Lusk Field House, S.U.C.N.Y",
+    "show_count": 1,
+    "state": "NY"
+  },
+  "madison-square-garden": {
+    "city": "New York City",
+    "lat": 40.7505129,
+    "lon": -73.9935159,
+    "name": "Madison Square Garden",
+    "show_count": 52,
+    "state": "NY"
+  },
+  "mammoth-gardens": {
+    "city": "Denver",
+    "lat": 39.7392364,
+    "lon": -104.984862,
+    "name": "Mammoth Gardens",
+    "show_count": 1,
+    "state": "CO"
+  },
+  "manhattan-center": {
+    "city": "New York City",
+    "lat": 40.7529437,
+    "lon": -73.9941199,
+    "name": "Manhattan Center",
+    "show_count": 3,
+    "state": "NY"
+  },
+  "manor-downs": {
+    "city": "Austin",
+    "lat": 30.2711286,
+    "lon": -97.7436995,
+    "name": "Manor Downs",
+    "show_count": 5,
+    "state": "TX"
+  },
+  "marin-county-veteran-s-auditorium": {
+    "city": "San Rafael",
+    "lat": 37.9747795,
+    "lon": -122.5316686,
+    "name": "Marin County Veteran's Auditorium",
+    "show_count": 6,
+    "state": "CA"
+  },
+  "marion-shea-aud-paterson-state-col": {
+    "city": "Wayne",
+    "lat": 40.9491723,
+    "lon": -74.2376802,
+    "name": "Marion Shea Aud., Paterson State Col.",
+    "show_count": 1,
+    "state": "NJ"
+  },
+  "market-square-arena": {
+    "city": "Indianapolis",
+    "lat": 39.7683331,
+    "lon": -86.1583502,
+    "name": "Market Square Arena",
+    "show_count": 3,
+    "state": "IN"
+  },
+  "masonic-temple": {
+    "city": "Detroit",
+    "lat": 42.341609,
+    "lon": -83.0604001,
+    "name": "Masonic Temple",
+    "show_count": 1,
+    "state": "MI"
+  },
+  "max-yasgur-s-farm": {
+    "city": "Bethel",
+    "lat": 41.6834224,
+    "lon": -74.8712753,
+    "name": "Max Yasgur's Farm",
+    "show_count": 1,
+    "state": "NY"
+  },
+  "mcarthur-court-university-of-oregon": {
+    "city": "Eugene",
+    "lat": 44.0505054,
+    "lon": -123.0950506,
+    "name": "McArthur Court (University Of Oregon)",
+    "show_count": 2,
+    "state": "OR"
+  },
+  "mcdonough-arena-georgetown-u": {
+    "city": "Washington",
+    "lat": 38.8950982,
+    "lon": -77.0363849,
+    "name": "McDonough Arena, Georgetown U.",
+    "show_count": 1,
+    "state": "DC"
+  },
+  "mcfarlin-auditorium-s-m-u": {
+    "city": "Dallas",
+    "lat": 32.7762719,
+    "lon": -96.7968559,
+    "name": "McFarlin Auditorium, S.M.U.",
+    "show_count": 1,
+    "state": "TX"
+  },
+  "mcgaw-memorial-hall": {
+    "city": "Evanston",
+    "lat": 42.0668689,
+    "lon": -87.6924405,
+    "name": "McGaw Memorial Hall",
+    "show_count": 1,
+    "state": "IL"
+  },
+  "mcnichols-sports-arena": {
+    "city": "Denver",
+    "lat": 39.7392364,
+    "lon": -104.984862,
+    "name": "McNichols Sports Arena",
+    "show_count": 13,
+    "state": "CO"
+  },
+  "meadowlands-arena": {
+    "city": "East Rutherford",
+    "lat": 40.8116021,
+    "lon": -74.0675967,
+    "name": "Meadowlands Arena",
+    "show_count": 5,
+    "state": "NJ"
+  },
+  "memorial-auditorium": {
+    "city": "Dallas",
+    "lat": 32.8441985,
+    "lon": -96.7861766,
+    "name": "Memorial Auditorium",
+    "show_count": 1,
+    "state": "TX"
+  },
+  "memorial-coliseum-state-fairgrounds": {
+    "city": "Jackson",
+    "lat": 32.2998686,
+    "lon": -90.1830408,
+    "name": "Memorial Coliseum (State Fairgrounds)",
+    "show_count": 1,
+    "state": "MS"
+  },
+  "memorial-coliseum-university-of-alabama": {
+    "city": "Tuscaloosa",
+    "lat": 33.2095614,
+    "lon": -87.5675258,
+    "name": "Memorial Coliseum (University Of Alabama)",
+    "show_count": 1,
+    "state": "AL"
+  },
+  "memorial-hall": {
+    "city": "Kansas City",
+    "lat": 39.0026266,
+    "lon": -94.5661553,
+    "name": "Memorial Hall",
+    "show_count": 1,
+    "state": "MO"
+  },
+  "memorial-stadium": {
+    "city": "Seattle",
+    "lat": 47.6228223,
+    "lon": -122.3499417,
+    "name": "Memorial Stadium",
+    "show_count": 3,
+    "state": "WA"
+  },
+  "memorial-union-ballroom-purdue-u": {
+    "city": "Lafayette",
+    "lat": 40.4191229,
+    "lon": -86.8919011,
+    "name": "Memorial Union Ballroom, Purdue U.",
+    "show_count": 1,
+    "state": "IN"
+  },
+  "merramac-community-college": {
+    "city": "Kirkwood",
+    "lat": 38.5800713,
+    "lon": -90.4069177,
+    "name": "Merramac Community College",
+    "show_count": 1,
+    "state": "MO"
+  },
+  "merriweather-post-pavilion": {
+    "city": "Columbia",
+    "lat": 39.2088352,
+    "lon": -76.8625061,
+    "name": "Merriweather Post Pavilion",
+    "show_count": 6,
+    "state": "MD"
+  },
+  "metropolitan-sports-center": {
+    "city": "Minneapolis",
+    "lat": 44.9772995,
+    "lon": -93.2654692,
+    "name": "Metropolitan Sports Center",
+    "show_count": 2,
+    "state": "MN"
+  },
+  "miami-arena": {
+    "city": "Miami",
+    "lat": 25.7813596,
+    "lon": -80.1879435,
+    "name": "Miami Arena",
+    "show_count": 6,
+    "state": "FL"
+  },
+  "mile-high-stadium": {
+    "city": "Denver",
+    "lat": 39.743952,
+    "lon": -105.0192228,
+    "name": "Mile High Stadium",
+    "show_count": 1,
+    "state": "CO"
+  },
+  "mill-valley-recreation-center": {
+    "city": "Mill Valley",
+    "lat": 37.9060368,
+    "lon": -122.5449763,
+    "name": "Mill Valley Recreation Center",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "milwaukee-auditorium": {
+    "city": "Milwaukee",
+    "lat": 43.0422794,
+    "lon": -87.9181594,
+    "name": "Milwaukee Auditorium",
+    "show_count": 2,
+    "state": "WI"
+  },
+  "milwaukee-performing-arts-center": {
+    "city": "Milwaukee",
+    "lat": 43.0386475,
+    "lon": -87.9090751,
+    "name": "Milwaukee Performing Arts Center",
+    "show_count": 1,
+    "state": "WI"
+  },
+  "mississippi-river-festival": {
+    "city": "Edwardsville",
+    "lat": 38.8114364,
+    "lon": -89.953157,
+    "name": "Mississippi River Festival",
+    "show_count": 1,
+    "state": "IL"
+  },
+  "monterey-fairgrounds": {
+    "city": "Monterey",
+    "lat": 36.5944591,
+    "lon": -121.8623782,
+    "name": "Monterey Fairgrounds",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "monterey-performing-arts-center": {
+    "city": "Monterey",
+    "lat": 36.2231079,
+    "lon": -121.387742,
+    "name": "Monterey Performing Arts Center",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "moody-coliseum-smu": {
+    "city": "Dallas",
+    "lat": 32.7762719,
+    "lon": -96.7968559,
+    "name": "Moody Coliseum (SMU)",
+    "show_count": 1,
+    "state": "TX"
+  },
+  "morgantown-civic-center": {
+    "city": "Morgantown",
+    "lat": 39.6296809,
+    "lon": -79.9559437,
+    "name": "Morgantown Civic Center",
+    "show_count": 1,
+    "state": "WV"
+  },
+  "moscone-center": {
+    "city": "San Francisco",
+    "lat": 37.7847119,
+    "lon": -122.4003108,
+    "name": "Moscone Center",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "municipal-auditorium": {
+    "city": "Austin",
+    "lat": 30.2711286,
+    "lon": -97.7436995,
+    "name": "Municipal Auditorium",
+    "show_count": 1,
+    "state": "TX"
+  },
+  "music-hall": {
+    "city": "Cincinnati",
+    "lat": 39.1093865,
+    "lon": -84.5191887,
+    "name": "Music Hall",
+    "show_count": 1,
+    "state": "OH"
+  },
+  "musikhalle": {
+    "city": "Hamburg",
+    "lat": 51.2515879,
+    "lon": 6.9791488,
+    "name": "Musikhalle",
+    "show_count": 1,
+    "state": "West Germany"
+  },
+  "nashville-municipal-auditorium": {
+    "city": "Nashville",
+    "lat": 36.1673832,
+    "lon": -86.7821984,
+    "name": "Nashville Municipal Auditorium",
+    "show_count": 2,
+    "state": "TN"
+  },
+  "nassau-coliseum": {
+    "city": "Uniondale",
+    "lat": 40.7229344,
+    "lon": -73.5907243,
+    "name": "Nassau Coliseum",
+    "show_count": 42,
+    "state": "NY"
+  },
+  "nbc-studios": {
+    "city": "New York City",
+    "lat": 40.7591424,
+    "lon": -73.9796681,
+    "name": "NBC Studios",
+    "show_count": 4,
+    "state": "NY"
+  },
+  "nevada-county-fairgrounds": {
+    "city": "Grass Valley",
+    "lat": 39.2062547,
+    "lon": -121.0797122,
+    "name": "Nevada County Fairgrounds",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "newcastle-under-lyme": {
+    "city": "Newcastle",
+    "lat": 53.0117627,
+    "lon": -2.2273919,
+    "name": "Newcastle-Under-Lyme",
+    "show_count": 1,
+    "state": "England"
+  },
+  "niagara-falls-convention-center": {
+    "city": "Niagara Falls",
+    "lat": 43.085735,
+    "lon": -79.0604616,
+    "name": "Niagara Falls Convention Center",
+    "show_count": 1,
+    "state": "NY"
+  },
+  "northrop-auditorium-u-of-minn": {
+    "city": "Minneapolis",
+    "lat": 44.9772995,
+    "lon": -93.2654692,
+    "name": "Northrop Auditorium, U. Of Minn.",
+    "show_count": 1,
+    "state": "MN"
+  },
+  "ny-state-pavilion-flushing-meadow-park": {
+    "city": "Queens",
+    "lat": 40.7135078,
+    "lon": -73.8283132,
+    "name": "NY State Pavilion, Flushing Meadow Park",
+    "show_count": 2,
+    "state": "NY"
+  },
+  "o-keefe-center": {
+    "city": "Toronto",
+    "lat": 43.6534817,
+    "lon": -79.3839347,
+    "name": "O'Keefe Center",
+    "show_count": 2,
+    "state": "Canada"
+  },
+  "oakland-auditorium-arena": {
+    "city": "Oakland",
+    "lat": 37.8044557,
+    "lon": -122.271356,
+    "name": "Oakland Auditorium Arena",
+    "show_count": 23,
+    "state": "CA"
+  },
+  "oakland-coliseum-arena": {
+    "city": "Oakland",
+    "lat": 37.7494171,
+    "lon": -122.1990172,
+    "name": "Oakland Coliseum Arena",
+    "show_count": 66,
+    "state": "CA"
+  },
+  "oakland-coliseum-stadium": {
+    "city": "Oakland",
+    "lat": 37.7516333,
+    "lon": -122.2004749,
+    "name": "Oakland Coliseum Stadium",
+    "show_count": 5,
+    "state": "CA"
+  },
+  "ohio-theatre": {
+    "city": "Columbus",
+    "lat": 39.9598912,
+    "lon": -82.9989419,
+    "name": "Ohio Theatre",
+    "show_count": 1,
+    "state": "OH"
+  },
+  "oklahoma-city-music-hall": {
+    "city": "Oklahoma City",
+    "lat": 35.4729886,
+    "lon": -97.5170536,
+    "name": "Oklahoma City Music Hall",
+    "show_count": 2,
+    "state": "OK"
+  },
+  "old-renaissance-faire-grounds": {
+    "city": "Veneta",
+    "lat": 44.0488807,
+    "lon": -123.351514,
+    "name": "Old Renaissance Faire Grounds",
+    "show_count": 1,
+    "state": "OR"
+  },
+  "olympia-halle": {
+    "city": "Munich",
+    "lat": 48.1719513,
+    "lon": 11.5783159,
+    "name": "Olympia Halle",
+    "show_count": 1,
+    "state": "West Germany"
+  },
+  "olympia-theater": {
+    "city": "Paris",
+    "lat": 48.8702443,
+    "lon": 2.3283595,
+    "name": "Olympia Theater",
+    "show_count": 2,
+    "state": "France"
+  },
+  "olympic-center": {
+    "city": "Lake Placid",
+    "lat": 44.2836556,
+    "lon": -73.9853014,
+    "name": "Olympic Center",
+    "show_count": 1,
+    "state": "NY"
+  },
+  "omaha-auditorium": {
+    "city": "Omaha",
+    "lat": 41.2587459,
+    "lon": -95.9383758,
+    "name": "Omaha Auditorium",
+    "show_count": 1,
+    "state": "NE"
+  },
+  "onondaga-war-memorial-auditorium": {
+    "city": "Syracuse",
+    "lat": 43.0481221,
+    "lon": -76.1474244,
+    "name": "Onondaga War Memorial Auditorium",
+    "show_count": 6,
+    "state": "NY"
+  },
+  "oregon-county-fair-site": {
+    "city": "Veneta",
+    "lat": 44.0488807,
+    "lon": -123.351514,
+    "name": "Oregon County Fair Site",
+    "show_count": 1,
+    "state": "OR"
+  },
+  "oregon-state-university": {
+    "city": "Corvallis",
+    "lat": 44.563056,
+    "lon": -123.2839234,
+    "name": "Oregon State University",
+    "show_count": 1,
+    "state": "OR"
+  },
+  "orlando-arena": {
+    "city": "Orlando",
+    "lat": 28.5421218,
+    "lon": -81.379045,
+    "name": "Orlando Arena",
+    "show_count": 4,
+    "state": "FL"
+  },
+  "orpheum-theater": {
+    "city": "San Francisco",
+    "lat": 37.7791619,
+    "lon": -122.4147347,
+    "name": "Orpheum Theater",
+    "show_count": 6,
+    "state": "CA"
+  },
+  "oxford-plains-speedway": {
+    "city": "Oxford",
+    "lat": 44.1537974,
+    "lon": -70.4845299,
+    "name": "Oxford Plains Speedway",
+    "show_count": 2,
+    "state": "ME"
+  },
+  "p-n-e-coliseum": {
+    "city": "Vancouver",
+    "lat": 49.2608724,
+    "lon": -123.113952,
+    "name": "P.N.E. Coliseum",
+    "show_count": 2,
+    "state": "Canada"
+  },
+  "p-n-e-garden-auditorium": {
+    "city": "Vancouver B.C.",
+    "lat": 49.2608724,
+    "lon": -123.113952,
+    "name": "P.N.E. Garden Auditorium",
+    "show_count": 2,
+    "state": "Canada"
+  },
+  "pacific-high-recording": {
+    "city": "San Mateo",
+    "lat": 37.496904,
+    "lon": -122.3330573,
+    "name": "Pacific High Recording",
+    "show_count": 16,
+    "state": "CA"
+  },
+  "palais-des-sports": {
+    "city": "Paris",
+    "lat": 48.8322364,
+    "lon": 2.2873078,
+    "name": "Palais Des Sports",
+    "show_count": 2,
+    "state": "France"
+  },
+  "paramount-northeast": {
+    "city": "Seattle",
+    "lat": 47.7341277,
+    "lon": -122.3081141,
+    "name": "Paramount Northeast",
+    "show_count": 1,
+    "state": "WA"
+  },
+  "paramount-northwest": {
+    "city": "Seattle",
+    "lat": 47.6038321,
+    "lon": -122.330062,
+    "name": "Paramount Northwest",
+    "show_count": 2,
+    "state": "WA"
+  },
+  "paramount-northwest-theatre": {
+    "city": "Seattle",
+    "lat": 47.6038321,
+    "lon": -122.330062,
+    "name": "Paramount Northwest Theatre",
+    "show_count": 1,
+    "state": "WA"
+  },
+  "paramount-theater": {
+    "city": "Portland",
+    "lat": 45.5202471,
+    "lon": -122.674194,
+    "name": "Paramount Theater",
+    "show_count": 4,
+    "state": "OR"
+  },
+  "paramount-theatre": {
+    "city": "Portland",
+    "lat": 45.5202471,
+    "lon": -122.674194,
+    "name": "Paramount Theatre",
+    "show_count": 2,
+    "state": "OR"
+  },
+  "parc-des-expositions": {
+    "city": "Dijon",
+    "lat": 47.3299555,
+    "lon": 5.0549033,
+    "name": "Parc des Expositions",
+    "show_count": 1,
+    "state": "France"
+  },
+  "park-west-ski-resort": {
+    "city": "Salt Lake City",
+    "lat": 40.7596198,
+    "lon": -111.886797,
+    "name": "Park West Ski Resort",
+    "show_count": 2,
+    "state": "UT"
+  },
+  "pasadena-civic-auditorium": {
+    "city": "Pasadena",
+    "lat": 34.1438464,
+    "lon": -118.1442654,
+    "name": "Pasadena Civic Auditorium",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "patrick-field-house-university-of-vermont": {
+    "city": "Burlington",
+    "lat": 44.4761601,
+    "lon": -73.212906,
+    "name": "Patrick Field House (University Of Vermont)",
+    "show_count": 2,
+    "state": "VT"
+  },
+  "pauley-ballroom-u-of-california": {
+    "city": "Berkeley",
+    "lat": 37.8708393,
+    "lon": -122.272863,
+    "name": "Pauley Ballroom, U. Of California",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "pauley-pavilion-ucla": {
+    "city": "Los Angeles",
+    "lat": 34.0536909,
+    "lon": -118.242766,
+    "name": "Pauley Pavilion, UCLA",
+    "show_count": 6,
+    "state": "CA"
+  },
+  "pavilion-university-illinois-at-chicago": {
+    "city": "Chicago",
+    "lat": 41.8755616,
+    "lon": -87.6244212,
+    "name": "Pavilion (University Illinois At Chicago)",
+    "show_count": 3,
+    "state": "IL"
+  },
+  "pershing-municipal-auditorium": {
+    "city": "Lincoln",
+    "lat": 40.8088861,
+    "lon": -96.7077751,
+    "name": "Pershing Municipal Auditorium",
+    "show_count": 1,
+    "state": "NE"
+  },
+  "philadelphia-civic-center": {
+    "city": "Philadelphia",
+    "lat": 39.9476976,
+    "lon": -75.1949802,
+    "name": "Philadelphia Civic Center",
+    "show_count": 5,
+    "state": "PA"
+  },
+  "piedmont-park": {
+    "city": "Atlanta",
+    "lat": 33.7890478,
+    "lon": -84.3718862,
+    "name": "Piedmont Park",
+    "show_count": 1,
+    "state": "GA"
+  },
+  "pine-knob-music-theater": {
+    "city": "Clarkston",
+    "lat": 42.735863,
+    "lon": -83.4188304,
+    "name": "Pine Knob Music Theater",
+    "show_count": 4,
+    "state": "MI"
+  },
+  "pirates-world": {
+    "city": "Dania",
+    "lat": 26.0543154,
+    "lon": -80.1457426,
+    "name": "Pirates World",
+    "show_count": 1,
+    "state": "FL"
+  },
+  "pittsburgh-civic-arena": {
+    "city": "Pittsburgh",
+    "lat": 40.4406968,
+    "lon": -80.0025666,
+    "name": "Pittsburgh Civic Arena",
+    "show_count": 8,
+    "state": "PA"
+  },
+  "place-ville-marie": {
+    "city": "Montreal",
+    "lat": 45.5021778,
+    "lon": -73.5682146,
+    "name": "Place Ville Marie",
+    "show_count": 1,
+    "state": "Canada"
+  },
+  "playboy-after-dark": {
+    "city": "New York City",
+    "lat": 40.7127281,
+    "lon": -74.0060152,
+    "name": "Playboy After Dark",
+    "show_count": 1,
+    "state": "NY"
+  },
+  "playhouse-theater": {
+    "city": "Edinburgh",
+    "lat": 55.9567521,
+    "lon": -3.1849634,
+    "name": "Playhouse Theater",
+    "show_count": 1,
+    "state": "Scotland"
+  },
+  "polo-field": {
+    "city": "Golden Gate Park - San Francisco",
+    "lat": 37.7693681,
+    "lon": -122.4821837,
+    "name": "Polo Field",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "polo-field-golden-gate-park": {
+    "city": "San Francisco",
+    "lat": 37.7879363,
+    "lon": -122.4075201,
+    "name": "Polo Field, Golden Gate Park",
+    "show_count": 2,
+    "state": "CA"
+  },
+  "poplar-creek-pavilion": {
+    "city": "Poplar Creek",
+    "lat": 42.0467686,
+    "lon": -88.1954708,
+    "name": "Poplar Creek Pavilion",
+    "show_count": 2,
+    "state": "IL"
+  },
+  "portland-international-speedway": {
+    "city": "Portland",
+    "lat": 45.5202471,
+    "lon": -122.674194,
+    "name": "Portland International Speedway",
+    "show_count": 1,
+    "state": "OR"
+  },
+  "portland-meadows": {
+    "city": "Portland",
+    "lat": 45.592605,
+    "lon": -122.6794422,
+    "name": "Portland Meadows",
+    "show_count": 2,
+    "state": "OR"
+  },
+  "portland-memorial-coliseum": {
+    "city": "Portland",
+    "lat": 45.5202471,
+    "lon": -122.674194,
+    "name": "Portland Memorial Coliseum",
+    "show_count": 5,
+    "state": "OR"
+  },
+  "providence-civic-center": {
+    "city": "Providence",
+    "lat": 41.8236194,
+    "lon": -71.4180896,
+    "name": "Providence Civic Center",
+    "show_count": 19,
+    "state": "RI"
+  },
+  "r-c-a-studio-a": {
+    "city": "Los Angeles",
+    "lat": 34.0536909,
+    "lon": -118.242766,
+    "name": "R.C.A. Studio A",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "raceway-park": {
+    "city": "Englishtown",
+    "lat": 40.2973319,
+    "lon": -74.3582041,
+    "name": "Raceway Park",
+    "show_count": 1,
+    "state": "NJ"
+  },
+  "radio": {
+    "city": "Luxembourg",
+    "lat": 49.6014255,
+    "lon": 6.1362153,
+    "name": "Radio",
+    "show_count": 1,
+    "state": "Luxembourg"
+  },
+  "radio-city-music-hall": {
+    "city": "New York City",
+    "lat": 40.7598116,
+    "lon": -73.9792791,
+    "name": "Radio City Music Hall",
+    "show_count": 8,
+    "state": "NY"
+  },
+  "rainbow-theater": {
+    "city": "London",
+    "lat": 51.5074456,
+    "lon": -0.1277653,
+    "name": "Rainbow Theater",
+    "show_count": 8,
+    "state": "England"
+  },
+  "rec-hall-penn-state-university": {
+    "city": "State College",
+    "lat": 40.7944504,
+    "lon": -77.8616386,
+    "name": "Rec Hall (Penn State University)",
+    "show_count": 2,
+    "state": "PA"
+  },
+  "recreation-hall-uc-davis": {
+    "city": "Davis",
+    "lat": 38.5435526,
+    "lon": -121.739005,
+    "name": "Recreation Hall (UC Davis)",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "red-rocks-amphitheater": {
+    "city": "Morrison",
+    "lat": 39.6653917,
+    "lon": -105.2057171,
+    "name": "Red Rocks Amphitheater",
+    "show_count": 20,
+    "state": "CO"
+  },
+  "red-vest": {
+    "city": "Oahu",
+    "lat": 21.4834365,
+    "lon": -158.0364837,
+    "name": "Red Vest",
+    "show_count": 1,
+    "state": "HI"
+  },
+  "reno-centennial-coliseum": {
+    "city": "Reno",
+    "lat": 39.5261788,
+    "lon": -119.812658,
+    "name": "Reno Centennial Coliseum",
+    "show_count": 1,
+    "state": "NV"
+  },
+  "reunion-arena": {
+    "city": "Dallas",
+    "lat": 32.7762719,
+    "lon": -96.7968559,
+    "name": "Reunion Arena",
+    "show_count": 1,
+    "state": "TX"
+  },
+  "rheinhalle": {
+    "city": "Dusseldorf",
+    "lat": 51.2766823,
+    "lon": 6.8246555,
+    "name": "Rheinhalle",
+    "show_count": 1,
+    "state": "West Germany"
+  },
+  "rhode-island-auditorium": {
+    "city": "Providence",
+    "lat": 41.8239891,
+    "lon": -71.4128343,
+    "name": "Rhode Island Auditorium",
+    "show_count": 1,
+    "state": "RI"
+  },
+  "rich-stadium": {
+    "city": "Orchard Park",
+    "lat": 42.7730293,
+    "lon": -78.7921925,
+    "name": "Rich Stadium",
+    "show_count": 4,
+    "state": "NY"
+  },
+  "richfield-coliseum": {
+    "city": "Richfield",
+    "lat": 41.2479833,
+    "lon": -81.5950363,
+    "name": "Richfield Coliseum",
+    "show_count": 13,
+    "state": "OH"
+  },
+  "richmond-coliseum": {
+    "city": "Richmond",
+    "lat": 37.5446365,
+    "lon": -77.4344429,
+    "name": "Richmond Coliseum",
+    "show_count": 4,
+    "state": "VA"
+  },
+  "river-bend-music-center": {
+    "city": "Cincinnati",
+    "lat": 39.1014537,
+    "lon": -84.5124602,
+    "name": "River Bend Music Center",
+    "show_count": 2,
+    "state": "OH"
+  },
+  "river-front-coliseum": {
+    "city": "Cincinnati",
+    "lat": 39.1014537,
+    "lon": -84.5124602,
+    "name": "River Front Coliseum",
+    "show_count": 1,
+    "state": "OH"
+  },
+  "riverfront-arena": {
+    "city": "Cincinnati",
+    "lat": 39.0979262,
+    "lon": -84.5044458,
+    "name": "Riverfront Arena",
+    "show_count": 1,
+    "state": "OH"
+  },
+  "riverport-amphitheatre": {
+    "city": "Maryland Heights",
+    "lat": 38.7150511,
+    "lon": -90.435999,
+    "name": "Riverport Amphitheatre",
+    "show_count": 4,
+    "state": "MO"
+  },
+  "robert-f-kennedy-stadium": {
+    "city": "Washington DC",
+    "lat": 38.8898161,
+    "lon": -76.9719224,
+    "name": "Robert F. Kennedy Stadium",
+    "show_count": 15,
+    "state": "DC"
+  },
+  "robertson-gym-ucsb": {
+    "city": "Santa Barbara",
+    "lat": 34.4221319,
+    "lon": -119.702667,
+    "name": "Robertson Gym, UCSB",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "rock-pile": {
+    "city": "Toronto",
+    "lat": 43.6534817,
+    "lon": -79.3839347,
+    "name": "Rock Pile",
+    "show_count": 1,
+    "state": "Canada"
+  },
+  "roosevelt-stadium": {
+    "city": "Jersey City",
+    "lat": 40.7111099,
+    "lon": -74.1025557,
+    "name": "Roosevelt Stadium",
+    "show_count": 6,
+    "state": "NJ"
+  },
+  "roscoe-maples-pavilion": {
+    "city": "Palo Alto",
+    "lat": 37.4443293,
+    "lon": -122.1598465,
+    "name": "Roscoe Maples Pavilion",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "rose-palace": {
+    "city": "Pasadena",
+    "lat": 34.1476507,
+    "lon": -118.144155,
+    "name": "Rose Palace",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "rosemont-horizon": {
+    "city": "Rosemont",
+    "lat": 41.9941334,
+    "lon": -87.8756737,
+    "name": "Rosemont Horizon",
+    "show_count": 13,
+    "state": "IL"
+  },
+  "rubber-bowl": {
+    "city": "Akron",
+    "lat": 41.0394205,
+    "lon": -81.4561285,
+    "name": "Rubber Bowl",
+    "show_count": 1,
+    "state": "OH"
+  },
+  "rupp-arena-lexington-center": {
+    "city": "Lexington",
+    "lat": 38.048032,
+    "lon": -84.5030655,
+    "name": "Rupp Arena (Lexington Center)",
+    "show_count": 1,
+    "state": "KY"
+  },
+  "sacramento-memorial-auditorium": {
+    "city": "Sacramento",
+    "lat": 38.5789153,
+    "lon": -121.4856188,
+    "name": "Sacramento Memorial Auditorium",
+    "show_count": 4,
+    "state": "CA"
+  },
+  "saenger-performing-arts-center": {
+    "city": "New Orleans",
+    "lat": 29.9561422,
+    "lon": -90.0733934,
+    "name": "Saenger Performing Arts Center",
+    "show_count": 3,
+    "state": "LA"
+  },
+  "salt-palace": {
+    "city": "Salt Lake City",
+    "lat": 40.7672426,
+    "lon": -111.8953825,
+    "name": "Salt Palace",
+    "show_count": 2,
+    "state": "UT"
+  },
+  "sam-boyd-silver-bowl": {
+    "city": "Las Vegas",
+    "lat": 36.0862687,
+    "lon": -115.0167365,
+    "name": "Sam Boyd Silver Bowl",
+    "show_count": 14,
+    "state": "NV"
+  },
+  "san-antonio-civic-auditorium": {
+    "city": "San Antonio",
+    "lat": 29.4246002,
+    "lon": -98.4951405,
+    "name": "San Antonio Civic Auditorium",
+    "show_count": 1,
+    "state": "TX"
+  },
+  "san-diego-sports-arena": {
+    "city": "San Diego",
+    "lat": 32.7553042,
+    "lon": -117.2122696,
+    "name": "San Diego Sports Arena",
+    "show_count": 4,
+    "state": "CA"
+  },
+  "san-francisco-civic": {
+    "city": "San Francisco",
+    "lat": 37.7780501,
+    "lon": -122.4173077,
+    "name": "San Francisco Civic",
+    "show_count": 10,
+    "state": "CA"
+  },
+  "san-jose-state-university": {
+    "city": "San Jose",
+    "lat": 37.3351902,
+    "lon": -121.881225,
+    "name": "San Jose State University",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "sandstone-amphitheatre": {
+    "city": "Bonner Springs",
+    "lat": 39.0597129,
+    "lon": -94.8837597,
+    "name": "Sandstone Amphitheatre",
+    "show_count": 3,
+    "state": "KS"
+  },
+  "santa-clara-county-fairgrounds": {
+    "city": "San Jose",
+    "lat": 37.2999593,
+    "lon": -121.8511955,
+    "name": "Santa Clara County Fairgrounds",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "santa-cruz-county-fairgrounds": {
+    "city": "Watsonville",
+    "lat": 36.9089338,
+    "lon": -121.7557942,
+    "name": "Santa Cruz County Fairgrounds",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "santa-fe-downs": {
+    "city": "Santa Fe",
+    "lat": 35.5889217,
+    "lon": -106.0775225,
+    "name": "Santa Fe Downs",
+    "show_count": 3,
+    "state": "NM"
+  },
+  "santa-monica-civic-auditorium": {
+    "city": "Santa Monica",
+    "lat": 34.0090592,
+    "lon": -118.4893052,
+    "name": "Santa Monica Civic Auditorium",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "santa-rosa-fairgrounds": {
+    "city": "Santa Rosa",
+    "lat": 38.4404925,
+    "lon": -122.7141049,
+    "name": "Santa Rosa Fairgrounds",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "saratoga-performing-arts-center": {
+    "city": "Saratoga Springs",
+    "lat": 43.05426,
+    "lon": -73.8063329,
+    "name": "Saratoga Performing Arts Center",
+    "show_count": 4,
+    "state": "NY"
+  },
+  "sargent-gym-boston-university": {
+    "city": "Boston",
+    "lat": 42.3588336,
+    "lon": -71.0578303,
+    "name": "Sargent Gym, Boston University",
+    "show_count": 1,
+    "state": "MA"
+  },
+  "saturday-night-live-nbc-studios": {
+    "city": "New York City",
+    "lat": 40.7127281,
+    "lon": -74.0060152,
+    "name": "Saturday Night Live, NBC Studios",
+    "show_count": 1,
+    "state": "NY"
+  },
+  "seattle-center-arena": {
+    "city": "Seattle",
+    "lat": 47.6240043,
+    "lon": -122.3494507,
+    "name": "Seattle Center Arena",
+    "show_count": 2,
+    "state": "WA"
+  },
+  "seattle-center-coliseum": {
+    "city": "Seattle",
+    "lat": 47.6038321,
+    "lon": -122.330062,
+    "name": "Seattle Center Coliseum",
+    "show_count": 5,
+    "state": "WA"
+  },
+  "seattle-memorial-stadium": {
+    "city": "Seattle",
+    "lat": 47.6038321,
+    "lon": -122.330062,
+    "name": "Seattle Memorial Stadium",
+    "show_count": 2,
+    "state": "WA"
+  },
+  "selland-arena": {
+    "city": "Fresno",
+    "lat": 36.7329391,
+    "lon": -119.7827459,
+    "name": "Selland Arena",
+    "show_count": 3,
+    "state": "CA"
+  },
+  "seminole-indian-village": {
+    "city": "Hollywood",
+    "lat": 26.0112014,
+    "lon": -80.1494901,
+    "name": "Seminole Indian Village",
+    "show_count": 2,
+    "state": "FL"
+  },
+  "shea-s-theater": {
+    "city": "Buffalo",
+    "lat": 42.8918573,
+    "lon": -78.8731925,
+    "name": "Shea's Theater",
+    "show_count": 1,
+    "state": "NY"
+  },
+  "shoreline-amphitheatre": {
+    "city": "Mountain View",
+    "lat": 37.4268616,
+    "lon": -122.0806072,
+    "name": "Shoreline Amphitheatre",
+    "show_count": 39,
+    "state": "CA"
+  },
+  "shrine-auditorium": {
+    "city": "Los Angeles",
+    "lat": 34.0234369,
+    "lon": -118.2814016,
+    "name": "Shrine Auditorium",
+    "show_count": 11,
+    "state": "CA"
+  },
+  "sierra-college": {
+    "city": "Rocklin",
+    "lat": 38.7944398,
+    "lon": -121.210556,
+    "name": "Sierra College",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "silva-hall-hult-center": {
+    "city": "Eugene",
+    "lat": 44.0505054,
+    "lon": -123.0950506,
+    "name": "Silva Hall (Hult Center)",
+    "show_count": 6,
+    "state": "OR"
+  },
+  "silver-stadium": {
+    "city": "Rochester",
+    "lat": 43.187589,
+    "lon": -77.6107529,
+    "name": "Silver Stadium",
+    "show_count": 2,
+    "state": "NY"
+  },
+  "soldier-field": {
+    "city": "Chicago",
+    "lat": 41.8624515,
+    "lon": -87.6167151,
+    "name": "Soldier Field",
+    "show_count": 9,
+    "state": "IL"
+  },
+  "soldiers-and-sailors-memorial-hall": {
+    "city": "Kansas City",
+    "lat": 39.1134562,
+    "lon": -94.626497,
+    "name": "Soldiers' And Sailors' Memorial Hall",
+    "show_count": 6,
+    "state": "KS"
+  },
+  "son-et-lumiere-theater": {
+    "city": "Giza",
+    "lat": 29.9870753,
+    "lon": 31.2118063,
+    "name": "Son Et Lumiere Theater",
+    "show_count": 3,
+    "state": "Egypt"
+  },
+  "southern-star-amphitheater": {
+    "city": "Houston",
+    "lat": 29.7589382,
+    "lon": -95.3676974,
+    "name": "Southern Star Amphitheater",
+    "show_count": 1,
+    "state": "TX"
+  },
+  "spartan-stadium": {
+    "city": "San Jose",
+    "lat": 37.3196895,
+    "lon": -121.8683139,
+    "name": "Spartan Stadium",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "spokane-coliseum": {
+    "city": "Spokane",
+    "lat": 47.6571934,
+    "lon": -117.42351,
+    "name": "Spokane Coliseum",
+    "show_count": 1,
+    "state": "WA"
+  },
+  "sports-and-music-center": {
+    "city": "Indianapolis",
+    "lat": 39.7683331,
+    "lon": -86.1583502,
+    "name": "Sports And Music Center",
+    "show_count": 1,
+    "state": "IN"
+  },
+  "sports-halle": {
+    "city": "Hamburg",
+    "lat": 53.5501721,
+    "lon": 10.0013165,
+    "name": "Sports Halle",
+    "show_count": 1,
+    "state": "Germany"
+  },
+  "sports-palace": {
+    "city": "Barcelona",
+    "lat": 41.3825802,
+    "lon": 2.177073,
+    "name": "Sports Palace",
+    "show_count": 1,
+    "state": "Spain"
+  },
+  "springer-s-inn": {
+    "city": "Portland",
+    "lat": 45.5202471,
+    "lon": -122.674194,
+    "name": "Springer's Inn",
+    "show_count": 2,
+    "state": "OR"
+  },
+  "springer-s-inn-portland": {
+    "city": "Portland",
+    "lat": 45.5202471,
+    "lon": -122.674194,
+    "name": "Springer's Inn Portland",
+    "show_count": 1,
+    "state": "OR"
+  },
+  "springfield-civic-center": {
+    "city": "Springfield",
+    "lat": 42.1019127,
+    "lon": -72.587235,
+    "name": "Springfield Civic Center",
+    "show_count": 10,
+    "state": "MA"
+  },
+  "st-john-s-arena-ohio-state-university": {
+    "city": "Columbus",
+    "lat": 39.9622601,
+    "lon": -83.0007065,
+    "name": "St. John's Arena (Ohio State University)",
+    "show_count": 1,
+    "state": "OH"
+  },
+  "st-louis-arena": {
+    "city": "St. Louis",
+    "lat": 38.6254063,
+    "lon": -90.190009,
+    "name": "St. Louis Arena",
+    "show_count": 1,
+    "state": "MO"
+  },
+  "st-paul-auditorium": {
+    "city": "St. Paul",
+    "lat": 44.9497487,
+    "lon": -93.0931028,
+    "name": "St. Paul Auditorium",
+    "show_count": 1,
+    "state": "MN"
+  },
+  "st-paul-civic-center": {
+    "city": "St. Paul",
+    "lat": 44.9497487,
+    "lon": -93.0931028,
+    "name": "St. Paul Civic Center",
+    "show_count": 5,
+    "state": "MN"
+  },
+  "stabler-arena-lehigh-university": {
+    "city": "Bethlehem",
+    "lat": -1.45056,
+    "lon": -48.4682453,
+    "name": "Stabler Arena (Lehigh University)",
+    "show_count": 1,
+    "state": "PA"
+  },
+  "stadt-halle": {
+    "city": "Bremen",
+    "lat": 53.0758196,
+    "lon": 8.8071646,
+    "name": "Stadt Halle",
+    "show_count": 1,
+    "state": "Germany"
+  },
+  "stanley-theater": {
+    "city": "Pittsburgh",
+    "lat": 40.4430914,
+    "lon": -79.9996284,
+    "name": "Stanley Theater",
+    "show_count": 5,
+    "state": "PA"
+  },
+  "star-lake-amphitheater": {
+    "city": "Burgettstown",
+    "lat": 40.3820133,
+    "lon": -80.3928423,
+    "name": "Star Lake Amphitheater",
+    "show_count": 2,
+    "state": "PA"
+  },
+  "star-theatre": {
+    "city": "Phoenix",
+    "lat": 33.4484367,
+    "lon": -112.074141,
+    "name": "Star Theatre",
+    "show_count": 1,
+    "state": "AZ"
+  },
+  "starlight-theater": {
+    "city": "Kansas City",
+    "lat": 39.0075805,
+    "lon": -94.5328099,
+    "name": "Starlight Theater",
+    "show_count": 3,
+    "state": "MO"
+  },
+  "state-fair-coliseum": {
+    "city": "Indianapolis",
+    "lat": 39.8275675,
+    "lon": -86.1351451,
+    "name": "State Fair Coliseum",
+    "show_count": 1,
+    "state": "IN"
+  },
+  "state-fairgrounds": {
+    "city": "Des Moines",
+    "lat": 41.5954105,
+    "lon": -93.5464497,
+    "name": "State Fairgrounds",
+    "show_count": 2,
+    "state": "IA"
+  },
+  "stockton-civic-auditorium": {
+    "city": "Stockton",
+    "lat": 37.9578794,
+    "lon": -121.2933098,
+    "name": "Stockton Civic Auditorium",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "straight-theater": {
+    "city": "San Francisco",
+    "lat": 37.7879363,
+    "lon": -122.4075201,
+    "name": "Straight Theater",
+    "show_count": 2,
+    "state": "CA"
+  },
+  "student-center-modesto-jr-college": {
+    "city": "Modesto",
+    "lat": 37.6393419,
+    "lon": -120.9968892,
+    "name": "Student Center, Modesto Jr. College",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "student-union-ballroom-u-of-u": {
+    "city": "Salt Lake City",
+    "lat": 40.7596198,
+    "lon": -111.886797,
+    "name": "Student Union Ballroom, U. Of U.",
+    "show_count": 1,
+    "state": "UT"
+  },
+  "studio-rehersal": {
+    "city": "Unknown City",
+    "name": "Studio Rehersal",
+    "show_count": 1,
+    "state": "Unknown State"
+  },
+  "sullivan-stadium": {
+    "city": "Foxboro",
+    "lat": 42.0953545,
+    "lon": -71.2616265,
+    "name": "Sullivan Stadium",
+    "show_count": 2,
+    "state": "MA"
+  },
+  "sun-dome": {
+    "city": "Tampa",
+    "lat": 28.0592444,
+    "lon": -82.4066241,
+    "name": "Sun Dome",
+    "show_count": 1,
+    "state": "FL"
+  },
+  "swing-auditorium": {
+    "city": "San Bernardino",
+    "lat": 34.8253019,
+    "lon": -116.0833144,
+    "name": "Swing Auditorium",
+    "show_count": 4,
+    "state": "CA"
+  },
+  "tacoma-dome": {
+    "city": "Tacoma",
+    "lat": 47.2368873,
+    "lon": -122.4269522,
+    "name": "Tacoma Dome",
+    "show_count": 1,
+    "state": "WA"
+  },
+  "taft-auditorium": {
+    "city": "Cincinnati",
+    "lat": 39.1015996,
+    "lon": -84.5077045,
+    "name": "Taft Auditorium",
+    "show_count": 1,
+    "state": "OH"
+  },
+  "tampa-stadium": {
+    "city": "Tampa",
+    "lat": 27.9608742,
+    "lon": -82.5046395,
+    "name": "Tampa Stadium",
+    "show_count": 1,
+    "state": "FL"
+  },
+  "temple-university": {
+    "city": "Philadelphia",
+    "lat": 39.981188,
+    "lon": -75.1562828,
+    "name": "Temple University",
+    "show_count": 1,
+    "state": "PA"
+  },
+  "terrace-ballroom": {
+    "city": "Salt Lake City",
+    "lat": 40.7596198,
+    "lon": -111.886797,
+    "name": "Terrace Ballroom",
+    "show_count": 1,
+    "state": "UT"
+  },
+  "texas-christian-university": {
+    "city": "Fort Worth",
+    "lat": 32.7080148,
+    "lon": -97.3611939,
+    "name": "Texas Christian University",
+    "show_count": 1,
+    "state": "TX"
+  },
+  "the-ark": {
+    "city": "Boston",
+    "lat": 35.279928,
+    "lon": -93.1316614,
+    "name": "The Ark",
+    "show_count": 3,
+    "state": "MA"
+  },
+  "the-centrum": {
+    "city": "Worcester",
+    "lat": 42.2625621,
+    "lon": -71.8018877,
+    "name": "The Centrum",
+    "show_count": 12,
+    "state": "MA"
+  },
+  "the-dean-dome-university-of-nc": {
+    "city": "Chapel Hill",
+    "lat": 35.9131542,
+    "lon": -79.05578,
+    "name": "The Dean Dome (University Of NC)",
+    "show_count": 2,
+    "state": "NC"
+  },
+  "the-fabulous-forum": {
+    "city": "Inglewood",
+    "lat": 33.9582157,
+    "lon": -118.341972,
+    "name": "The Fabulous Forum",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "the-hippodrome": {
+    "city": "Paris",
+    "lat": 48.8588897,
+    "lon": 2.320041,
+    "name": "The Hippodrome",
+    "show_count": 1,
+    "state": "France"
+  },
+  "the-i-c-c": {
+    "city": "Berlin",
+    "lat": 52.5173885,
+    "lon": 13.3951309,
+    "name": "The I.C.C.",
+    "show_count": 2,
+    "state": "Germany"
+  },
+  "the-matrix": {
+    "city": "San Francisco",
+    "lat": 37.7879363,
+    "lon": -122.4075201,
+    "name": "The Matrix",
+    "show_count": 11,
+    "state": "CA"
+  },
+  "the-mecca": {
+    "city": "Milwaukee",
+    "lat": 43.0451715,
+    "lon": -87.915596,
+    "name": "The Mecca",
+    "show_count": 2,
+    "state": "WI"
+  },
+  "the-met-center": {
+    "city": "Bloomington",
+    "lat": 44.8322405,
+    "lon": -93.3204872,
+    "name": "The Met Center",
+    "show_count": 1,
+    "state": "MN"
+  },
+  "the-mosque": {
+    "city": "Richmond",
+    "lat": 37.546203,
+    "lon": -77.4521083,
+    "name": "The Mosque",
+    "show_count": 1,
+    "state": "VA"
+  },
+  "the-music-box": {
+    "city": "Omaha",
+    "lat": 41.2587459,
+    "lon": -95.9383758,
+    "name": "The Music Box",
+    "show_count": 2,
+    "state": "NE"
+  },
+  "the-omni": {
+    "city": "Atlanta",
+    "lat": 33.8893737,
+    "lon": -84.4676616,
+    "name": "The Omni",
+    "show_count": 24,
+    "state": "GA"
+  },
+  "the-palace": {
+    "city": "Auburn Hills",
+    "lat": 42.6875323,
+    "lon": -83.2341028,
+    "name": "The Palace",
+    "show_count": 8,
+    "state": "MI"
+  },
+  "the-palace-theater": {
+    "city": "Waterbury",
+    "lat": 41.5538091,
+    "lon": -73.0438362,
+    "name": "The Palace Theater",
+    "show_count": 2,
+    "state": "CT"
+  },
+  "the-palestra-u-of-rochester": {
+    "city": "Rochester",
+    "lat": 43.157285,
+    "lon": -77.615214,
+    "name": "The Palestra, U. Of Rochester",
+    "show_count": 2,
+    "state": "NY"
+  },
+  "the-palladium": {
+    "city": "New York City",
+    "lat": 40.7127281,
+    "lon": -74.0060152,
+    "name": "The Palladium",
+    "show_count": 5,
+    "state": "NY"
+  },
+  "the-pyramid": {
+    "city": "Memphis",
+    "lat": 35.156063,
+    "lon": -90.052287,
+    "name": "The Pyramid",
+    "show_count": 2,
+    "state": "TN"
+  },
+  "the-scope": {
+    "city": "Norfolk",
+    "lat": 36.8493695,
+    "lon": -76.2899539,
+    "name": "The Scope",
+    "show_count": 1,
+    "state": "VA"
+  },
+  "the-silver-dollar-fair": {
+    "city": "Chico",
+    "lat": 39.7284945,
+    "lon": -121.8374777,
+    "name": "The Silver Dollar Fair",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "the-spectrum": {
+    "city": "Philadelphia",
+    "lat": 39.9527237,
+    "lon": -75.1635262,
+    "name": "The Spectrum",
+    "show_count": 52,
+    "state": "PA"
+  },
+  "the-sportatorium": {
+    "city": "Pembroke Pines",
+    "lat": 26.0061943,
+    "lon": -80.2872086,
+    "name": "The Sportatorium",
+    "show_count": 4,
+    "state": "FL"
+  },
+  "the-strand-lyceum": {
+    "city": "London",
+    "lat": 51.5074456,
+    "lon": -0.1277653,
+    "name": "The Strand Lyceum",
+    "show_count": 4,
+    "state": "England"
+  },
+  "the-summit": {
+    "city": "Houston",
+    "lat": 29.7589382,
+    "lon": -95.3676974,
+    "name": "The Summit",
+    "show_count": 3,
+    "state": "TX"
+  },
+  "the-syndrome": {
+    "city": "Chicago",
+    "lat": 41.8755616,
+    "lon": -87.6244212,
+    "name": "The Syndrome",
+    "show_count": 1,
+    "state": "IL"
+  },
+  "the-wharehouse": {
+    "city": "New Orleans",
+    "lat": 29.9561422,
+    "lon": -90.0733934,
+    "name": "The Wharehouse",
+    "show_count": 4,
+    "state": "LA"
+  },
+  "the-zenith": {
+    "city": "Paris",
+    "name": "The Zenith",
+    "show_count": 2,
+    "state": "France"
+  },
+  "thelma-theater": {
+    "city": "Los Angeles",
+    "lat": 34.0536909,
+    "lon": -118.242766,
+    "name": "Thelma Theater",
+    "show_count": 3,
+    "state": "CA"
+  },
+  "thompson-arena-dartmouth-college": {
+    "city": "Hanover",
+    "lat": 43.7023545,
+    "lon": -72.2892164,
+    "name": "Thompson Arena (Dartmouth College)",
+    "show_count": 1,
+    "state": "NH"
+  },
+  "three-rivers-stadium": {
+    "city": "Pittsburgh",
+    "lat": 40.4406968,
+    "lon": -80.0025666,
+    "name": "Three Rivers Stadium",
+    "show_count": 2,
+    "state": "PA"
+  },
+  "tivolis-koncertsal": {
+    "city": "Copenhagen",
+    "lat": 55.67262,
+    "lon": 12.5687072,
+    "name": "Tivolis Koncertsal",
+    "show_count": 2,
+    "state": "Denmark"
+  },
+  "tower-theater": {
+    "city": "Upper Darby",
+    "lat": 39.9607987,
+    "lon": -75.2582095,
+    "name": "Tower Theater",
+    "show_count": 4,
+    "state": "PA"
+  },
+  "town-park": {
+    "city": "Telluride",
+    "lat": 37.9341936,
+    "lon": -107.8058925,
+    "name": "Town Park",
+    "show_count": 2,
+    "state": "CO"
+  },
+  "trouper-s-club": {
+    "city": "Los Angeles",
+    "lat": 34.0536909,
+    "lon": -118.242766,
+    "name": "Trouper's Club.",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "tulsa-fairgrounds-pavilion": {
+    "city": "Tulsa",
+    "lat": 36.1563122,
+    "lon": -95.9927516,
+    "name": "Tulsa Fairgrounds Pavilion",
+    "show_count": 1,
+    "state": "OK"
+  },
+  "tyrone-guthrie-theatre": {
+    "city": "Minneapolis",
+    "lat": 44.9772995,
+    "lon": -93.2654692,
+    "name": "Tyrone Guthrie Theatre",
+    "show_count": 1,
+    "state": "MN"
+  },
+  "ucsb-stadium": {
+    "city": "Santa Barbara",
+    "lat": 34.4221319,
+    "lon": -119.702667,
+    "name": "UCSB Stadium",
+    "show_count": 1,
+    "state": "CA"
+  },
+  "ungano-s-night-club": {
+    "city": "New York City",
+    "lat": 40.7127281,
+    "lon": -74.0060152,
+    "name": "Ungano's Night Club",
+    "show_count": 1,
+    "state": "NY"
+  },
+  "uni-dome-university-of-northern-iowa": {
+    "city": "Cedar Falls",
+    "lat": 42.5361805,
+    "lon": -92.447758,
+    "name": "Uni Dome (University Of Northern Iowa)",
+    "show_count": 1,
+    "state": "IA"
+  },
+  "universal-amphitheater": {
+    "city": "Universal City",
+    "lat": 34.1419225,
+    "lon": -118.358411,
+    "name": "Universal AmphiTheater",
+    "show_count": 3,
+    "state": "CA"
+  },
+  "university-of-iowa": {
+    "city": "Iowa City",
+    "lat": 41.6311024,
+    "lon": -91.540752,
+    "name": "University Of Iowa",
+    "show_count": 3,
+    "state": "IA"
+  },
+  "university-of-nevada": {
+    "city": "Reno",
+    "lat": 39.5442688,
+    "lon": -119.8163105,
+    "name": "University Of Nevada",
+    "show_count": 1,
+    "state": "NV"
+  },
+  "university-of-new-mexico": {
+    "city": "Albuquerque",
+    "lat": 35.0866328,
+    "lon": -106.6202094,
+    "name": "University Of New Mexico",
+    "show_count": 1,
+    "state": "NM"
+  },
+  "university-of-virginia": {
+    "city": "Charlottesville",
+    "lat": 38.0410576,
+    "lon": -78.5055084,
+    "name": "University Of Virginia",
+    "show_count": 1,
+    "state": "VA"
+  },
+  "unknown-venue": {
+    "city": "Unknown City",
+    "name": "Unknown Venue",
+    "show_count": 2,
+    "state": "Unknown State"
+  },
+  "uptown-theater": {
+    "city": "Chicago",
+    "lat": 41.9694501,
+    "lon": -87.6605129,
+    "name": "Uptown Theater",
+    "show_count": 17,
+    "state": "IL"
+  },
+  "usair-arena": {
+    "city": "Landover",
+    "lat": 38.925313,
+    "lon": -76.8815433,
+    "name": "USAir Arena",
+    "show_count": 3,
+    "state": "MD"
+  },
+  "utica-memorial-auditorium": {
+    "city": "Utica",
+    "lat": 43.1049452,
+    "lon": -75.2334291,
+    "name": "Utica Memorial Auditorium",
+    "show_count": 4,
+    "state": "NY"
+  },
+  "vanderbilt-university": {
+    "city": "Nashville",
+    "lat": 36.1438011,
+    "lon": -86.8028189,
+    "name": "Vanderbilt University",
+    "show_count": 1,
+    "state": "TN"
+  },
+  "ventura-county-fairgrounds": {
+    "city": "Ventura",
+    "lat": 34.2756168,
+    "lon": -119.3022499,
+    "name": "Ventura County Fairgrounds",
+    "show_count": 11,
+    "state": "CA"
+  },
+  "veterans-auditorium": {
+    "city": "Santa Rosa",
+    "lat": 38.4343013,
+    "lon": -122.7011741,
+    "name": "Veterans Auditorium",
+    "show_count": 2,
+    "state": "CA"
+  },
+  "veterans-memorial-auditorium": {
+    "city": "Columbus",
+    "lat": 39.9622601,
+    "lon": -83.0007065,
+    "name": "Veterans' Memorial Auditorium",
+    "show_count": 2,
+    "state": "OH"
+  },
+  "veterans-memorial-coliseum": {
+    "city": "New Haven",
+    "lat": 41.3082138,
+    "lon": -72.9250518,
+    "name": "Veterans' Memorial Coliseum",
+    "show_count": 11,
+    "state": "CT"
+  },
+  "virginia-polytechnic-university": {
+    "city": "Blacksburg",
+    "lat": 37.2219268,
+    "lon": -80.4272818,
+    "name": "Virginia Polytechnic University",
+    "show_count": 1,
+    "state": "VA"
+  },
+  "wallace-wade-stadium-duke-university": {
+    "city": "Durham",
+    "lat": 35.996653,
+    "lon": -78.9018053,
+    "name": "Wallace Wade Stadium, Duke University",
+    "show_count": 1,
+    "state": "NC"
+  },
+  "walter-koebel-halle": {
+    "city": "Russelsheim",
+    "lat": 49.991701,
+    "lon": 8.4138251,
+    "name": "Walter Koebel Halle",
+    "show_count": 1,
+    "state": "Germany"
+  },
+  "war-memorial-auditorium": {
+    "city": "Rochester",
+    "lat": 43.157285,
+    "lon": -77.615214,
+    "name": "War Memorial Auditorium",
+    "show_count": 10,
+    "state": "NY"
+  },
+  "warfield-theater": {
+    "city": "San Francisco",
+    "lat": 37.7826218,
+    "lon": -122.410342,
+    "name": "Warfield Theater",
+    "show_count": 21,
+    "state": "CA"
+  },
+  "washington-university": {
+    "city": "St. Louis",
+    "lat": 38.6472402,
+    "lon": -90.3084017,
+    "name": "Washington University",
+    "show_count": 2,
+    "state": "MO"
+  },
+  "wbcn-studios": {
+    "city": "Boston",
+    "lat": 42.3588336,
+    "lon": -71.0578303,
+    "name": "WBCN Studios",
+    "show_count": 1,
+    "state": "MA"
+  },
+  "wembley-arena": {
+    "city": "London",
+    "lat": 51.5579996,
+    "lon": -0.2827922,
+    "name": "Wembley Arena",
+    "show_count": 3,
+    "state": "England"
+  },
+  "west-high-auditorium": {
+    "city": "Anchorage",
+    "lat": 61.2163129,
+    "lon": -149.894852,
+    "name": "West High Auditorium",
+    "show_count": 3,
+    "state": "AK"
+  },
+  "west-palm-beach-civic-center": {
+    "city": "West Palm Beach",
+    "lat": 26.715364,
+    "lon": -80.0532942,
+    "name": "West Palm Beach Civic Center",
+    "show_count": 1,
+    "state": "FL"
+  },
+  "william-and-mary-college": {
+    "city": "Williamsburg",
+    "lat": 37.2690934,
+    "lon": -76.7220509,
+    "name": "William and Mary College",
+    "show_count": 4,
+    "state": "VA"
+  },
+  "winnipeg-fairgrounds": {
+    "city": "Winnipeg",
+    "lat": 49.8955367,
+    "lon": -97.1384584,
+    "name": "Winnipeg Fairgrounds",
+    "show_count": 1,
+    "state": "Canada"
+  },
+  "winterland-arena": {
+    "city": "San Francisco",
+    "lat": 37.7879363,
+    "lon": -122.4075201,
+    "name": "Winterland Arena",
+    "show_count": 55,
+    "state": "CA"
+  },
+  "worcester-polytechnic-institute": {
+    "city": "Worcester",
+    "lat": 42.274315,
+    "lon": -71.8084567,
+    "name": "Worcester Polytechnic Institute",
+    "show_count": 1,
+    "state": "MA"
+  },
+  "world-music-theater": {
+    "city": "Tinly Park",
+    "name": "World Music Theater",
+    "show_count": 3,
+    "state": "IL"
+  },
+  "yale-bowl-yale-university": {
+    "city": "New Haven",
+    "lat": 41.3082138,
+    "lon": -72.9250518,
+    "name": "Yale Bowl, Yale University",
+    "show_count": 1,
+    "state": "CT"
+  },
+  "zoo-amphitheater": {
+    "city": "Oklahoma City",
+    "lat": 35.4729886,
+    "lon": -97.5170536,
+    "name": "Zoo Amphitheater",
+    "show_count": 3,
+    "state": "OK"
+  }
+}
