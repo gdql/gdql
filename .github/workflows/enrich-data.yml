@@ -1,0 +1,215 @@
+name: Enrich data
+
+# Runs the three downstream enrichment pipelines against whatever's
+# currently on main. Each job opens a PR with its output if there's a
+# diff; if nothing changed, it exits cleanly.
+#
+# Triggers:
+#  - push to main touching the relevant inputs (lazy — only the job
+#    whose inputs changed fires)
+#  - workflow_dispatch, to force a full re-run (e.g. after the band
+#    adds a venue that we geocoded previously but want to re-confirm)
+#  - weekly cron, as a safety net for drift we'd otherwise miss
+#
+# Each script is resume-safe and idempotent: re-running after a partial
+# success just tops up the missing rows.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      # scrape-lyrics triggers
+      - 'run/embeddb/default.db'
+      - 'data/song_aliases.json'
+      # geocode-venues triggers
+      - 'shows_with_lengths.json'
+      # fetch-weather triggers
+      - 'data/venues_geo.json'
+      # and anything directly touching the enrichment scripts themselves
+      - 'scripts/scrape_lyrics.go'
+      - 'scripts/geocode_venues.py'
+      - 'scripts/fetch_weather.py'
+  workflow_dispatch:
+    inputs:
+      job:
+        description: 'Which enrichment to run (all, lyrics, venues, weather)'
+        required: false
+        default: 'all'
+        type: choice
+        options: [all, lyrics, venues, weather]
+  schedule:
+    # Sundays, 03:00 UTC — outside US business hours for both Anthropic
+    # (if anyone's watching the CI tab) and the upstream rate-limited
+    # APIs this workflow hammers.
+    - cron: '0 3 * * 0'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  # One enrichment run at a time per job. Subsequent pushes queue.
+  group: enrich-${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  # ------------------------------------------------------------------
+  # lyrics — Genius scrape; only runs if songs or song_aliases changed,
+  # or if manually requested. Go toolchain required.
+  # ------------------------------------------------------------------
+  scrape-lyrics:
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'push' ||
+      github.event.inputs.job == 'all' ||
+      github.event.inputs.job == 'lyrics'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Scrape lyrics (incremental)
+        # --min-plays=10 is the tight threshold that picks up moderately-
+        # played songs without chasing every one-off cover. Resume-safe:
+        # skips songs already present in lyrics.json.
+        run: go run scripts/scrape_lyrics.go -db run/embeddb/default.db -out lyrics.json -min-plays 10
+
+      - name: Import scraped lyrics into embedded DB
+        run: |
+          go install ./cmd/gdql-import
+          "$(go env GOPATH)/bin/gdql-import" -db run/embeddb/default.db lyrics lyrics.json
+
+      - name: Detect changes
+        id: diff
+        run: |
+          if git diff --quiet lyrics.json run/embeddb/default.db; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No new lyrics."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git diff --stat lyrics.json run/embeddb/default.db
+          fi
+
+      - name: Open PR
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: enrich/lyrics
+          delete-branch: true
+          title: "data: scrape new lyrics"
+          commit-message: "data: scrape new lyrics"
+          labels: auto-enrich, lyrics
+          body: |
+            Automated lyrics sweep. `scripts/scrape_lyrics.go` hit Genius
+            for every song with >=10 plays that wasn't already covered;
+            anything it found landed in `lyrics.json` and was imported
+            into the embedded DB.
+
+  # ------------------------------------------------------------------
+  # venues — Nominatim geocoding; triggers on embedded DB or
+  # shows_with_lengths.json changes. ~9 min end-to-end at the
+  # 1.05s/req cadence for a cold run; incremental runs finish in
+  # seconds.
+  # ------------------------------------------------------------------
+  geocode-venues:
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'push' ||
+      github.event.inputs.job == 'all' ||
+      github.event.inputs.job == 'venues'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Geocode missing venues
+        run: python3 scripts/geocode_venues.py
+
+      - name: Detect changes
+        id: diff
+        run: |
+          if git diff --quiet data/venues_geo.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No new venue lat/lons."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git diff --stat data/venues_geo.json
+          fi
+
+      - name: Open PR
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: enrich/venues-geo
+          delete-branch: true
+          title: "data: geocode new venues"
+          commit-message: "data: geocode new venues"
+          labels: auto-enrich, venues
+          body: |
+            Automated venue geocoding. `scripts/geocode_venues.py` hit
+            Nominatim for every venue name (from the DB and from
+            `shows_with_lengths.json`) that wasn't already resolved.
+            Resume-safe; already-resolved slugs untouched.
+
+  # ------------------------------------------------------------------
+  # weather — Open-Meteo historical archive; triggers on new
+  # venues_geo.json (new lat/lons unlock new weather lookups) or
+  # shows_with_lengths.json (new show dates to look up). Rate-limited;
+  # the script backs off on 429.
+  # ------------------------------------------------------------------
+  fetch-weather:
+    # Wait for geocode-venues first on full runs so that newly-geocoded
+    # venues can be weather-looked-up in the same pass. `always()` lets
+    # us still run after a skipped geocode job (on non-full-run triggers).
+    needs: [geocode-venues]
+    if: |
+      always() &&
+      (needs.geocode-venues.result == 'success' || needs.geocode-venues.result == 'skipped') &&
+      (github.event_name == 'schedule' ||
+       github.event_name == 'push' ||
+       github.event.inputs.job == 'all' ||
+       github.event.inputs.job == 'weather')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Pull in any PR opened by geocode-venues earlier in this run
+          # so weather can use the freshly-geocoded lat/lons.
+          ref: ${{ github.ref }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Fetch missing weather
+        run: python3 scripts/fetch_weather.py
+
+      - name: Detect changes
+        id: diff
+        run: |
+          if git diff --quiet data/weather.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No new weather data."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git diff --stat data/weather.json
+          fi
+
+      - name: Open PR
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: enrich/weather
+          delete-branch: true
+          title: "data: fetch new weather"
+          commit-message: "data: fetch new weather"
+          labels: auto-enrich, weather
+          body: |
+            Automated weather sweep. `scripts/fetch_weather.py` hit
+            Open-Meteo's historical archive for every show date whose
+            venue now has lat/lon but isn't yet in `weather.json`.
+            Back-off on 429 is built into the script.
