@@ -80,8 +80,47 @@ CREATE TABLE IF NOT EXISTS song_relations (
 CREATE INDEX IF NOT EXISTS idx_song_relations_from ON song_relations(from_song_id);
 CREATE INDEX IF NOT EXISTS idx_song_relations_to ON song_relations(to_song_id);
 
+-- Geographic coordinates per venue. Populated via scripts/geocode_venues.py
+-- (Nominatim). Kept as an extension table rather than columns on `venues`
+-- so geocoding failures leave the venue row intact.
+CREATE TABLE IF NOT EXISTS venue_coords (
+    venue_id INTEGER PRIMARY KEY REFERENCES venues(id),
+    lat REAL NOT NULL,
+    lon REAL NOT NULL,
+    source TEXT NOT NULL DEFAULT 'nominatim'
+);
+
+-- Historical daily weather for each show date, keyed by show.
+-- Populated via scripts/fetch_weather.py (Open-Meteo).
+-- WMO weather codes: https://open-meteo.com/en/docs#api_form
+CREATE TABLE IF NOT EXISTS show_weather (
+    show_id INTEGER PRIMARY KEY REFERENCES shows(id),
+    temp_high_c REAL,
+    temp_low_c REAL,
+    precip_mm REAL,
+    wind_kph REAL,
+    weather_code INTEGER
+);
+
+-- Archive.org recordings available for each show date. One row per
+-- recording identifier; many rows per show for dates with multiple
+-- circulating tapes. Populated via scripts/fetch_recordings.py.
+-- `source` values: sbd, matrix, fm, aud, unknown — sortable quality
+-- indicator that downstream consumers use to pick the best version.
+CREATE TABLE IF NOT EXISTS show_recordings (
+    show_id INTEGER NOT NULL REFERENCES shows(id),
+    identifier TEXT NOT NULL,
+    source TEXT,
+    downloads INTEGER,
+    rating REAL,
+    title TEXT,
+    PRIMARY KEY (show_id, identifier)
+);
+CREATE INDEX IF NOT EXISTS idx_show_recordings_show ON show_recordings(show_id);
+
 CREATE INDEX IF NOT EXISTS idx_songs_name ON songs(name);
 CREATE INDEX IF NOT EXISTS idx_perf_song ON performances(song_id);
 CREATE INDEX IF NOT EXISTS idx_perf_show ON performances(show_id);
 CREATE INDEX IF NOT EXISTS idx_perf_position ON performances(show_id, set_number, position);
 CREATE INDEX IF NOT EXISTS idx_shows_venue ON shows(venue_id);
+CREATE INDEX IF NOT EXISTS idx_venue_coords_latlon ON venue_coords(lat, lon);

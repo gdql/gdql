@@ -140,6 +140,54 @@ func main() {
 		}
 		fmt.Fprintf(os.Stderr, "Relations: %d loaded, %d skipped\n", loaded, skipped)
 
+	case "geo":
+		if len(args) < 2 {
+			fmt.Fprintln(os.Stderr, "Usage: gdql-import [-db path] geo <venues_geo.json>")
+			os.Exit(1)
+		}
+		db, err := sqlite.Open(dbPath)
+		if err != nil {
+			fatal(err)
+		}
+		defer db.Close()
+		loaded, skipped, err := sqlite.LoadGeoFromFile(context.Background(), db.DB(), args[1])
+		if err != nil {
+			fatal(err)
+		}
+		fmt.Fprintf(os.Stderr, "Geo: %d loaded, %d skipped\n", loaded, skipped)
+
+	case "weather":
+		if len(args) < 2 {
+			fmt.Fprintln(os.Stderr, "Usage: gdql-import [-db path] weather <weather.json>")
+			os.Exit(1)
+		}
+		db, err := sqlite.Open(dbPath)
+		if err != nil {
+			fatal(err)
+		}
+		defer db.Close()
+		loaded, skipped, err := sqlite.LoadWeatherFromFile(context.Background(), db.DB(), args[1])
+		if err != nil {
+			fatal(err)
+		}
+		fmt.Fprintf(os.Stderr, "Weather: %d loaded, %d skipped\n", loaded, skipped)
+
+	case "recordings":
+		if len(args) < 2 {
+			fmt.Fprintln(os.Stderr, "Usage: gdql-import [-db path] recordings <recordings.json>")
+			os.Exit(1)
+		}
+		db, err := sqlite.Open(dbPath)
+		if err != nil {
+			fatal(err)
+		}
+		defer db.Close()
+		loaded, skipped, err := sqlite.LoadRecordingsFromFile(context.Background(), db.DB(), args[1])
+		if err != nil {
+			fatal(err)
+		}
+		fmt.Fprintf(os.Stderr, "Recordings: %d loaded, %d skipped\n", loaded, skipped)
+
 	case "merge-songs":
 		if len(args) < 2 {
 			fmt.Fprintln(os.Stderr, "Usage: gdql-import [-db path] merge-songs <relations.json> [--record <out.json>]")
@@ -416,6 +464,9 @@ func printUsage() {
 	fmt.Fprintln(w, "  aliases <file>             Import song alias mappings")
 	fmt.Fprintln(w, "  relations <file>           Import song-to-song relations (variant_of, merge_into, pairs_with)")
 	fmt.Fprintln(w, "  merge-songs <file>         Apply kind=merge_into rows destructively (see --record to log)")
+	fmt.Fprintln(w, "  geo <file>                 Load venue lat/lon from venues_geo.json")
+	fmt.Fprintln(w, "  weather <file>             Load daily weather from weather.json")
+	fmt.Fprintln(w, "  recordings <file>          Load archive.org recordings from recordings.json")
 	fmt.Fprintln(w, "  fix-sets                   Re-infer set numbers for shows with flat set data")
 	fmt.Fprintln(w)
 	fmt.Fprintln(w, "Options:")

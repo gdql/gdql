@@ -99,10 +99,45 @@ gdql ‘SHOWS WHERE "Scarlet Begonias" > "Fire on the Mountain";’
 
 ## Documentation
 
+- **[docs.gdql.dev](https://docs.gdql.dev)** — Hosted docs site (cookbook, cheat sheet, language reference, data pipelines).
 - **[docs/LANGUAGE.md](docs/LANGUAGE.md)** — Language reference (living doc; we update it as we add features).
 - **[docs/INSTALL_GO_WSL.md](docs/INSTALL_GO_WSL.md)** — How to install Go on WSL.
 - **[DESIGN.md](DESIGN.md)** — Full language design and ideas.
 - **[SPEC.md](SPEC.md)** — Implementation spec and grammar.
+
+## Data pipelines
+
+The embedded database is enriched by several scripts that land in
+`data/` alongside the DB. See the [Data Pipelines doc](https://docs.gdql.dev/data-pipelines/)
+for the full overview; short summary:
+
+| Script | Produces | Purpose |
+|---|---|---|
+| `scripts/scrape_lyrics.go` | `lyrics.json` | Genius scrape for songs with ≥N plays |
+| `scripts/geocode_venues.py` | `data/venues_geo.json` | Nominatim lat/lon for every venue |
+| `scripts/fetch_weather.py` | `data/weather.json` | Open-Meteo historical daily for every show |
+
+### `gdql-import` subcommands
+
+```bash
+gdql-import [-db <path>] setlistfm                      # import shows from setlist.fm API
+gdql-import [-db <path>] json <file>                    # import from canonical JSON
+gdql-import [-db <path>] lyrics <file.json>             # lyrics JSON (from scrape_lyrics)
+gdql-import [-db <path>] aliases <file.json>            # setlist-text → canonical song
+gdql-import [-db <path>] relations <file.json>          # song-to-song cross-refs
+gdql-import [-db <path>] merge-songs <file.json>        # apply kind=merge_into destructively
+gdql-import [-db <path>] fix-sets                       # re-infer set numbers
+```
+
+### CI automation
+
+- **`.github/workflows/enrich-data.yml`** — path-filtered jobs that re-run the three
+  enrichment scripts when their inputs change, then open a PR per change.
+  Also runs weekly as a drift safety net.
+- **`.github/workflows/release.yml`** — on `v*` tag push, builds release binaries
+  and dispatches `repository_dispatch` events to downstream consumers
+  (`gdql/sandbox`, `samburba/deaddaily-timeline` aka *Dead Daily Explore*,
+  `samburba/deaddaily-listen` aka *Dead Daily Listen*).
 
 **Go API docs:** From the repo root, run `go doc ./...` to see package and symbol docs. Add `// Comment` above exported types and functions to build those docs as you go.
 

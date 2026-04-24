@@ -116,6 +116,11 @@ func (e *executor) ExecuteAST(ctx context.Context, q ast.Query) (*Result, error)
 	case ir.QueryTypeShows:
 		out.Type = ResultShows
 		out.Shows, err = mapRowsToShows(rs)
+		if err == nil && len(out.Shows) > 0 && e.dataSource != nil {
+			// Non-fatal enrichment: attach coords/weather/recordings when
+			// those extension tables exist. Silently no-ops on older DBs.
+			_ = attachShowEnrichments(ctx, e.dataSource, out.Shows)
+		}
 		// AS SETLIST: expand each show into its full setlist
 		if err == nil && irQ.OutputFmt == ir.OutputSetlist && len(out.Shows) > 0 {
 			var setlists []*SetlistResult
@@ -241,6 +246,118 @@ func splitCityState(s string) (city, state string) {
 		return city, ""
 	}
 	return city, state
+}
+
+// attachShowEnrichments fills in coords/weather/recordings on a batch of
+// shows via three lookups (venue_coords, show_weather, show_recordings).
+// Any table missing (older DB) causes the lookup to quietly no-op.
+func attachShowEnrichments(ctx context.Context, ds data.DataSource, shows []*data.Show) error {
+	if len(shows) == 0 {
+		return nil
+	}
+	byID := make(map[int]*data.Show, len(shows))
+	byVenue := make(map[int]*data.Show)
+	placeholders := make([]string, 0, len(shows))
+	args := make([]any, 0, len(shows))
+	for _, s := range shows {
+		byID[s.ID] = s
+		if s.VenueID > 0 {
+			byVenue[s.VenueID] = s
+		}
+		placeholders = append(placeholders, "?")
+		args = append(args, s.ID)
+	}
+	in := strings.Join(placeholders, ",")
+
+	// venue_coords — keyed by venue_id, but we look up via the shows in
+	// this batch. A single venue may back several shows.
+	if len(byVenue) > 0 {
+		vargs := make([]any, 0, len(byVenue))
+		vph := make([]string, 0, len(byVenue))
+		for vid := range byVenue {
+			vargs = append(vargs, vid)
+			vph = append(vph, "?")
+		}
+		q := "SELECT venue_id, lat, lon FROM venue_coords WHERE venue_id IN (" + strings.Join(vph, ",") + ")"
+		if rs, err := ds.ExecuteQuery(ctx, q, vargs...); err == nil {
+			for _, row := range rs.Rows {
+				if len(row) < 3 {
+					continue
+				}
+				vid := intVal(row[0])
+				// A single venue_id can map to multiple shows; apply the
+				// same coords to every show with this venue.
+				for _, s := range shows {
+					if s.VenueID == vid {
+						s.Coords = &data.Coords{Lat: floatVal(row[1]), Lon: floatVal(row[2])}
+					}
+				}
+			}
+		}
+	}
+
+	// show_weather
+	if rs, err := ds.ExecuteQuery(ctx,
+		"SELECT show_id, temp_high_c, temp_low_c, precip_mm, wind_kph, weather_code FROM show_weather WHERE show_id IN ("+in+")",
+		args...); err == nil {
+		for _, row := range rs.Rows {
+			if len(row) < 6 {
+				continue
+			}
+			sid := intVal(row[0])
+			s, ok := byID[sid]
+			if !ok {
+				continue
+			}
+			s.Weather = &data.Weather{
+				HighC:       nullableFloat(row[1]),
+				LowC:        nullableFloat(row[2]),
+				PrecipMM:    nullableFloat(row[3]),
+				WindKPH:     nullableFloat(row[4]),
+				WeatherCode: nullableInt(row[5]),
+			}
+		}
+	}
+
+	// show_recordings — many-per-show
+	if rs, err := ds.ExecuteQuery(ctx,
+		"SELECT show_id, identifier, source, downloads, rating, title FROM show_recordings WHERE show_id IN ("+in+") ORDER BY CASE source WHEN 'sbd' THEN 4 WHEN 'matrix' THEN 3 WHEN 'fm' THEN 2 WHEN 'aud' THEN 1 ELSE 0 END DESC, downloads DESC",
+		args...); err == nil {
+		for _, row := range rs.Rows {
+			if len(row) < 6 {
+				continue
+			}
+			sid := intVal(row[0])
+			s, ok := byID[sid]
+			if !ok {
+				continue
+			}
+			s.Recordings = append(s.Recordings, data.Recording{
+				ID:        strVal(row[1]),
+				Source:    strVal(row[2]),
+				Downloads: nullableInt(row[3]),
+				Rating:    nullableFloat(row[4]),
+				Title:     strVal(row[5]),
+			})
+		}
+	}
+	return nil
+}
+
+func nullableFloat(v any) *float64 {
+	if v == nil {
+		return nil
+	}
+	f := floatVal(v)
+	return &f
+}
+
+func nullableInt(v any) *int {
+	if v == nil {
+		return nil
+	}
+	n := intVal(v)
+	return &n
 }
 
 // attachSongRelations enriches songs with entries from the song_relations

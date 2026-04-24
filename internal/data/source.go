@@ -30,31 +30,62 @@ type ResultSet struct {
 // Row is a single row (slice of column values).
 type Row []interface{}
 
+// Coords is a venue lat/lon pair attached to a Show via its venue.
+type Coords struct {
+	Lat float64 `json:"lat"`
+	Lon float64 `json:"lon"`
+}
+
+// Weather is the daily weather reading for a show date.
+type Weather struct {
+	HighC       *float64 `json:"high_c,omitempty"`
+	LowC        *float64 `json:"low_c,omitempty"`
+	PrecipMM    *float64 `json:"precip_mm,omitempty"`
+	WindKPH     *float64 `json:"wind_kph,omitempty"`
+	WeatherCode *int     `json:"code,omitempty"`
+}
+
+// Recording is one archive.org identifier with metadata.
+type Recording struct {
+	ID        string   `json:"id"`
+	Source    string   `json:"src,omitempty"`
+	Downloads *int     `json:"dl,omitempty"`
+	Rating    *float64 `json:"r,omitempty"`
+	Title     string   `json:"t,omitempty"`
+}
+
 // Show is a single show.
 type Show struct {
-	ID      int       `json:"id"`
-	Date    time.Time `json:"date"`
-	VenueID int       `json:"venue_id,omitempty"`
-	Venue   string    `json:"venue"`
-	City    string    `json:"city,omitempty"`
-	State   string    `json:"state,omitempty"`
-	Tour    string    `json:"tour,omitempty"`
+	ID         int         `json:"id"`
+	Date       time.Time   `json:"date"`
+	VenueID    int         `json:"venue_id,omitempty"`
+	Venue      string      `json:"venue"`
+	City       string      `json:"city,omitempty"`
+	State      string      `json:"state,omitempty"`
+	Tour       string      `json:"tour,omitempty"`
+	Coords     *Coords     `json:"coords,omitempty"`
+	Weather    *Weather    `json:"weather,omitempty"`
+	Recordings []Recording `json:"recordings,omitempty"`
 }
 
 // MarshalJSON renders Date as YYYY-MM-DD instead of full RFC3339.
 func (s Show) MarshalJSON() ([]byte, error) {
 	type showOut struct {
-		ID      int    `json:"id"`
-		Date    string `json:"date"`
-		VenueID int    `json:"venue_id,omitempty"`
-		Venue   string `json:"venue"`
-		City    string `json:"city,omitempty"`
-		State   string `json:"state,omitempty"`
-		Tour    string `json:"tour,omitempty"`
+		ID         int         `json:"id"`
+		Date       string      `json:"date"`
+		VenueID    int         `json:"venue_id,omitempty"`
+		Venue      string      `json:"venue"`
+		City       string      `json:"city,omitempty"`
+		State      string      `json:"state,omitempty"`
+		Tour       string      `json:"tour,omitempty"`
+		Coords     *Coords     `json:"coords,omitempty"`
+		Weather    *Weather    `json:"weather,omitempty"`
+		Recordings []Recording `json:"recordings,omitempty"`
 	}
 	out := showOut{
 		ID: s.ID, VenueID: s.VenueID, Venue: s.Venue,
 		City: s.City, State: s.State, Tour: s.Tour,
+		Coords: s.Coords, Weather: s.Weather, Recordings: s.Recordings,
 	}
 	if !s.Date.IsZero() {
 		out.Date = s.Date.Format("2006-01-02")

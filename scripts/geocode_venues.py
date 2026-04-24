@@ -63,13 +63,40 @@ def main():
     conn = sqlite3.connect(DB)
     # Aggregate show counts per (venue_name, city, state) from the canonical
     # DB; minor spelling variants that share a slug get merged under one key.
-    rows = conn.execute("""
+    rows = list(conn.execute("""
         SELECT v.name, v.city, v.state, count(s.id) as show_count
         FROM venues v LEFT JOIN shows s ON s.venue_id = v.id
         WHERE v.name IS NOT NULL AND v.name != ''
         GROUP BY v.id
         ORDER BY show_count DESC
-    """).fetchall()
+    """).fetchall())
+
+    # Also ingest venue names from shows_with_lengths.json — that file was
+    # produced by a separate pipeline and carries ~200 venue spellings the
+    # DB's venues table doesn't have. Dedup by slug.
+    sw = ROOT / "shows_with_lengths.json"
+    if sw.exists():
+        import json as _json
+        seen_slugs = {slugify(n) for n, *_ in rows}
+        extra: dict[str, tuple[str, str, str, int]] = {}
+        for show in _json.load(open(sw)):
+            v = show.get("venue") or {}
+            name = (v.get("name") or "").strip()
+            if not name:
+                continue
+            slug = slugify(name)
+            if not slug or slug in seen_slugs:
+                continue
+            city = (v.get("city") or "").strip()
+            state = (v.get("state") or "").strip()
+            prev = extra.get(slug)
+            count = (prev[3] + 1) if prev else 1
+            extra[slug] = (name, city, state, count)
+        rows.extend(extra.values())
+        print(
+            f"shows_with_lengths: +{len(extra)} extra venues merged into queue",
+            file=sys.stderr,
+        )
 
     existing = load_existing()
     added = 0
